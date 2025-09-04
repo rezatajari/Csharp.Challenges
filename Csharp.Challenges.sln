@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04_InputValidation", "04_In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05_CustomMultiplicationTable", "05_CustomMultiplicationTable\05_CustomMultiplicationTable.csproj", "{170D2B5C-43E1-4118-9271-9FE63F5A9788}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06_ValueFrequencyAnalyzer", "06_ValueFrequencyAnalyzer\06_ValueFrequencyAnalyzer.csproj", "{6E811E4D-09C3-45D9-B1ED-81B6037CACC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{170D2B5C-43E1-4118-9271-9FE63F5A9788}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{170D2B5C-43E1-4118-9271-9FE63F5A9788}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{170D2B5C-43E1-4118-9271-9FE63F5A9788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E811E4D-09C3-45D9-B1ED-81B6037CACC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E811E4D-09C3-45D9-B1ED-81B6037CACC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E811E4D-09C3-45D9-B1ED-81B6037CACC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E811E4D-09C3-45D9-B1ED-81B6037CACC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
