@@ -18,4 +18,13 @@ This is the same as how businesses, schools, or apps analyze rating data.
    - The **number of valid entries**.  
    - The **number of invalid entries**.  
    - A list of distinct valid values and how many times each appears.  
-4. Use this test data to check your program:  
+4. Use this test data to check your program:  1 7 2 4 2 3 8 4 6 4 4 7
+
+
+### Why This Matters  
+This exercise teaches how to:  
+- Work with **arrays** to store data.  
+- Separate **valid vs invalid values**.  
+- Count **frequencies of distinct numbers**.  
+
+Think of it as building a **mini statistics tool** — turning raw input into organized results that reveal patterns.  
