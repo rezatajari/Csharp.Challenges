@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "08_FreqBarChart", "08_FreqB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "09_ArrayPolarity", "09_ArrayPolarity\09_ArrayPolarity.csproj", "{8DDF0CD7-CA16-4548-AF5A-E1FC062EE6FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10_Factorial", "10_Factorial\10_Factorial.csproj", "{44E40A11-3C43-411C-BCB0-B28B3CE48C47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{8DDF0CD7-CA16-4548-AF5A-E1FC062EE6FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DDF0CD7-CA16-4548-AF5A-E1FC062EE6FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DDF0CD7-CA16-4548-AF5A-E1FC062EE6FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
