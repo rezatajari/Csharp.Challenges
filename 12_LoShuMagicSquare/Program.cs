@@ -59,6 +59,4 @@ void SwitchCells()
     int temp = numbers[number1[0], number1[1]];
     numbers[number1[0], number1[1]] = numbers[number2[0], number2[1]];
     numbers[number2[0], number2[1]] = temp;
-
-
 }
