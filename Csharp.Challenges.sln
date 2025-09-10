@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "09_ArrayPolarity", "09_Arra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10_Factorial", "10_Factorial\10_Factorial.csproj", "{44E40A11-3C43-411C-BCB0-B28B3CE48C47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "16_CardNameDisplay", "16_CardNameDisplay\16_CardNameDisplay.csproj", "{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44E40A11-3C43-411C-BCB0-B28B3CE48C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
