@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10_Factorial", "10_Factoria
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11_FizzBuzz", "11_FizzBuzz\11_FizzBuzz.csproj", "{655BCDAA-5CCC-41D3-A534-3366106BFD91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "12_LoShuMagicSquare", "12_LoShuMagicSquare\12_LoShuMagicSquare.csproj", "{0E2F9686-ADD6-4F4F-841E-7BD4BE8D2D17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{655BCDAA-5CCC-41D3-A534-3366106BFD91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{655BCDAA-5CCC-41D3-A534-3366106BFD91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{655BCDAA-5CCC-41D3-A534-3366106BFD91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E2F9686-ADD6-4F4F-841E-7BD4BE8D2D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E2F9686-ADD6-4F4F-841E-7BD4BE8D2D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E2F9686-ADD6-4F4F-841E-7BD4BE8D2D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E2F9686-ADD6-4F4F-841E-7BD4BE8D2D17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
