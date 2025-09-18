@@ -29,6 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "12_LoShuMagicSquare", "12_L
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13_TortoisHareRace", "13_TortoisHareRace\13_TortoisHareRace.csproj", "{6B7B49F0-D044-4E75-898F-F5E197DBE3C9}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14_LatinTranslator", "14_LatinTranslator\14_LatinTranslator.csproj", "{C440581E-285C-4103-A808-4D63C997F810}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15_NumberImageClicker", "15_NumberImageClicker\15_NumberImageClicker.csproj", "{E7A5997D-D185-4FBE-B40F-31C4BDEEFFB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "16_CardNameDisplay", "16_CardNameDisplay\16_CardNameDisplay.csproj", "{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +97,10 @@ Global
 		{E7A5997D-D185-4FBE-B40F-31C4BDEEFFB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7A5997D-D185-4FBE-B40F-31C4BDEEFFB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7A5997D-D185-4FBE-B40F-31C4BDEEFFB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
