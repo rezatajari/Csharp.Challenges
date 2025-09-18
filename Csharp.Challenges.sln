@@ -27,6 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11_FizzBuzz", "11_FizzBuzz\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "12_LoShuMagicSquare", "12_LoShuMagicSquare\12_LoShuMagicSquare.csproj", "{0E2F9686-ADD6-4F4F-841E-7BD4BE8D2D17}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13_TortoisHareRace", "13_TortoisHareRace\13_TortoisHareRace.csproj", "{6B7B49F0-D044-4E75-898F-F5E197DBE3C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14_LatinTranslator", "14_LatinTranslator\14_LatinTranslator.csproj", "{C440581E-285C-4103-A808-4D63C997F810}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +87,10 @@ Global
 		{6B7B49F0-D044-4E75-898F-F5E197DBE3C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B7B49F0-D044-4E75-898F-F5E197DBE3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B7B49F0-D044-4E75-898F-F5E197DBE3C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C440581E-285C-4103-A808-4D63C997F810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C440581E-285C-4103-A808-4D63C997F810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C440581E-285C-4103-A808-4D63C997F810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C440581E-285C-4103-A808-4D63C997F810}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
