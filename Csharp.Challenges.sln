@@ -30,6 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13_TortoisHareRace", "13_To
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "14_LatinTranslator", "14_LatinTranslator\14_LatinTranslator.csproj", "{C440581E-285C-4103-A808-4D63C997F810}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15_NumberImageClicker", "15_NumberImageClicker\15_NumberImageClicker.csproj", "{E7A5997D-D185-4FBE-B40F-31C4BDEEFFB7}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "16_CardNameDisplay", "16_CardNameDisplay\16_CardNameDisplay.csproj", "{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "17_NameFormatter", "17_NameFormatter\17_NameFormatter.csproj", "{AC49BDC7-57C1-46C3-BB28-04C2A8AA8F64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +102,10 @@ Global
 		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A0F3855-0D47-4BDA-BABA-982512BC5FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC49BDC7-57C1-46C3-BB28-04C2A8AA8F64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC49BDC7-57C1-46C3-BB28-04C2A8AA8F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC49BDC7-57C1-46C3-BB28-04C2A8AA8F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC49BDC7-57C1-46C3-BB28-04C2A8AA8F64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
