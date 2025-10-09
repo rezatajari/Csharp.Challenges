@@ -1,4 +1,4 @@
-﻿# Challenge 01 – Aquarium pH Health Check  
+﻿# Aquarium pH Health Check  
 
 ### Concept  
 Imagine you are taking care of an aquarium.  
