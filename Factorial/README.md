@@ -1,4 +1,4 @@
-﻿# Challenge 10 – Factorial Calculator
+﻿# Factorial Calculator
 
 ### Concept
 

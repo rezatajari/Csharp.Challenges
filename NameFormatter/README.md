@@ -1,4 +1,4 @@
-﻿# Challenge 17 – Name Formatter (Windows Form)
+﻿# Name Formatter (Windows Form)
 
 ### Concept
 

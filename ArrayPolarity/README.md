@@ -1,4 +1,4 @@
-﻿# Challenge 09 – Positive & Negative Arrays with Position Sum
+﻿# Positive & Negative Arrays with Position Sum
 
 ## Concept
 

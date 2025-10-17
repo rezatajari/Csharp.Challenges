@@ -1,4 +1,4 @@
-﻿# Challenge 08 – Frequency Distribution Bar Chart
+﻿# Frequency Distribution Bar Chart
 
 ## Concept
 

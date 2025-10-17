@@ -1,4 +1,4 @@
-﻿# Challenge 04 – Input Validation Loop  
+﻿# Input Validation Loop  
 
 ### Concept  
 In real-world applications, users don’t always give us the data we expect.  

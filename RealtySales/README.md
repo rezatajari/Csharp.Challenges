@@ -1,4 +1,4 @@
-﻿# Challenge 07 – Realty Sales Percentage Report
+﻿# Realty Sales Percentage Report
 
 ### Concept
 

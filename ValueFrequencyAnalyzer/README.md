@@ -1,4 +1,4 @@
-﻿# Challenge 06 – Valid Values and Frequency Counter  
+﻿# Valid Values and Frequency Counter  
 
 ### Concept  
 Imagine you are collecting survey responses where people rate something on a scale from **0 to 10**.  

@@ -1,4 +1,4 @@
-﻿# Challenge 12 – Lo Shu Magic Square
+﻿# Lo Shu Magic Square
 
 ### Concept
 

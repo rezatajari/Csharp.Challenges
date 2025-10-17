@@ -1,4 +1,4 @@
-﻿# Challenge 03 – Random Numbers Analysis  
+﻿# Random Numbers Analysis  
 
 ### Concept  
 Random numbers are used everywhere: games, simulations, testing, and even security.  

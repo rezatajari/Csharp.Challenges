@@ -1,4 +1,4 @@
-﻿# Challenge 02 – Month Finder  
+﻿# Month Finder  
 
 ### Concept  
 We all use months every day — for birthdays, events, and planning.  

@@ -1,4 +1,4 @@
-﻿# Challenge 05 – Custom Multiplication Table  
+﻿# Custom Multiplication Table  
 
 ### Concept  
 Multiplication tables are one of the first tools we use to learn math.  

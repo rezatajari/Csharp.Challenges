@@ -1,4 +1,4 @@
-﻿# Challenge 14 – Latin Translator (Windows Form)
+﻿# Latin Translator (Windows Form)
 
 ### Concept
 

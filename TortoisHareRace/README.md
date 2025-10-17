@@ -1,4 +1,4 @@
-﻿### Challenge 13 – Tortoise vs. Hare Race (Detailed Version)
+﻿### Tortoise vs. Hare Race (Detailed Version)
 
 **Concept:**
 This challenge simulates a race between a Tortoise and a Hare on a 70-unit track. It emphasizes **loops, randomness, state tracking, and conditional logic**. The race extends the classic story by including **probabilistic moves**, so each competitor behaves unpredictably according to defined probabilities.

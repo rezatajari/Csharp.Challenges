@@ -1,4 +1,4 @@
-﻿# Challenge 16 – Card Name Display (Windows Form)
+﻿# Card Name Display (Windows Form)
 
 ### Concept
 

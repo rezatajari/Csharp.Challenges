@@ -1,4 +1,4 @@
-﻿# Challenge 15 – Number Image Clicker (Windows Form)
+﻿# Number Image Clicker (Windows Form)
 
 ### Concept
 
