@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputValidation", "InputValidation.csproj", "{50EE867F-F0A1-44D2-B289-95AF5F16335D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50EE867F-F0A1-44D2-B289-95AF5F16335D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50EE867F-F0A1-44D2-B289-95AF5F16335D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50EE867F-F0A1-44D2-B289-95AF5F16335D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50EE867F-F0A1-44D2-B289-95AF5F16335D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {719BD94C-82AF-476D-A725-F520F10E9617}
+	EndGlobalSection
+EndGlobal
