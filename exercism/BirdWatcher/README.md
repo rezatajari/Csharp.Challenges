@@ -32,18 +32,3 @@ Implement `BirdCount.CountForFirstDays(int days)` to calculate the total number 
 6. **Busy Days**  
 Implement `BirdCount.BusyDays()` to count the number of **busy days**, where a busy day is defined as having **five or more birds** visiting the garden.
 
----
-
-## Example Usage
-
-```csharp
-int[] birdsThisWeek = { 2, 5, 0, 7, 4, 1, 3 };
-var birdCount = new BirdCount(birdsThisWeek);
-
-Console.WriteLine(birdCount.Today());             // Output: 3
-birdCount.IncrementTodaysCount();
-Console.WriteLine(birdCount.Today());             // Output: 4
-Console.WriteLine(birdCount.HasDayWithoutBirds()); // Output: True
-Console.WriteLine(birdCount.CountForFirstDays(4)); // Output: 14
-Console.WriteLine(birdCount.BusyDays());           // Output: 3
-Console.WriteLine(string.Join(", ", BirdCount.LastWeek())); // Output: 0, 2, 5, 3, 7, 8, 4
