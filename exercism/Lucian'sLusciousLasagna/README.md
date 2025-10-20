@@ -17,7 +17,7 @@ You’ll complete a series of tasks, each one building on the previous.
 
 ---
 
-## 🧩 Tasks
+## Tasks
 
 ### Task 1: Define the expected oven time
 Create a method that returns how long the lasagna should stay in the oven according to the recipe.
