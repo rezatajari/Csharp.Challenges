@@ -183,3 +183,12 @@ Would you like me to create that conceptual architecture diagram next?
 | **Book**       | Stores each unique book                                |
 | **Author**     | Stores each unique author                              |
 | **BookAuthor** | Stores *connections* — which authors wrote which books |
+| Future Table              | Purpose                                            |
+| ------------------------- | -------------------------------------------------- |
+| `User`                    | Each registered reader                             |
+| `UserBook`                | Which books a user added to their personal library |
+| `BookNote`                | Notes users write on pages                         |
+| `Discussion` or `Comment` | Let users talk about notes                         |
+| `Tag`                     | Categorize books by genre, topic, etc.             |
+| `BookProgress`            | Track reading page progress per user               |
+| `Rating`                  | User ratings and reviews                           |
