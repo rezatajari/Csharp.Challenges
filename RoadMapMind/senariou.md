@@ -175,3 +175,11 @@ This can evolve into a **“social reading knowledge network”**, combining:
 If you’d like, I can help you **map this vision into a Clean Architecture domain design** (entities + boundaries + relationships diagram — concept only, no code).
 
 Would you like me to create that conceptual architecture diagram next?
+
+
+## Book and Author
+| Table          | Role                                                   |
+| -------------- | ------------------------------------------------------ |
+| **Book**       | Stores each unique book                                |
+| **Author**     | Stores each unique author                              |
+| **BookAuthor** | Stores *connections* — which authors wrote which books |
