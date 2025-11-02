@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\" />
+    <Folder Include="Persistence\Model\" />
   </ItemGroup>
 
 </Project>
