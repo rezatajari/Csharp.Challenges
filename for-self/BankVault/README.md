@@ -74,7 +74,7 @@ Encapsulation solves the problem of uncontrolled access:
 
 ---
 
-# گاوصندوق بانکی (Encapsulation)
+# گاوصندوق بانکی
 
 ## مرور چالش
 این مینی‌پروژه اصل **کپسوله‌سازی (Encapsulation)** را در زبان **C#** آموزش می‌دهد.  
