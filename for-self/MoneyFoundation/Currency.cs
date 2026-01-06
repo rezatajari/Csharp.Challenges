@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-namespace MoneyFoundation
+﻿namespace MoneyFoundation
 {
     public readonly struct Currency(string name, decimal rate)
     {
