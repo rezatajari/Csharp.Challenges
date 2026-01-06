@@ -10,5 +10,11 @@
             ? throw new InvalidOperationException(
                 $"Mismatched Currency: Cannot add {left.Currency.Name} and {right.Currency.Name}")
             : new Money(left.Amount + right.Amount, left.Currency);
+
+        public static Money operator -(Money left, Money right)
+            => (left.Currency!=right.Currency)
+            ?throw new InvalidOperationException(
+                $"Mismatched Currency: Cannot subtract {left.Currency.Name} and {right.Currency.Name}")
+            : new Money(left.Amount - right.Amount, left.Currency);
     }
 }
