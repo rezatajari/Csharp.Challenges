@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MoneyFoundation
@@ -12,5 +14,11 @@ namespace MoneyFoundation
         public decimal Rate { get; } = rate > 0
             ? rate
             : throw new ArgumentOutOfRangeException(nameof(rate), "Rate must be positive.");
+
+        public static bool operator ==(Currency left,Currency right)
+            => (left.Name == right.Name && left.Rate == right.Rate) ? true : false;
+
+        public static bool operator !=(Currency left, Currency right)
+            => !(left == right);
     }
 }
