@@ -45,9 +45,9 @@ Teach the system the "Laws of the Bank" to prevent illegal operations.
 
 ---
 
-# Challenge 2: The Bank Account Entity
+## Challenge 2: The Bank Account Entity
 
-## Overview
+### Overview
 In this challenge, we transitioned from simple **Value Objects** to a robust **Domain Entity**. The focus was on protecting the "State" of an account and ensuring that every financial movement is traceable and valid.
 
 ##  Architectural Decisions
@@ -78,6 +78,8 @@ We implemented strict validation at the "Entry Points" (Constructor and Methods)
 
 ##  Data Integrity Example
 ```csharp
+
+
 // Recalculating balance from history to verify state
 public Money GetVerifiedBalance()
 {
@@ -90,12 +92,12 @@ public Money GetVerifiedBalance()
     return new Money(total, Currency);
 }
 
-
+```
 ---
 
-# Challenge 3: The Bank Management System
+## Challenge 3: The Bank Management System
 
-## Overview
+### Overview
 In this challenge, we moved from managing a single **Account** to building a **Bank** system. This required handling collections of entities and coordinating interactions between two different objects (Transfers).
 
 ## Architectural Decisions
@@ -125,3 +127,11 @@ The `Bank` acts as a factory for accounts. Instead of the user manually creating
 | :--- | :--- |
 | `Bank` | The Orchestrator. Manages account storage and inter-account transfers. |
 | `LINQ` | Used for efficient searching within
+
+---
+
+By completing these 3 challenges, you have successfully covered:
+1. Types & Logic: Structs vs. Classes, Operator Overloading.
+2. Encapsulation: Private fields, Read-only properties, and Data Hiding.
+3. Collections & LINQ: Managing lists and searching data.
+4. Exceptions: Guarding against invalid states.
