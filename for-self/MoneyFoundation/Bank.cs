@@ -28,5 +28,14 @@ namespace MoneyFoundation
                 throw new ArgumentException("Account not found.", nameof(accountNumber));
             return account;
         }
+
+        public void Transfer (int fromAccountNumber,int toAccountNumber,Money money)
+        {
+            Account fromAccount=GetAccount(fromAccountNumber);
+            Account toAccount=GetAccount(toAccountNumber);
+
+            fromAccount.Withdraw(money);
+            toAccount.Deposit(money);
+        }
     }
 }
