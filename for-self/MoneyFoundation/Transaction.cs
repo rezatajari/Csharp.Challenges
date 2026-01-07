@@ -29,7 +29,6 @@ namespace MoneyFoundation
     public enum TransactionType
     {
         Deposit,
-        Withdrawal,
-        Transfer
+        Withdrawal
     }
 }

@@ -54,5 +54,19 @@ namespace MoneyFoundation
             Transaction tx= new Transaction(amount, TransactionType.Withdrawal);
             _transactions.Add(tx);
         }
+
+        public Money GetVerifiedBalance()
+        {
+            decimal total = 0;
+            foreach(var tx in _transactions)
+            {
+                if (tx.Type == TransactionType.Deposit)
+                    total += tx.Amount.Amount;
+                else
+                    total -= tx.Amount.Amount;
+            }
+            
+            return new Money(total, Currency);
+        }
     }
 }
