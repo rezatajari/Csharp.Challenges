@@ -7,10 +7,6 @@ namespace MoneyFoundation
     public class Account
     {
         private static int counter = 0;
-        public int Number { get; init; }
-        public User User { get; set; }
-        public Currency Currency { get; set; }
-        public Money Balance { get; private set; }
         public Account(User user, Currency currency)
         {
             Number = new Random().Next(100, 199) + (++counter);
@@ -22,6 +18,12 @@ namespace MoneyFoundation
             Currency = currency;
             Balance = new Money(0, Currency);
         }
+        public int Number { get; init; }
+        public User User { get; set; }
+        public Currency Currency { get; set; }
+        public Money Balance { get; private set; }
+        public IReadOnlyList<Transaction> Transactions { get; private set; }
+       
 
         public void Deposit(Money amount)
         {
@@ -32,6 +34,8 @@ namespace MoneyFoundation
                 throw new ArgumentException("Deposit amount must be positive.", nameof(amount));
 
             Balance += amount;
+            Transaction transaction = new Transaction();
+            
         }
 
         public void Withdraw(Money amount)
