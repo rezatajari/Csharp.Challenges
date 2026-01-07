@@ -42,3 +42,50 @@ Teach the system the "Laws of the Bank" to prevent illegal operations.
 * **Operator Overloading:** Providing a clean, expressive math-like API.
 * **Semantic Data Modeling:** Linking raw numbers to their domain context (Currency).
 * **Defensive Programming:** Using "Fail-Fast" logic to catch errors at the source.
+
+---
+
+# Challenge 2: The Bank Account Entity
+
+## Overview
+In this challenge, we transitioned from simple **Value Objects** to a robust **Domain Entity**. The focus was on protecting the "State" of an account and ensuring that every financial movement is traceable and valid.
+
+##  Architectural Decisions
+
+### 1. Entity vs. Value Object
+We designed `Account` as a **Class** (Reference Type). 
+* **Reasoning:** A bank account has a unique **Identity** (Account Number) that stays the same even if the data (Balance) changes. It must be shared across the system without being copied.
+
+### 2. The "Twin-Storage" Encapsulation
+To protect the transaction history, we used the **Private Workhorse / Public Window** pattern:
+* **Private:** `List<Transaction> _transactions` allows the `Account` class to record history.
+* **Public:** `IReadOnlyList<Transaction> Transactions` allows outside users to view history without the ability to `Add()` or `Clear()` records.
+
+
+
+### 3. Fail-Fast Guard Clauses
+We implemented strict validation at the "Entry Points" (Constructor and Methods):
+* **Null Checks:** Prevent "Zombie Accounts" by ensuring `User` and `Currency` are valid upon creation.
+* **Domain Rules:** Prevent currency mismatch and unauthorized overdrafts before the balance is ever touched.
+
+## Components
+
+| Component | Type | Responsibility |
+| :--- | :--- | :--- |
+| `Account` | **Class** | Manages balance, enforces rules, and owns the history. |
+| `Transaction` | **Readonly Struct** | Captures a "Snapshot" of a move (Amount, Type, Time). |
+| `TransactionType`| **Enum** | Categorizes moves (Deposit, Withdrawal, Transfer). |
+
+##  Data Integrity Example
+```csharp
+// Recalculating balance from history to verify state
+public Money GetVerifiedBalance()
+{
+    decimal total = 0;
+    foreach(var tx in _transactions)
+    {
+        if (tx.Type == TransactionType.Deposit) total += tx.Amount.Amount;
+        else total -= tx.Amount.Amount;
+    }
+    return new Money(total, Currency);
+}
