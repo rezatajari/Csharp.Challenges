@@ -89,3 +89,39 @@ public Money GetVerifiedBalance()
     }
     return new Money(total, Currency);
 }
+
+
+---
+
+# Challenge 3: The Bank Management System
+
+## Overview
+In this challenge, we moved from managing a single **Account** to building a **Bank** system. This required handling collections of entities and coordinating interactions between two different objects (Transfers).
+
+## Architectural Decisions
+
+### 1. The Registry (Storage)
+We implemented a private collection within the `Bank` class to manage account lifecycles.
+* **Encapsulation:** The list of accounts is `private`. The only way to interact with an account is through the Bank's verified methods (`GetAccount`).
+* **Identity-Based Lookup:** We used **LINQ** (`FirstOrDefault`) to retrieve accounts by their unique `Number`.
+
+### 2. Transactional Atomicity (The Transfer)
+The biggest challenge was ensuring that money doesn't "disappear" during a transfer. We implemented the **Validate-All-Then-Act** pattern:
+* **Pre-Execution Guards:** We verify the currency compatibility of the Source, the Destination, AND the Money object before a single cent is withdrawn.
+* **Safety:** If the destination account is incompatible, the process throws an exception *before* the source account is debited.
+
+
+
+### 3. Factory Pattern
+The `Bank` acts as a factory for accounts. Instead of the user manually creating an `Account` object, the `Bank.OpenAccount` method handles:
+1. Validation of the User and Currency.
+2. Instantiation of the Account.
+3. Registration in the internal "Vault."
+4. Returning the `AccountNumber` as the unique handle for the user.
+
+## Components
+
+| Component | Responsibility |
+| :--- | :--- |
+| `Bank` | The Orchestrator. Manages account storage and inter-account transfers. |
+| `LINQ` | Used for efficient searching within
