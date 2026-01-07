@@ -33,5 +33,19 @@ namespace MoneyFoundation
 
             Balance += amount;
         }
+
+        public void Withdraw(Money amount)
+        {
+            if (amount.Currency.Name!=Currency.Name)
+                throw new ArgumentException("Currency mismatch.", nameof(amount));
+
+            if (amount.Amount <= 0)
+                throw new ArgumentException("Withdrawal amount must be positive.", nameof(amount));
+
+            if (Balance.Amount < amount.Amount)
+                throw new InvalidOperationException("Insufficient funds for withdrawal.");
+
+            Balance -= amount;
+        }
     }
 }
