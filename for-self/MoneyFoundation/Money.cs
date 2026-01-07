@@ -3,7 +3,9 @@
     public readonly struct Money(decimal amount, Currency currency)
     {
         public decimal Amount { get; } = amount;
-        public Currency Currency { get; } = currency;
+        public Currency Currency { get; } = currency != null
+            ? currency
+            : throw new InvalidOperationException("Currency is missing!");
 
         public static Money operator +(Money left, Money right)
         => (left.Currency != right.Currency)
