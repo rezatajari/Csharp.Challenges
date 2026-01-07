@@ -2,8 +2,8 @@
 {
     public readonly struct Money(decimal amount, Currency currency)
     {
-        public decimal Amount { get;} = amount;
-        public Currency Currency { get;  } = currency;
+        public decimal Amount { get; } = amount;
+        public Currency Currency { get; } = currency;
 
         public static Money operator +(Money left, Money right)
         => (left.Currency != right.Currency)
@@ -12,9 +12,15 @@
             : new Money(left.Amount + right.Amount, left.Currency);
 
         public static Money operator -(Money left, Money right)
-            => (left.Currency!=right.Currency)
-            ?throw new InvalidOperationException(
+            => (left.Currency != right.Currency)
+            ? throw new InvalidOperationException(
                 $"Mismatched Currency: Cannot subtract {left.Currency.Name} and {right.Currency.Name}")
             : new Money(left.Amount - right.Amount, left.Currency);
+
+        public static bool operator ==(Money left, Money right)
+        => left.Currency == right.Currency && left.Amount == right.Amount;
+
+        public static bool operator !=(Money left, Money right)
+         => !(left == right);
     }
 }
