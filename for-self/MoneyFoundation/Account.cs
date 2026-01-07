@@ -22,5 +22,16 @@ namespace MoneyFoundation
             Currency = currency;
             Balance = new Money(0, Currency);
         }
+
+        public void Deposit(Money amount)
+        {
+            if (amount.Currency.Name!=Currency.Name)
+                throw new ArgumentException("Currency mismatch.", nameof(amount));
+
+            if (amount.Amount <= 0)
+                throw new ArgumentException("Deposit amount must be positive.", nameof(amount));
+
+            Balance += amount;
+        }
     }
 }
