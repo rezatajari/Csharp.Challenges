@@ -7,7 +7,7 @@ namespace MoneyFoundation
     public class Bank
     {
         private readonly List<Account> _accounts = new();
-        public void OpenAccount(User user, Currency currency)
+        public int OpenAccount(User user, Currency currency)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
@@ -15,7 +15,18 @@ namespace MoneyFoundation
             if (string.IsNullOrEmpty(currency.Name))
                 throw new ArgumentException("Invalid Currency provided.", nameof(currency));
 
-            _accounts.Add(new Account(user, currency));
+            Account account = new Account(user, currency);
+            _accounts.Add(account);
+
+            return account.Number;
+        }
+
+        public Account GetAccount(int accountNumber)
+        {
+            Account? account= _accounts.Where(a=>a.Number == accountNumber).FirstOrDefault();
+            if (account == null)
+                throw new ArgumentException("Account not found.", nameof(accountNumber));
+            return account;
         }
     }
 }

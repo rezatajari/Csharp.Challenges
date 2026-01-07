@@ -21,7 +21,6 @@ namespace MoneyFoundation
         public Money Balance { get; private set; }
         public IReadOnlyList<Transaction> Transactions => _transactions;
        
-
         public void Deposit(Money amount)
         {
             if (amount.Currency.Name!=Currency.Name)
