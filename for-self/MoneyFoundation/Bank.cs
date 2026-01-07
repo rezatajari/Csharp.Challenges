@@ -34,6 +34,12 @@ namespace MoneyFoundation
             Account fromAccount=GetAccount(fromAccountNumber);
             Account toAccount=GetAccount(toAccountNumber);
 
+            if (fromAccount.Currency != money.Currency)
+                throw new InvalidOperationException("Currency mismatch on from account.");
+
+            if (toAccount.Currency != money.Currency)   
+                throw new InvalidOperationException("Currency mismatch on to account.");
+
             fromAccount.Withdraw(money);
             toAccount.Deposit(money);
         }
