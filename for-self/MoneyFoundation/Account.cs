@@ -11,17 +11,13 @@ namespace MoneyFoundation
         public Account(User user, Currency currency)
         {
             Number = new Random().Next(100, 199) + (++counter);
-            User = user ?? throw new ArgumentNullException(nameof(user), "User cannot be null");
-
-            if (string.IsNullOrEmpty(currency.Name))
-                throw new ArgumentException("Invalid Currency provided.", nameof(currency));
-
+            User= user;
             Currency = currency;
             Balance = new Money(0, Currency);
         }
         public int Number { get; init; }
-        public User User { get; set; }
-        public Currency Currency { get; set; }
+        public Currency Currency { get;init; }
+        public User User { get;init; }
         public Money Balance { get; private set; }
         public IReadOnlyList<Transaction> Transactions => _transactions;
        
