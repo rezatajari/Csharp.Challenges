@@ -15,5 +15,16 @@ namespace Domain.ValueObjects
 
             Value = value;
         }
+
+        public virtual bool Equals(Title? other)
+        {
+            if (other is null) return false;
+            return Value == other.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode(StringComparison.Ordinal);
+        }
     }
 }
