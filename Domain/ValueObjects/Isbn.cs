@@ -4,7 +4,15 @@ using System.Text;
 
 namespace Domain.ValueObjects
 {
-    internal class Isbn
+    public record Isbn
     {
+        public string Value { get; }
+        public Isbn(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value));
+
+            Value = value;
+        }
     }
 }

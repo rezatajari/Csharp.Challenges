@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.ValueObjects
 {
-    internal class Title
+    public class Title
     {
     }
 }
