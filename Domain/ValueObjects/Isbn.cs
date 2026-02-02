@@ -10,7 +10,7 @@ namespace Domain.ValueObjects
         public Isbn(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentNullException(nameof(value));
+                throw new ArgumentNullException("ISBN cannot be empty.",nameof(value));
 
             Value = value;
         }
