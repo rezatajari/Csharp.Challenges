@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain
 {
-    internal class Errors
+    public class Errors
     {
     }
 }
