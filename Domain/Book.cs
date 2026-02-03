@@ -19,19 +19,22 @@ namespace Domain
             AvailableCopies=totalCopies;
         }
 
-        public void BorrowCopy()
+        public Result BorrowCopy()
         {
             if (AvailableCopies<=0)
-                throw new InvalidOperationException("No copies available to borrow.");
+                return Result.Failure(Errors.Book.NoAvaliableCopies);
 
             AvailableCopies--;
+            return Result.Success();
         }
 
-        public void ReturnCopy()
+        public Result ReturnCopy()
         {
             if (AvailableCopies>=TotalCopies)
-                throw new InvalidOperationException("All copies are already returned.");
+                return Result.Failure(Errors.Book.AllCopiesReturned);
+
             AvailableCopies++;
+            return Result.Success();
         }
     }
 }
