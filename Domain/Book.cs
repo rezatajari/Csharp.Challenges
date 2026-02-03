@@ -38,6 +38,7 @@ namespace Domain
 
             AvailableCopies--;
             _domainEvents.Add(new BookBorrowed(Isbn));
+
             EnsureInvariant();
             return Result.Success();
         }

@@ -3,16 +3,7 @@
   "WorkspaceRootPath": "D:\\Repo\\Library\\Library\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\errors.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\valueobjects\\title.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\valueobjects\\isbn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -25,58 +16,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 249,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Errors.cs",
               "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Errors.cs",
               "RelativeDocumentMoniker": "..\\Domain\\Errors.cs",
               "ToolTip": "D:\\Repo\\Library\\Domain\\Errors.cs",
               "RelativeToolTip": "..\\Domain\\Errors.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-02T08:59:35.93Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Title.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\ValueObjects\\Title.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\ValueObjects\\Title.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\ValueObjects\\Title.cs",
-              "RelativeToolTip": "..\\Domain\\ValueObjects\\Title.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-02T08:59:15.341Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Isbn.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\ValueObjects\\Isbn.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\ValueObjects\\Isbn.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\ValueObjects\\Isbn.cs",
-              "RelativeToolTip": "..\\Domain\\ValueObjects\\Isbn.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-02T08:59:07.803Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Domain",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Domain.csproj",
-              "RelativeDocumentMoniker": "..\\Domain\\Domain.csproj",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\Domain.csproj",
-              "RelativeToolTip": "..\\Domain\\Domain.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-02-02T08:58:57.41Z",
+              "WhenOpened": "2026-02-02T11:23:39.149Z",
               "EditorCaption": ""
             },
             {
@@ -97,13 +49,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Book.cs",
               "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Book.cs",
               "RelativeDocumentMoniker": "..\\Domain\\Book.cs",
               "ToolTip": "D:\\Repo\\Library\\Domain\\Book.cs",
               "RelativeToolTip": "..\\Domain\\Book.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAgwBkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-02T08:58:49.029Z",
               "EditorCaption": ""
