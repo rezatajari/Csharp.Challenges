@@ -1,4 +1,4 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.ValueObjects.Book;
 
 namespace Domain.Events
 {

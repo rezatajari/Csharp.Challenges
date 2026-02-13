@@ -1,6 +1,6 @@
 ﻿using Domain.Errors;
 using Domain.Events;
-using Domain.ValueObjects;
+using Domain.ValueObjects.Book;
 
 namespace Domain.Entities
 {
@@ -12,14 +12,22 @@ namespace Domain.Entities
         public Title Title { get; private set; }
         public  int AvailableCopies { get; private set; }
         public int TotalCopies { get; private set; }
-        public Book(Isbn isbn,Title title,int totalCopies)
+        private Book(Isbn isbn,Title title,int totalCopies)
         {
             Isbn=isbn?? throw new ArgumentNullException(nameof(isbn));            
             Title=title?? throw new ArgumentNullException(nameof(title));
-            TotalCopies=totalCopies>0 ? totalCopies : throw new ArgumentOutOfRangeException("Total copies must be greater than zero.", nameof(totalCopies));
-            AvailableCopies=totalCopies;
+            TotalCopies=totalCopies>0 ? totalCopies : throw new ArgumentOutOfRangeException(nameof(totalCopies),
+    "Total copies must be greater than zero.");
+
+            AvailableCopies = totalCopies;
             EnsureInvariant();
         }
+
+        public static Book Create(Isbn isbn, Title title, int totalCopies)
+        {
+            return new Book(isbn, title, totalCopies);
+        }
+
         private void EnsureInvariant()
         {
             if (AvailableCopies < 0)
