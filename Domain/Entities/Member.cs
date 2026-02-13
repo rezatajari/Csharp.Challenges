@@ -26,13 +26,22 @@ namespace Domain.ValueObjects.Book
             return Result.Success();
         }
 
-        public Result RegisterBorrow(Isbn isbn)
+        public Result RegisterBorrow()
         {
             var result = CanBorrow();
             if (!result.IsSuccess)
                 return result;
 
             _borrowedCount++;
+            return Result.Success();
+        }
+
+        public Result UnregisterBorrow()
+        {
+            if (_borrowedCount<=0)
+                return Result.Failure("Member has no borrowed books to return.");
+
+            _borrowedCount--;
             return Result.Success();
         }
     }

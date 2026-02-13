@@ -18,7 +18,7 @@ namespace Domain.Services
             if (!bookResult.IsSuccess)
                 return bookResult;
 
-            member.RegisterBorrow(book.Isbn);
+            member.RegisterBorrow();
 
             return Result.Success();    
         }
