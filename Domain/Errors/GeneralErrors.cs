@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain
+namespace Domain.Errors
 {
-    public static class Errors
+    public static class GeneralErrors
     {
         public static class Book
         {

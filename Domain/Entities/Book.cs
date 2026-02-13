@@ -1,10 +1,8 @@
-﻿using Domain.Events;
+﻿using Domain.Errors;
+using Domain.Events;
 using Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Domain
+namespace Domain.Entities
 {
     public class Book
     {
@@ -34,7 +32,7 @@ namespace Domain
         public Result BorrowCopy()
         {
             if (AvailableCopies<=0)
-                return Result.Failure(Errors.Book.NoAvailableCopies);
+                return Result.Failure(GeneralErrors.Book.NoAvailableCopies);
 
             AvailableCopies--;
             _domainEvents.Add(new BookBorrowed(Isbn));
@@ -46,7 +44,7 @@ namespace Domain
         public Result ReturnCopy()
         {
             if (AvailableCopies>=TotalCopies)
-                return Result.Failure(Errors.Book.AllCopiesReturned);
+                return Result.Failure(GeneralErrors.Book.AllCopiesReturned);
 
             AvailableCopies++;
             EnsureInvariant();
