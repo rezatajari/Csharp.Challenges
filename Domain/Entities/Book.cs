@@ -8,13 +8,13 @@ namespace Domain.Entities
     {
         private readonly List<IDomainEvent> _domainEvents = new();
 
-        public Isbn Isbn { get;private set; }
+        public Isbn Id { get; }
         public Title Title { get; private set; }
         public  int AvailableCopies { get; private set; }
         public int TotalCopies { get; private set; }
-        private Book(Isbn isbn,Title title,int totalCopies)
+        private Book(Isbn id,Title title,int totalCopies)
         {
-            Isbn=isbn?? throw new ArgumentNullException(nameof(isbn));            
+            Id=id?? throw new ArgumentNullException(nameof(id));            
             Title=title?? throw new ArgumentNullException(nameof(title));
             TotalCopies=totalCopies>0 ? totalCopies : throw new ArgumentOutOfRangeException(nameof(totalCopies),
     "Total copies must be greater than zero.");
@@ -43,7 +43,7 @@ namespace Domain.Entities
                 return Result.Failure(GeneralErrors.Book.NoAvailableCopies);
 
             AvailableCopies--;
-            _domainEvents.Add(new BookBorrowed(Isbn));
+            _domainEvents.Add(new BookBorrowed(Id));
 
             EnsureInvariant();
             return Result.Success();
@@ -55,6 +55,8 @@ namespace Domain.Entities
                 return Result.Failure(GeneralErrors.Book.AllCopiesReturned);
 
             AvailableCopies++;
+            _domainEvents.Add(new BookReturned(Id));
+
             EnsureInvariant();
             return Result.Success();
         }
