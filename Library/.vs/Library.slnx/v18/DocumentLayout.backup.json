@@ -3,10 +3,16 @@
   "WorkspaceRootPath": "D:\\Repo\\Library\\Library\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\entities\\member.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\events\\bookborrowed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\services\\returningservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\entities\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\services\\borrowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,15 +27,28 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Book.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Book.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\Book.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\Book.cs",
-              "RelativeToolTip": "..\\Domain\\Book.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Title": "Member.cs",
+              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Entities\\Member.cs",
+              "RelativeDocumentMoniker": "..\\Domain\\Entities\\Member.cs",
+              "ToolTip": "D:\\Repo\\Library\\Domain\\Entities\\Member.cs",
+              "RelativeToolTip": "..\\Domain\\Entities\\Member.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAArwCoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-02T08:58:49.029Z",
+              "WhenOpened": "2026-02-13T09:42:32.649Z",
               "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Book.cs",
+              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Entities\\Book.cs",
+              "RelativeDocumentMoniker": "..\\Domain\\Entities\\Book.cs",
+              "ToolTip": "D:\\Repo\\Library\\Domain\\Entities\\Book.cs",
+              "RelativeToolTip": "..\\Domain\\Entities\\Book.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAASwDsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-13T12:28:23.587Z",
               "EditorCaption": ""
             },
             {
@@ -51,20 +70,33 @@
           ]
         },
         {
-          "DockedWidth": 217,
+          "DockedWidth": 200,
           "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BookBorrowed.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Events\\BookBorrowed.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\Events\\BookBorrowed.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\Events\\BookBorrowed.cs",
-              "RelativeToolTip": "..\\Domain\\Events\\BookBorrowed.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Title": "ReturningService.cs",
+              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Services\\ReturningService.cs",
+              "RelativeDocumentMoniker": "..\\Domain\\Services\\ReturningService.cs",
+              "ToolTip": "D:\\Repo\\Library\\Domain\\Services\\ReturningService.cs",
+              "RelativeToolTip": "..\\Domain\\Services\\ReturningService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-03T06:03:46.797Z",
+              "WhenOpened": "2026-02-13T12:27:28.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BorrowingService.cs",
+              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Services\\BorrowingService.cs",
+              "RelativeDocumentMoniker": "..\\Domain\\Services\\BorrowingService.cs",
+              "ToolTip": "D:\\Repo\\Library\\Domain\\Services\\BorrowingService.cs",
+              "RelativeToolTip": "..\\Domain\\Services\\BorrowingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-13T08:28:13.546Z",
               "EditorCaption": ""
             }
           ]

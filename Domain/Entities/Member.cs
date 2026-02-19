@@ -1,7 +1,4 @@
 ﻿using Domain.ValueObjects.Member;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.ValueObjects.Book
 {
@@ -9,15 +6,19 @@ namespace Domain.ValueObjects.Book
     {
         private int _borrowedCount;
         private const int BorrowLimit = 3;
-        private Member()
+        private Member(MemberId id)
         {
+            Id= id;
             _borrowedCount = 0;
         }
 
+        public MemberId Id { get;}
+
         public static Member Create()
         {
-            return new Member();
+            return new Member(MemberId.New());
         }
+
         public Result CanBorrow()
         {
             if (_borrowedCount >= BorrowLimit)

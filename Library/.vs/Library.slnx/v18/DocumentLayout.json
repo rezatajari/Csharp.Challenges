@@ -9,9 +9,6 @@
       "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\services\\returningservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\entities\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\services\\borrowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -32,23 +29,10 @@
               "RelativeDocumentMoniker": "..\\Domain\\Entities\\Member.cs",
               "ToolTip": "D:\\Repo\\Library\\Domain\\Entities\\Member.cs",
               "RelativeToolTip": "..\\Domain\\Entities\\Member.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAArwCoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAADgvxAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-13T09:42:32.649Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Book.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Entities\\Book.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\Entities\\Book.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\Entities\\Book.cs",
-              "RelativeToolTip": "..\\Domain\\Entities\\Book.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAASwDsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-13T12:28:23.587Z",
               "EditorCaption": ""
             },
             {
@@ -88,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "BorrowingService.cs",
               "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Services\\BorrowingService.cs",
               "RelativeDocumentMoniker": "..\\Domain\\Services\\BorrowingService.cs",
