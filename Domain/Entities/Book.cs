@@ -28,6 +28,9 @@ namespace Domain.Entities
             return new Book(isbn, title, totalCopies);
         }
 
+
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
         private void EnsureInvariant()
         {
             if (AvailableCopies < 0)
@@ -60,6 +63,9 @@ namespace Domain.Entities
             EnsureInvariant();
             return Result.Success();
         }
+
+        public void ClearDomainEvents() {  _domainEvents.Clear(); }
+
     }
 }
     
