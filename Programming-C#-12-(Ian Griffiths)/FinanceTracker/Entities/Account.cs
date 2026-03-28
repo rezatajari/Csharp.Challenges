@@ -27,6 +27,32 @@ namespace FinanceTracker.Entities
         public TypeName Type { get;private set; }
         public Currency Currency{ get; private set; }
 
+        public static bool operator >(Account account, decimal value)
+        {
+            return account.Balance > value;
+        }
+        public static bool operator <(Account account, decimal value)
+        {
+            return account.Balance < value;
+        }
+        public static bool operator >(Account left,Account right)
+        {
+            CompareCurrency(left, right);
+            return left.Balance > right.Balance;
+        }
+        public static bool operator<(Account left, Account right)
+        {
+            CompareCurrency(left, right);
+            return left.Balance < right.Balance;
+        }
+
+        private static void CompareCurrency(Account left,Account right)
+        {
+            if (left.Currency != right.Currency)
+            {
+                throw new InvalidOperationException("Cannot compare accounts with different currencies.");
+            }
+        }
         public static Account Create(string name,decimal balance, TypeName type,Currency currency)
         {
             return new Account(name,balance, type,currency);
