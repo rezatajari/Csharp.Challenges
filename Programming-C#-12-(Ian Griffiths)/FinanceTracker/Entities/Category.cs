@@ -10,7 +10,7 @@ namespace FinanceTracker.Entities
         private Category(string name,string? description)
         {
             ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-            this.Name = name;
+            this.Name = name.Trim();
             this.Description = description;
         }
         public string Name { get; init; }
