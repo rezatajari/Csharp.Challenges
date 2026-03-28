@@ -7,7 +7,7 @@ namespace FinanceTracker.Entities
     public class Transaction
     {
         private Transaction(decimal amount, Category category,
-            Account account, string? description)
+            Account account, string? description,DateTime createAt)
         {
             if (amount <= 0)
             {
@@ -15,15 +15,14 @@ namespace FinanceTracker.Entities
             }
             this.Amount = amount;
 
-            if (category==null || account==null)
-            {
-                throw new ArgumentNullException("Category and Account cannot be null.");
-            }
-            this.Category = category;
-            this.Account = account;
+            ArgumentNullException.ThrowIfNull(category, nameof(category));
+            this.Category= category;
+
+            ArgumentNullException.ThrowIfNull(account,nameof(account)); 
+            this.Account= account;
 
             this.Description = description;
-            this.CreateAt = DateTime.Now;
+            this.CreateAt =createAt;
         }
         public decimal Amount { get; private set; }
         public DateTime CreateAt { get; private set; }
@@ -31,10 +30,10 @@ namespace FinanceTracker.Entities
         public Account Account { get; private set; }
         public string? Description { get; private set; }
 
-        public static Transaction CreateTransaction(decimal amount, Category category,
-            Account account, string? description)
+        public static Transaction Create(decimal amount, Category category,
+            Account account, string? description,DateTime createAt)
         {
-            return new Transaction(amount, category, account, description);
+            return new Transaction(amount, category, account, description,createAt);
         }
 
     }
