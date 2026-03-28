@@ -42,6 +42,10 @@ namespace FinanceTracker.Entities
                 this.Balance += transaction.Amount;
             }else if (transaction.Type == TransactionType.Expense)
             {
+                if (this.Balance < transaction.Amount)
+                {
+                    throw new InvalidOperationException("Insufficient balance for this transaction.");
+                }
                 this.Balance -= transaction.Amount;
             }
         }
