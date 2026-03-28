@@ -24,45 +24,18 @@ namespace FinanceTracker.Entities
 
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        public decimal Balance { get;private set; }
+        public Money Balance { get;private set; }
         public List<Transaction> Transactions { get; private set; } = [];
         public TypeName Type { get;private set; }
-        public Currency Currency{ get; private set; }
 
-        public static bool operator >(Account account, decimal value)
-        {
-            return account.Balance > value;
-        }
-        public static bool operator <(Account account, decimal value)
-        {
-            return account.Balance < value;
-        }
-        public static bool operator >(Account left,Account right)
-        {
-            CompareCurrency(left, right);
-            return left.Balance > right.Balance;
-        }
-        public static bool operator<(Account left, Account right)
-        {
-            CompareCurrency(left, right);
-            return left.Balance < right.Balance;
-        }
-
-        private static void CompareCurrency(Account left,Account right)
-        {
-            if (left.Currency != right.Currency)
-            {
-                throw new InvalidOperationException("Cannot compare accounts with different currencies.");
-            }
-        }
         public static Account Create(string name,decimal balance, TypeName type,Currency currency)
         {
             return new Account(name,balance, type,currency);
         }
 
-        public Transaction AddExpense(decimal amount,Category category,string? description,DateTime createAt)
+        public Transaction AddExpense(Money amount,Category category,string? description,DateTime createAt)
         {
-            if (this.Balance < amount)
+            if (Money < amount)
             {
                 throw new InvalidOperationException("Insufficient balance for this transaction.");
             }
@@ -99,10 +72,5 @@ namespace FinanceTracker.Entities
         Investment
     }
 
-    public enum Currency
-    {
-        USD,
-        EUR,
-        GBP
-    }
+   
 }
