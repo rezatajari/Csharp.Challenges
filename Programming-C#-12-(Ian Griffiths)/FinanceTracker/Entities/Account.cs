@@ -61,6 +61,12 @@ namespace FinanceTracker.Entities
         public void AddTransaction(Transaction transaction)
         {
             ArgumentNullException.ThrowIfNull(transaction, nameof(transaction));
+
+            if (transaction.Account != this)
+            {
+                throw new InvalidOperationException("Transaction does not belong to this account.");
+            }
+
             this.Transactions.Add(transaction);
 
             if (transaction.Type == TransactionType.Income)

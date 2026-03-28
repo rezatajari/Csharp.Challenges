@@ -23,11 +23,16 @@ namespace FinanceTracker.Entities
             ArgumentNullException.ThrowIfNull(account, nameof(account));
             this.Account = account;
 
+            if (createAt == default)
+            {
+                throw new ArgumentException("Transaction data must be a valid date.",nameof(createAt));
+            }
             this.CreateAt = createAt;
+
             this.Description = description;
         }
         public decimal Amount { get; private set; }
-        public TransactionType Type { get; set; }
+        public TransactionType Type { get;private set; }
         public DateTime CreateAt { get; private set; }
         public Category Category { get; private set; }
         public Account Account { get; private set; }
