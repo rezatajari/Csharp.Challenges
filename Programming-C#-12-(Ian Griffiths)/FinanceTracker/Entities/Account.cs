@@ -8,6 +8,7 @@ namespace FinanceTracker.Entities
     {
         private Account(string name,decimal balance, TypeName type,Currency currency)
         {
+            this.Id=Guid.NewGuid();
             ArgumentNullException.ThrowIfNullOrWhiteSpace(name,nameof(name));
             this.Name = name;
 
@@ -21,6 +22,7 @@ namespace FinanceTracker.Entities
             this.Currency = currency;
         }
 
+        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public decimal Balance { get;private set; }
         public List<Transaction> Transactions { get; private set; } = [];
@@ -58,29 +60,35 @@ namespace FinanceTracker.Entities
             return new Account(name,balance, type,currency);
         }
 
-        public void AddTransaction(Transaction transaction)
+        public Transaction AddExpense(decimal amount,Category category,string? description,DateTime createAt)
         {
-            ArgumentNullException.ThrowIfNull(transaction, nameof(transaction));
-
-            if (transaction.Account != this)
+            if (this.Balance < amount)
             {
-                throw new InvalidOperationException("Transaction does not belong to this account.");
+                throw new InvalidOperationException("Insufficient balance for this transaction.");
             }
 
-            this.Transactions.Add(transaction);
+            var transaction=Transaction.Create(amount,TransactionType.Expense,
+                category,this,description, createAt);
 
-            if (transaction.Type == TransactionType.Income)
-            {
-                this.Balance += transaction.Amount;
-            }else if (transaction.Type == TransactionType.Expense)
-            {
-                if (this.Balance < transaction.Amount)
-                {
-                    throw new InvalidOperationException("Insufficient balance for this transaction.");
-                }
-                this.Balance -= transaction.Amount;
-            }
+            CreateAndStore(transaction);
+            this.Balance -= amount;
+
+            return transaction;
         }
+
+        public Transaction AddIncome(decimal amount,Category category,
+            string? description,DateTime createAt)
+        {
+            var transaction=Transaction.Create(amount,TransactionType.Income,
+                category,this,description,createAt);
+
+            CreateAndStore(transaction);
+            this.Balance += amount;
+
+            return transaction;
+        }
+
+        private void CreateAndStore(Transaction transaction) => this.Transactions.Add(transaction);
     }
 
     public enum TypeName
