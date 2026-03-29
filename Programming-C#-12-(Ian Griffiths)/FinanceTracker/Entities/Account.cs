@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -19,7 +20,7 @@ namespace FinanceTracker.Entities
                 throw new ArgumentException("Balance cannot be negative.", nameof(balance));
             }
             this._initialBalance = balance;
-            this.Balance= balance;
+            this.Balance = balance;
             this.Type = type;
             this.CreateAt = DateTime.Now;
         }
@@ -27,13 +28,16 @@ namespace FinanceTracker.Entities
         private readonly Money _initialBalance;
         private readonly List<Transaction> _transactions = [];
 
+        #region Public Properties
         public Guid Id { get; private set; }
         public string Name { get; private set; }
-        public DateTime CreateAt { get; private set; } 
+        public DateTime CreateAt { get; private set; }
         public Money Balance { get; private set; }
         public IEnumerable<Transaction> Transactions => _transactions.AsReadOnly();
         public TypeName Type { get; private set; }
+        #endregion
 
+        #region Public Methods
         public static Account Create(string name, Money balance, TypeName type)
         {
             return new Account(name, balance, type);
@@ -101,6 +105,21 @@ namespace FinanceTracker.Entities
             return incomeAmount - expenseAmount;
         }
 
+        public TransferResult TransferTo(Account destination, Money amount, DateTime transferDate,
+              string? description="Founds Transfer")
+        {
+            if (this.Id == destination.Id)
+                throw new InvalidOperationException("Cannot transfer to the same account.");
+
+            EnsureSameCurrency(destination.Balance);
+
+            var transferCategory = Category.Create("Transfer", "Internal Transfer", TransactionType.Expense);
+            Transaction sourceTx = this.AddExpense(amount, transferCategory, description, transferDate);
+            Transaction destTx = destination.AddIncome(amount, transferCategory, description, transferDate);
+
+            return new TransferResult(sourceTx, destTx);
+        }
+        #endregion
 
         private void EnsureSameCurrency(Money amount)
         {
