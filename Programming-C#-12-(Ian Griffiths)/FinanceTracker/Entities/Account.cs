@@ -120,6 +120,15 @@ namespace FinanceTracker.Entities
             return new TransferResult(sourceTx, destTx);
         }
 
+        public List<Transaction> GetTransactionsByCategory(Category category)
+        => _transactions.Where(tx => tx.Category == category).ToList();
+
+        public decimal GetTotalSpendingByCategory(Category category)
+        => _transactions
+                .Where(tx => tx.Category == category && tx.Type == TransactionType.Expense)
+                .Select(a => a.Amount.Amount)
+                .Sum();
+
         public Transaction this[int index]
         {
             get
