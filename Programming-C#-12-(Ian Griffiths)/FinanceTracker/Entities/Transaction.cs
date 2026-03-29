@@ -36,9 +36,13 @@ namespace FinanceTracker.Entities
         public Account Account { get; private set; }
         public string? Description { get; private set; }
 
-        internal static Transaction Create(Money amount, TransactionType type, Category category,
+        internal static Transaction CreateForAccount(Money amount, TransactionType type, Category category,
             Account account, string? description, DateTime createAt)
         {
+            if (category.Type != type)
+            {
+                throw new InvalidOperationException($"Category type {category.Type} does not match transaction type {type}.");
+            }
             return new Transaction(amount, type, category, account, description, createAt);
         }
     }
