@@ -9,8 +9,8 @@ namespace FinanceTracker.Entities
     {
         private Money(decimal amount, Currency currency)
         {
-            if (amount == 0)
-                throw new ArgumentException("Amount cannot zero");
+            if (amount < 0)
+                throw new ArgumentException("Amount cannot be negative", nameof(amount));
             this.Amount = amount;
             this.Currency = currency;
         }
@@ -38,6 +38,10 @@ namespace FinanceTracker.Entities
         public static Money operator -(Money left, Money right)
         {
             CompareCurrency(left, right);
+            if (left.Amount < right.Amount)
+            {
+                throw new InvalidOperationException("Resulting money cannot be negative");
+            }
             return Create(left.Amount - right.Amount, left.Currency);
         }
 

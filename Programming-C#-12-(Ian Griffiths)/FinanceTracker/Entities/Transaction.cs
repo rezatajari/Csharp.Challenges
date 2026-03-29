@@ -10,12 +10,7 @@ namespace FinanceTracker.Entities
             Account account, string? description, DateTime createAt)
         {
             this.Id = Guid.NewGuid();
-            if (amount.Amount <= 0)
-            {
-                throw new ArgumentException("Amount must be greater than zero.", nameof(amount));
-            }
             this.Amount = amount;
-
             this.Type = type;
 
             ArgumentNullException.ThrowIfNull(category, nameof(category));
