@@ -18,15 +18,18 @@ namespace FinanceTracker.Entities
             {
                 throw new ArgumentException("Balance cannot be negative.", nameof(balance));
             }
-            this.Balance = balance;
-
+            this._initialBalance = balance;
+            this.Balance= balance;
             this.Type = type;
+            this.CreateAt = DateTime.Now;
         }
 
+        private readonly Money _initialBalance;
         private readonly List<Transaction> _transactions = [];
 
         public Guid Id { get; private set; }
         public string Name { get; private set; }
+        public DateTime CreateAt { get; private set; } 
         public Money Balance { get; private set; }
         public IEnumerable<Transaction> Transactions => _transactions.AsReadOnly();
         public TypeName Type { get; private set; }
@@ -67,6 +70,37 @@ namespace FinanceTracker.Entities
 
             return transaction;
         }
+
+        public Money GetBalanceAtDate(DateTime targetDate)
+        {
+
+            if (targetDate > DateTime.Now)
+            {
+                return this.Balance;
+            }
+            else if (targetDate < this.CreateAt)
+            {
+                return Money.Create(0, this.Balance.Currency);
+            }
+
+            Money incomeAmount = _initialBalance;
+            Money expenseAmount = Money.Create(0, this.Balance.Currency);
+            foreach (var transaction in _transactions)
+            {
+                if (transaction.CreateAt > targetDate) continue;
+                if (transaction == null) continue;
+
+                (incomeAmount, expenseAmount) = transaction.Type switch
+                {
+                    TransactionType.Income => (incomeAmount + transaction.Amount, expenseAmount),
+                    TransactionType.Expense => (incomeAmount, expenseAmount + transaction.Amount),
+                    _ => (incomeAmount, expenseAmount)
+                };
+            }
+
+            return incomeAmount - expenseAmount;
+        }
+
 
         private void EnsureSameCurrency(Money amount)
         {
