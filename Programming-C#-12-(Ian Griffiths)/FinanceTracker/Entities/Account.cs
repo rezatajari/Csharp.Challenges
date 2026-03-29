@@ -126,8 +126,18 @@ namespace FinanceTracker.Entities
         public decimal GetTotalSpendingByCategory(Category category)
         => _transactions
                 .Where(tx => tx.Category == category && tx.Type == TransactionType.Expense)
-                .Select(a => a.Amount.Amount)
-                .Sum();
+                .Sum(a => a.Amount.Amount);
+
+        public List<CategorySummary> GetSpendingSummoryByCategory()
+         => _transactions
+                    .Where(tx => tx.Type == TransactionType.Expense)
+                    .GroupBy(tx => tx.Category.Name)
+                    .Select(group => new CategorySummary(
+                        group.Key,   // The Name
+                        group.Sum(t => t.Amount.Amount),  // The Sum
+                        group.Count() // The Count
+                        ))
+                    .ToList();
 
         public Transaction this[int index]
         {
