@@ -106,7 +106,7 @@ namespace FinanceTracker.Entities
         }
 
         public TransferResult TransferTo(Account destination, Money amount, DateTime transferDate,
-              string? description="Founds Transfer")
+              string? description = "Founds Transfer")
         {
             if (this.Id == destination.Id)
                 throw new InvalidOperationException("Cannot transfer to the same account.");
@@ -118,6 +118,29 @@ namespace FinanceTracker.Entities
             Transaction destTx = destination.AddIncome(amount, transferCategory, description, transferDate);
 
             return new TransferResult(sourceTx, destTx);
+        }
+
+        public Transaction this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _transactions.Count)
+                    throw new IndexOutOfRangeException("Transaction index out of bounds.");
+
+                return _transactions[index];
+            }
+        }
+
+        public Transaction? this[Guid Id]
+        {
+            get
+            {
+                foreach (var tx in _transactions)
+                {
+                    if (tx.Id == Id) return tx;
+                }
+                return null;
+            }
         }
         #endregion
 
