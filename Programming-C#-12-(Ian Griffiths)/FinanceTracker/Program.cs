@@ -8,7 +8,7 @@ try
     myAccount.TransferTo(targetAccount, Money.Create(500, Currency.USD), DateTime.Now, description: "Transfer to other my account");
     Console.WriteLine("Success!");
 }
-catch (InvalidOperationException ex)
+catch (InsufficientFundsException ex)
 {
     Console.WriteLine("User Error: " + ex.Message);
 }

@@ -49,7 +49,7 @@ namespace FinanceTracker.Entities
 
             if (Balance < amount)
             {
-                throw new InvalidOperationException("Insufficient balance for this transaction.");
+                throw new InsufficientFundsException("Insufficient balance for this transaction.");
             }
 
             var transaction = Transaction.CreateForAccount(amount, TransactionType.Expense,
