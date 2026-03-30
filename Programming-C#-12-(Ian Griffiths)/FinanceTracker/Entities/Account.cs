@@ -11,37 +11,16 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Account : IAccount
+    public class Account : BaseAccount
     {
-        private Account(string name, Money balance, TypeName type)
+        private Account(string name, Money initialBalance, TypeName type) : base(name, initialBalance, type)
         {
-            this.Id = Guid.NewGuid();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-            this.Name = name;
-
-            if (balance.Amount < 0)
+            if (initialBalance.Amount < 0)
             {
-                throw new ArgumentException("Balance cannot be negative.", nameof(balance));
+                throw new ArgumentException("Balance cannot be negative.", nameof(initialBalance));
             }
-            this._initialBalance = balance;
-            this.Balance = balance;
-            this.Type = type;
-            this.CreateAt = DateTime.Now;
         }
 
-        private readonly Money _initialBalance;
-        private readonly List<Transaction> _transactions = [];
-
-        #region Public Properties
-        public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public DateTime CreateAt { get; private set; }
-        public Money Balance { get; private set; }
-        public IEnumerable<Transaction> Transactions => _transactions.AsReadOnly();
-        public TypeName Type { get; private set; }
-        #endregion
-
-        #region Public Methods
         public static Account Create(string name, Money balance, TypeName type)
         {
             return new Account(name, balance, type);
@@ -60,7 +39,7 @@ namespace FinanceTracker.Entities
                 category, this, description, createAt);
 
             this.Balance -= amount;
-            CreateAndStore(transaction);
+            StoreTransaction(transaction);
 
             return transaction;
         }
@@ -74,7 +53,7 @@ namespace FinanceTracker.Entities
                 category, this, description, createAt);
 
             this.Balance += amount;
-            CreateAndStore(transaction);
+            StoreTransaction(transaction);
 
             return transaction;
         }
@@ -165,7 +144,6 @@ namespace FinanceTracker.Entities
                 return null;
             }
         }
-        #endregion
 
         private void EnsureSameCurrency(Money amount)
         {
@@ -175,26 +153,17 @@ namespace FinanceTracker.Entities
                     "Currency mismatch between account balance and transaction amount.");
             }
         }
-        private void CreateAndStore(Transaction transaction) => _transactions.Add(transaction);
 
-        public void Deposit(Money amount)
+        public override void Deposit(Money amount)
         {
-            Deposit(amount, Category.Create("Default",null, TransactionType.Income),
-                    null,DateTime.Now);
+            Deposit(amount, Category.Create("Default", null, TransactionType.Income),
+                    null, DateTime.Now);
         }
 
-        public void Withdraw(Money amount)
+        public override void Withdraw(Money amount)
         {
-            Withdraw(amount, Category.Create("Default",null,TransactionType.Income),
-                null,DateTime.Now);
+            Withdraw(amount, Category.Create("Default", null, TransactionType.Income),
+                null, DateTime.Now);
         }
-    }
-
-    public enum TypeName
-    {
-        Cash,
-        Bank,
-        CreditCard,
-        Investment
     }
 }

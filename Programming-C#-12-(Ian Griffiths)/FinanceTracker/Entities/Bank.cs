@@ -6,21 +6,13 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Bank
+    public class Bank 
     {
-        private Bank()
-        {
-
-        }
-
         private readonly List<IAccount> _accounts = [];
 
         public IEnumerable<IAccount> Accounts => _accounts.AsReadOnly();
 
-        public void AddAccount(IAccount account)
-        {
-            _accounts.Add(account);
-        }
+        public void AddAccount(IAccount account) => _accounts.Add(account);
 
         public List<Money> GetTotalNetWorths()
         {
