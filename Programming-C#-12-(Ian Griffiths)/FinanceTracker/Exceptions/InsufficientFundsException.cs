@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FinanceTracker.Entities
+namespace FinanceTracker.Exceptions
 {
     public class InsufficientFundsException:Exception
     {

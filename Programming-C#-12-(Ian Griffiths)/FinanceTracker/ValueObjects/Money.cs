@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.Text;
 
-namespace FinanceTracker.Entities
+namespace FinanceTracker.ValueObjects
 {
     public record Money
     {
