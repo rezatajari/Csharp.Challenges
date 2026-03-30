@@ -26,6 +26,18 @@ namespace FinanceTracker.Entities
             return new Account(name, balance, type);
         }
 
+        public override void Deposit(Money amount)
+        {
+            Deposit(amount, Category.Create("Default", null, TransactionType.Income),
+                    null, DateTime.Now);
+        }
+
+        public override void Withdraw(Money amount)
+        {
+            Withdraw(amount, Category.Create("Default", null, TransactionType.Income),
+                null, DateTime.Now);
+        }
+
         public Transaction Withdraw(Money amount, Category category, string? description, DateTime createAt)
         {
             EnsureSameCurrency(amount);
@@ -145,25 +157,6 @@ namespace FinanceTracker.Entities
             }
         }
 
-        private void EnsureSameCurrency(Money amount)
-        {
-            if (this.Balance.Currency != amount.Currency)
-            {
-                throw new InvalidOperationException(
-                    "Currency mismatch between account balance and transaction amount.");
-            }
-        }
-
-        public override void Deposit(Money amount)
-        {
-            Deposit(amount, Category.Create("Default", null, TransactionType.Income),
-                    null, DateTime.Now);
-        }
-
-        public override void Withdraw(Money amount)
-        {
-            Withdraw(amount, Category.Create("Default", null, TransactionType.Income),
-                null, DateTime.Now);
-        }
+       
     }
 }

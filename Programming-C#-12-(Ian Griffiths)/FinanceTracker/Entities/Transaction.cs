@@ -1,4 +1,5 @@
-﻿using FinanceTracker.ValueObjects;
+﻿using FinanceTracker.Interfaces;
+using FinanceTracker.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace FinanceTracker.Entities
     public class Transaction
     {
         private Transaction(Money amount, TransactionType type, Category category,
-            Account account, string? description, DateTime createAt)
+            IAccount account, string? description, DateTime createAt)
         {
             this.Id = Guid.NewGuid();
             this.Amount = amount;
@@ -34,11 +35,11 @@ namespace FinanceTracker.Entities
         public TransactionType Type { get;private set; }
         public DateTime CreateAt { get; private set; }
         public Category Category { get; private set; }
-        public Account Account { get; private set; }
+        public IAccount Account { get; private set; }
         public string? Description { get; private set; }
 
         internal static Transaction CreateForAccount(Money amount, TransactionType type, Category category,
-            Account account, string? description, DateTime createAt)
+            IAccount account, string? description, DateTime createAt)
         {
             if (category.Type != type)
             {

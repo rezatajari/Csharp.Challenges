@@ -32,7 +32,14 @@ namespace FinanceTracker.Entities
         }
 
         protected void StoreTransaction(Transaction transaction) => _transactions.Add(transaction);
-
+        protected void EnsureSameCurrency(Money amount)
+        {
+            if (this.Balance.Currency != amount.Currency)
+            {
+                throw new InvalidOperationException(
+                    "Currency mismatch between account balance and transaction amount.");
+            }
+        }
         public abstract void Deposit(Money amount);
         public abstract void Withdraw(Money amount);
     }

@@ -9,10 +9,8 @@ namespace FinanceTracker.ValueObjects
     {
         private Money(decimal amount, Currency currency)
         {
-            if (amount < 0)
-                throw new ArgumentException("Amount cannot be negative", nameof(amount));
-            this.Amount = amount;
-            this.Currency = currency;
+            Amount = amount;
+            Currency = currency;
         }
         public decimal Amount { get; init; }
         public Currency Currency { get; init; }
