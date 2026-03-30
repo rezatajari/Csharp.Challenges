@@ -1,4 +1,6 @@
 ﻿using FinanceTracker.Dtos;
+using FinanceTracker.Exceptions;
+using FinanceTracker.Interfaces;
 using FinanceTracker.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Account
+    public class Account : IAccount
     {
         private Account(string name, Money balance, TypeName type)
         {
@@ -45,7 +47,7 @@ namespace FinanceTracker.Entities
             return new Account(name, balance, type);
         }
 
-        public Transaction AddExpense(Money amount, Category category, string? description, DateTime createAt)
+        public Transaction Withdraw(Money amount, Category category, string? description, DateTime createAt)
         {
             EnsureSameCurrency(amount);
 
@@ -63,7 +65,7 @@ namespace FinanceTracker.Entities
             return transaction;
         }
 
-        public Transaction AddIncome(Money amount, Category category,
+        public Transaction Deposit(Money amount, Category category,
             string? description, DateTime createAt)
         {
             EnsureSameCurrency(amount);
@@ -116,8 +118,8 @@ namespace FinanceTracker.Entities
             EnsureSameCurrency(destination.Balance);
 
             var transferCategory = Category.Create("Transfer", "Internal Transfer", TransactionType.Expense);
-            Transaction sourceTx = this.AddExpense(amount, transferCategory, description, transferDate);
-            Transaction destTx = destination.AddIncome(amount, transferCategory, description, transferDate);
+            Transaction sourceTx = this.Withdraw(amount, transferCategory, description, transferDate);
+            Transaction destTx = destination.Deposit(amount, transferCategory, description, transferDate);
 
             return new TransferResult(sourceTx, destTx);
         }
@@ -174,6 +176,18 @@ namespace FinanceTracker.Entities
             }
         }
         private void CreateAndStore(Transaction transaction) => _transactions.Add(transaction);
+
+        public void Deposit(Money amount)
+        {
+            Deposit(amount, Category.Create("Default",null, TransactionType.Income),
+                    null,DateTime.Now);
+        }
+
+        public void Withdraw(Money amount)
+        {
+            Withdraw(amount, Category.Create("Default",null,TransactionType.Income),
+                null,DateTime.Now);
+        }
     }
 
     public enum TypeName
