@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FinanceTracker.Interfaces
 {
-    public interface IAccount
+    public interface IAccount: IEntity
     {
         string Name { get; }
         Money Balance { get; }

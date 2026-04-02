@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Transaction
+    public class Transaction:IEntity
     {
         private Transaction(Money amount, TransactionType type, Category category,
             IAccount account, string? description, DateTime createAt)
