@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Bank 
+    public class Bank
     {
         private readonly List<IAccount> _accounts = [];
 
@@ -15,12 +15,16 @@ namespace FinanceTracker.Entities
         public void AddAccount(IAccount account) => _accounts.Add(account);
 
         public List<Money> GetTotalNetWorths()
-        {
-            return _accounts.GroupBy(acc => acc.Balance.Currency)
+            => _accounts.GroupBy(acc => acc.Balance.Currency)
                 .Select(group => Money.Create(
                     group.Sum(a => a.Balance.Amount),
                     group.Key))
                 .ToList();
-        }
+
+        public IAccount? GetAccountByName(string name)
+             => _accounts.FirstOrDefault(acc => acc.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+        public List<CreditCard> GetCreditCards()
+            => _accounts.OfType<CreditCard>().ToList();
     }
 }
