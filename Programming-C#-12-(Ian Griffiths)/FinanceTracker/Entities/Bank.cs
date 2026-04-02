@@ -26,5 +26,8 @@ namespace FinanceTracker.Entities
 
         public List<CreditCard> GetCreditCards()
             => _accounts.OfType<CreditCard>().ToList();
+
+        public List<IAccount> GetAccountInDebt()
+            => _accounts.Where(acc=>acc.Balance.Amount<0).ToList(); 
     }
 }
