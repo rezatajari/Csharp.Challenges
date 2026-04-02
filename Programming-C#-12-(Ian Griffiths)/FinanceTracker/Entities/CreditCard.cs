@@ -1,4 +1,5 @@
-﻿using FinanceTracker.ValueObjects;
+﻿using FinanceTracker.Exceptions;
+using FinanceTracker.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,17 +37,17 @@ namespace FinanceTracker.Entities
         {
             EnsureSameCurrency(amount);
 
-            if (this.Balance.Amount - amount.Amount<-this.CreditLimit.Amount)
-                throw new InvalidOperationException("Credit limit exceeded!");
+            if (this.Balance.Amount - amount.Amount < -this.CreditLimit.Amount)
+                throw new CreditLimitExceedException("Transaction denied: Credit limit exceeded!",
+                    amount.Amount, this.CreditLimit.Amount);
 
             this.Balance -= amount;
 
-            var tx=Transaction.CreateForAccount(amount,TransactionType.Expense,
-                Category.Create("Charge",null,TransactionType.Expense),this,"Credit Purchase",DateTime.Now);
+            var tx = Transaction.CreateForAccount(amount, TransactionType.Expense,
+                Category.Create("Charge", null, TransactionType.Expense), this, "Credit Purchase", DateTime.Now);
 
             StoreTransaction(tx);
         }
 
-      
     }
 }
