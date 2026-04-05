@@ -34,7 +34,7 @@ namespace FinanceTracker.Entities
 
         public override void Withdraw(Money amount)
         {
-            Withdraw(amount, Category.Create("Default", null, TransactionType.Income),
+            Withdraw(amount, Category.Create("Default", null, TransactionType.Expense),
                 null, DateTime.Now);
         }
 

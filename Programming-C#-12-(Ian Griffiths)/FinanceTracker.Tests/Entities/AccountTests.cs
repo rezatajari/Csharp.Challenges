@@ -1,4 +1,5 @@
 ﻿using FinanceTracker.Entities;
+using FinanceTracker.Exceptions;
 using FinanceTracker.ValueObjects;
 
 namespace FinanceTracker.Tests.Entities
@@ -33,11 +34,19 @@ namespace FinanceTracker.Tests.Entities
         [Fact]
         public void Withdraw_Should_DecreaseBalance_WhenFundsAreSufficient()
         {
-            var account = Account.Create("My Savings", Money.Create(200, Currency.USD), TypeName.Bank);
+            var account = Account.Create("My Savings", Money.Create(200, Currency.USD),TypeName.Bank);
 
             account.Withdraw(Money.Create(80, Currency.USD));
 
             Assert.Equal(120, account.Balance.Amount);
+        }
+
+        [Fact]
+        public void Withdraw_Should_ThrowException_WhenBalanceIsTooLow()
+        {
+            var account = Account.Create("My Savings", Money.Create(50, Currency.USD), TypeName.Bank);
+
+            Assert.Throws<InsufficientFundsException>(() => account.Withdraw(Money.Create(100, Currency.USD)));
         }
     }
 }
