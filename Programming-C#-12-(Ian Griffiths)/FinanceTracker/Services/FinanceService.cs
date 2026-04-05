@@ -58,5 +58,28 @@ namespace FinanceTracker.Services
             
             _transactionRepo.Add(purchaseTx);
         }
+
+        public void ExecuteTransfer(Guid fromAccountId,Guid toAccountId,Money amount)
+        {
+            var fromAccount=_accountRepo.GetById(fromAccountId);
+            var toAccount = _accountRepo.GetById(toAccountId);
+
+            if (fromAccount == null || toAccount == null)
+                throw new KeyNotFoundException($"One or both accounts were not found.");
+
+            fromAccount.Withdraw(amount);
+            toAccount.Deposit(amount);
+
+            var transferCategory=Category.Create("Transfer",null,TransactionType.Transfer);
+
+            var outTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
+                transferCategory, fromAccount, $"Transfer to {toAccount.Name}", DateTime.Now);
+
+            var inTx = Transaction.CreateForAccount(amount, TransactionType.Income,
+                transferCategory, toAccount, $"Transfer from {fromAccount}", DateTime.Now);
+
+            _transactionRepo.Add(outTx);
+            _transactionRepo.Add(inTx);
+        }
     }
 }

@@ -51,6 +51,7 @@ namespace FinanceTracker.Entities
     public enum TransactionType
     {
         Income,
-        Expense
+        Expense,
+        Transfer
     }
 }
