@@ -104,5 +104,8 @@ namespace FinanceTracker.Services
 
             return Money.Create(total, targetCurrency);
         }
+
+        public List<Transaction> GetAllTransactions()
+            => _transactionRepo.GetAll();
     }
 }
