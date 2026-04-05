@@ -25,6 +25,8 @@ namespace FinanceTracker.Services
 
             if (initialDeposit.Amount > 0)
             {
+                newAccount.Deposit(initialDeposit);
+
                 var depositTx = Transaction.CreateForAccount(
                     initialDeposit,
                     TransactionType.Income,
@@ -38,6 +40,23 @@ namespace FinanceTracker.Services
             }
 
             return newAccount.Id;
+        }
+
+        public void ExecutePurchase(Guid accountId, Money amount, string categoryName)
+        {
+            var account = _accountRepo.GetById(accountId);
+
+            if (account == null)
+                throw new KeyNotFoundException($"Account with ID {accountId} not found.");
+
+            account.Withdraw(amount);
+
+            var category = Category.Create(categoryName, null, TransactionType.Expense);
+
+            var purchaseTx = Transaction.CreateForAccount(amount, TransactionType.Expense, 
+                category, account, "Purchase", DateTime.Now);
+            
+            _transactionRepo.Add(purchaseTx);
         }
     }
 }

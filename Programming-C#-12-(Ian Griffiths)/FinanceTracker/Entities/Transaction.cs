@@ -42,9 +42,8 @@ namespace FinanceTracker.Entities
             IAccount account, string? description, DateTime createAt)
         {
             if (category.Type != type)
-            {
                 throw new InvalidOperationException($"Category type {category.Type} does not match transaction type {type}.");
-            }
+
             return new Transaction(amount, type, category, account, description, createAt);
         }
     }
