@@ -1,7 +1,5 @@
-﻿using FinanceTracker.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FinanceTracker.Entities;
+using FinanceTracker.ValueObjects;
 
 namespace FinanceTracker.Interfaces
 {
@@ -9,6 +7,7 @@ namespace FinanceTracker.Interfaces
     {
         string Name { get; }
         Money Balance { get; }
+        TypeName Type { get; }
         void Deposit(Money amount);
         void Withdraw(Money amount);
     }

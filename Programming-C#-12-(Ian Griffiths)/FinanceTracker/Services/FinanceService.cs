@@ -2,6 +2,7 @@
 using FinanceTracker.Entities;
 using FinanceTracker.Interfaces;
 using FinanceTracker.ValueObjects;
+using System.Security;
 
 namespace FinanceTracker.Services
 {
@@ -80,6 +81,28 @@ namespace FinanceTracker.Services
 
             _transactionRepo.Add(outTx);
             _transactionRepo.Add(inTx);
+        }
+
+        public Money GetTotalNetWorth(Currency targetCurrency)
+        {
+            var allAccount = _accountRepo.GetAll();
+            decimal total=0;
+
+            foreach(var acc in allAccount)
+            {
+                if (acc.Balance.Currency != targetCurrency) continue;
+
+                if (acc.Type == TypeName.CreditCard)
+                {
+                    total -= acc.Balance.Amount; 
+                }
+                else
+                {
+                    total += acc.Balance.Amount; 
+                }
+            }
+
+            return Money.Create(total, targetCurrency);
         }
     }
 }
