@@ -29,5 +29,16 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.Equal(150, account.Balance.Amount);
         }
+
+        [Fact]
+        public void Withdraw_Should_DecreaseBalance_WhenFundsAreSufficient()
+        {
+            var account = Account.Create("My Savings", Money.Create(200, Currency.USD), TypeName.Bank);
+
+            account.Withdraw(Money.Create(80, Currency.USD));
+
+            Assert.Equal(120, account.Balance.Amount);
+        }
     }
 }
+
