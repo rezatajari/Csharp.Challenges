@@ -16,8 +16,8 @@ namespace FinanceTracker.Shared
             Value = value;
             ErrorMessage = errorMessage;
         }
-
-        public static Result<T> Success(T value) => new(true, value, string.Empty);
+           
+                public static Result<T> Success(T value) => new(true, value, string.Empty);
         public static Result<T> Failure(string errorMessage) => new(false, default, errorMessage);
     }
 }
