@@ -1,7 +1,9 @@
 ﻿using FinanceTracker.Data;
 using FinanceTracker.Entities;
 using FinanceTracker.Interfaces;
+using FinanceTracker.Shared;
 using FinanceTracker.ValueObjects;
+using System.Runtime.InteropServices.Marshalling;
 using System.Security;
 
 namespace FinanceTracker.Services
@@ -20,7 +22,7 @@ namespace FinanceTracker.Services
             _transactionRepo = transactionRepo;
         }
 
-        public Guid OpenAccount(IAccount newAccount, Money initialDeposit)
+        public Result<Guid> OpenAccount(IAccount newAccount, Money initialDeposit)
         {
             _accountRepo.Add(newAccount);
 
@@ -40,10 +42,10 @@ namespace FinanceTracker.Services
                 _transactionRepo.Add(depositTx);
             }
 
-            return newAccount.Id;
+            return Result<Guid>.Success(newAccount.Id);
         }
 
-        public void ExecutePurchase(Guid accountId, Money amount, string categoryName)
+        public Result<bool> ExecutePurchase(Guid accountId, Money amount, string categoryName)
         {
             var account = _accountRepo.GetById(accountId);
 
@@ -58,9 +60,11 @@ namespace FinanceTracker.Services
                 category, account, "Purchase", DateTime.Now);
             
             _transactionRepo.Add(purchaseTx);
+
+            return Result<bool>.Success(true);
         }
 
-        public void ExecuteTransfer(Guid fromAccountId,Guid toAccountId,Money amount)
+        public Result<bool> ExecuteTransfer(Guid fromAccountId,Guid toAccountId,Money amount)
         {
             var fromAccount=_accountRepo.GetById(fromAccountId);
             var toAccount = _accountRepo.GetById(toAccountId);
@@ -81,9 +85,11 @@ namespace FinanceTracker.Services
 
             _transactionRepo.Add(outTx);
             _transactionRepo.Add(inTx);
+
+            return Result<bool>.Success(true);
         }
 
-        public Money GetTotalNetWorth(Currency targetCurrency)
+        public Result<Money> GetTotalNetWorth(Currency targetCurrency)
         {
             var allAccount = _accountRepo.GetAll();
             decimal total=0;
@@ -102,10 +108,10 @@ namespace FinanceTracker.Services
                 }
             }
 
-            return Money.Create(total, targetCurrency);
+            return Result<Money>.Success(Money.Create(total, targetCurrency));
         }
 
-        public List<Transaction> GetAllTransactions()
-            => _transactionRepo.GetAll();
+        public Result<List<Transaction>> GetAllTransactions()
+            => Result<List<Transaction>>.Success(_transactionRepo.GetAll());
     }
 }
