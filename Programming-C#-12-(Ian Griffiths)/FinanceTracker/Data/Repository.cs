@@ -7,9 +7,9 @@ namespace FinanceTracker.Data
 {
     public class Repository<T> where T : class, IEntity
     {
-        private readonly List<T> _item = new();
+        protected readonly List<T> _item = new();
 
-        public void Add(T item) => _item.Add(item);
+        public virtual void Add(T item) => _item.Add(item);
         public List<T> GetAll() => _item.ToList();
         public T? GetById(Guid id) => _item.FirstOrDefault(x => x.Id == id);
         public bool Remove(Guid id)
