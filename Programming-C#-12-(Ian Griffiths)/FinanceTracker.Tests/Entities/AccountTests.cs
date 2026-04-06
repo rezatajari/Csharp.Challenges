@@ -54,7 +54,13 @@ namespace FinanceTracker.Tests.Entities
             => Assert.Throws<ArgumentException>(()
                 => Account.Create("My Savings", Money.Create(-100, Currency.USD), TypeName.Bank));
 
-      
+        [Fact]
+        public void TransferTo_Should_ThrowInvalidOperation_WhenSourceAndDestinationAreSame()
+        {
+            var account = Account.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            Assert.Throws<InvalidOperationException>(()
+                => account.TransferTo(account, Money.Create(50, Currency.USD), DateTime.Now));
+        }
     }
 }
 
