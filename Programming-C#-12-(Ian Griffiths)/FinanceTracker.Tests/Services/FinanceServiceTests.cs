@@ -68,9 +68,17 @@ namespace FinanceTracker.Tests.Services
         [Fact]
         public void GetTotalBalance_Should_SumAllAccounts_InSpecificCurrency()
         {
-            var m = Money.Default();
             var acc1 = Account.Create("Acc 1", Money.Create(100, Currency.USD), TypeName.Bank);
             _service.OpenAccount(acc1, Money.Default());
+            var acc2 = Account.Create("Acc 2", Money.Create(100, Currency.USD), TypeName.Bank);
+            _service.OpenAccount(acc2, Money.Default());
+            var acc3 = Account.Create("Acc 3", Money.Create(100, Currency.USD), TypeName.Bank);
+            _service.OpenAccount(acc3, Money.Default());
+
+            var result =_service.GetTotalNetWorth(Currency.USD);
+
+            Assert.Equal(300, result.Value?.Amount);
+
         }
     }
 }
