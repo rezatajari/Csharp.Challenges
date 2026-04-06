@@ -3,7 +3,7 @@ using FinanceTracker.Exceptions;
 using FinanceTracker.ValueObjects;
 
 var myAccount = Account.Create("Savings", Money.Create(100, Currency.USD), TypeName.Bank);
-var targetAccount = Account.Create("Checking", Money.Create(0, Currency.USD), TypeName.Bank);
+var targetAccount = Account.Create("Checking", Money.Default(), TypeName.Bank);
 
 try
 {
