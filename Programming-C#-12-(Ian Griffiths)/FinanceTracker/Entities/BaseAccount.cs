@@ -40,8 +40,8 @@ namespace FinanceTracker.Entities
                     "Currency mismatch between account balance and transaction amount.");
             }
         }
-        public abstract void Deposit(Money amount);
-        public abstract void Withdraw(Money amount);
+        public abstract void Deposit(Money amount,DateTime createAt);
+        public abstract void Withdraw(Money amount, DateTime createAt);
     }
 
     public enum TypeName

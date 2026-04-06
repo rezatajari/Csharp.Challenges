@@ -8,8 +8,8 @@ namespace FinanceTracker.Interfaces
         string Name { get; }
         Money Balance { get; }
         TypeName Type { get; }
-        void Deposit(Money amount);
-        void Withdraw(Money amount);
+        void Deposit(Money amount, DateTime createAt);
+        void Withdraw(Money amount, DateTime createAt);
     }
 }
 

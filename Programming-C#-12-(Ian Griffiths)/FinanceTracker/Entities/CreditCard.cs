@@ -21,19 +21,19 @@ namespace FinanceTracker.Entities
             return new CreditCard(name, initialBalance, limit);
         }
 
-        public override void Deposit(Money amount)
+        public override void Deposit(Money amount, DateTime createAt)
         {
             EnsureSameCurrency(amount);
 
             this.Balance += amount;
 
             var tx = Transaction.CreateForAccount(amount, TransactionType.Income,
-                Category.Create("Charge", null, TransactionType.Income), this, "Credit Payment", DateTime.Now);
+                Category.Create("Charge", null, TransactionType.Income), this, "Credit Payment", createAt);
 
             StoreTransaction(tx);
         }
 
-        public override void Withdraw(Money amount)
+        public override void Withdraw(Money amount, DateTime createAt)
         {
             EnsureSameCurrency(amount);
 
@@ -44,7 +44,7 @@ namespace FinanceTracker.Entities
             this.Balance -= amount;
 
             var tx = Transaction.CreateForAccount(amount, TransactionType.Expense,
-                Category.Create("Charge", null, TransactionType.Expense), this, "Credit Purchase", DateTime.Now);
+                Category.Create("Charge", null, TransactionType.Expense), this, "Credit Purchase", createAt);
 
             StoreTransaction(tx);
         }

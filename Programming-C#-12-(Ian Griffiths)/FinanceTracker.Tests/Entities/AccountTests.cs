@@ -36,7 +36,7 @@ namespace FinanceTracker.Tests.Entities
         {
             var account = Account.Create("My Savings", Money.Create(200, Currency.USD), TypeName.Bank);
 
-            account.Withdraw(Money.Create(80, Currency.USD));
+            account.Withdraw(Money.Create(80, Currency.USD),DateTime.Now);
 
             Assert.Equal(120, account.Balance.Amount);
         }
@@ -46,7 +46,7 @@ namespace FinanceTracker.Tests.Entities
         {
             var account = Account.Create("My Savings", Money.Create(50, Currency.USD), TypeName.Bank);
 
-            Assert.Throws<InsufficientFundsException>(() => account.Withdraw(Money.Create(100, Currency.USD)));
+            Assert.Throws<InsufficientFundsException>(() => account.Withdraw(Money.Create(100, Currency.USD),DateTime.Now));
         }
 
         [Fact]
@@ -69,6 +69,17 @@ namespace FinanceTracker.Tests.Entities
             var result=account.GetBalanceAtDate(DateTime.Now);
 
             Assert.Equal(100, result.Amount);
+        }
+
+        [Fact]
+        public void GetBalanceAtDate_Should_IgnoreFutureTransactions_WhenDateIsPast()
+        {
+            var account=Account.Create("My Savings",Money.Create(100,Currency.USD),TypeName.Bank);
+
+            var now = DateTime.Now;
+            var tommorow = now.AddDays(1);
+
+            account.Deposit(Money.Create(50, Currency.USD));
         }
     }
 }
