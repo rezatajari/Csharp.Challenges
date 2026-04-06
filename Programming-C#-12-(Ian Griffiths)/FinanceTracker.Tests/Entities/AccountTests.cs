@@ -34,7 +34,7 @@ namespace FinanceTracker.Tests.Entities
         [Fact]
         public void Withdraw_Should_DecreaseBalance_WhenFundsAreSufficient()
         {
-            var account = Account.Create("My Savings", Money.Create(200, Currency.USD),TypeName.Bank);
+            var account = Account.Create("My Savings", Money.Create(200, Currency.USD), TypeName.Bank);
 
             account.Withdraw(Money.Create(80, Currency.USD));
 
@@ -48,6 +48,13 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.Throws<InsufficientFundsException>(() => account.Withdraw(Money.Create(100, Currency.USD)));
         }
+
+        [Fact]
+        public void Constructor_Should_ThrowArgumentException_WhenInitialBalanceIsNegative()
+            => Assert.Throws<ArgumentException>(()
+                => Account.Create("My Savings", Money.Create(-100, Currency.USD), TypeName.Bank));
+
+      
     }
 }
 
