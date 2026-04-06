@@ -61,6 +61,15 @@ namespace FinanceTracker.Tests.Entities
             Assert.Throws<InvalidOperationException>(()
                 => account.TransferTo(account, Money.Create(50, Currency.USD), DateTime.Now));
         }
+
+        [Fact]
+        public void GetBalanceAtDate_Should_ReturnInitialBalance_WhenNoTransactionsExist()
+        {
+            var account=Account.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            var result=account.GetBalanceAtDate(DateTime.Now);
+
+            Assert.Equal(100, result.Amount);
+        }
     }
 }
 
