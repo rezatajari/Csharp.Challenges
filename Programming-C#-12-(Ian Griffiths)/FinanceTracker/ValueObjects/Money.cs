@@ -46,6 +46,9 @@ namespace FinanceTracker.ValueObjects
         public static Money Create(decimal amount, Currency currency)
         => new Money(amount, currency);
 
+        public static Money Default()
+            => new Money(0, Currency.USD);
+
         private static void CompareCurrency(Money left, Money right)
         {
             if (left.Currency != right.Currency)

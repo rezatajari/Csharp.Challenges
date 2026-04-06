@@ -6,6 +6,7 @@ using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 
@@ -62,6 +63,12 @@ namespace FinanceTracker.Tests.Services
 
             Assert.False(result.IsSuccess);
             Assert.Contains("Insufficient", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void GetTotalBalance_Should_SumAllAccounts_InSpecificCurrency()
+        {
+
         }
     }
 }
