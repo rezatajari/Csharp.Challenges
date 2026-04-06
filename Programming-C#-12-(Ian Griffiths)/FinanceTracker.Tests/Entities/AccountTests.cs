@@ -130,6 +130,20 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.Equal(10, result?.TotalAmount);
         }
+
+        [Fact]
+        public void Indexer_Should_ReturnCorrectTransaction_ByGuid()
+        {
+            Account account = Account.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            var depositAmount = Money.Create(50, Currency.USD);
+            DateTime now = DateTime.Now;
+             account.Deposit(depositAmount,now);
+
+            var tx = account[0];
+
+            Assert.NotNull(tx);
+            Assert.Equal(50, tx.Amount.Amount);
+        }
     }
 }
 
