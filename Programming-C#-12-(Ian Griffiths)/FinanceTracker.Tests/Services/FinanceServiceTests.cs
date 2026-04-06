@@ -1,10 +1,12 @@
 ﻿using FinanceTracker.Data;
 using FinanceTracker.Entities;
+using FinanceTracker.Exceptions;
 using FinanceTracker.Interfaces;
 using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 
 namespace FinanceTracker.Tests.Services
@@ -46,6 +48,20 @@ namespace FinanceTracker.Tests.Services
 
             Assert.Equal(Money.Create(150, Currency.USD), acc1.Balance);
             Assert.Equal(Money.Create(50, Currency.USD), acc2.Balance);
+        }
+
+        [Fact]
+        public void Transfer_Should_ThrowException_WhenSenderHasInsufficientFunds()
+        {
+            var acc1 = Account.Create("From Account", Money.Create(10, Currency.USD), TypeName.Bank);
+            _service.OpenAccount(acc1, Money.Create(0, Currency.USD));
+            var acc2 = Account.Create("To Account", Money.Create(0, Currency.USD), TypeName.Bank);
+            _service.OpenAccount(acc2, Money.Create(0, Currency.USD));
+
+            var result = _service.ExecuteTransfer(acc1.Id, acc2.Id, Money.Create(100, Currency.USD));
+
+            Assert.False(result.IsSuccess);
+            Assert.Contains("Insufficient", result.ErrorMessage);
         }
     }
 }

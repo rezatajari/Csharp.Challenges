@@ -98,10 +98,10 @@ namespace FinanceTracker.Services
                 var transferCategory = Category.Create("Transfer", null, TransactionType.Transfer);
 
                 var outTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
-                    transferCategory, fromAccount, $"Transfer to {toAccount.Name}", DateTime.Now);
+                    transferCategory, fromAccount, $"Transfer from {toAccount.Name}", DateTime.Now);
 
                 var inTx = Transaction.CreateForAccount(amount, TransactionType.Income,
-                    transferCategory, toAccount, $"Transfer from {fromAccount.Name}", DateTime.Now);
+                    transferCategory, toAccount, $"Transfer to {fromAccount.Name}", DateTime.Now);
 
                 _transactionRepo.Add(outTx);
                 _transactionRepo.Add(inTx);
