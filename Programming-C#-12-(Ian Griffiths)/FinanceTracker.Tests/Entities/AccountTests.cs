@@ -83,6 +83,17 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.Equal(100, account.GetBalanceAtDate(now).Amount);
         }
+
+        [Fact]
+        public void GetBalanceAtDate_Should_ReturnZero_WhenDateIsBeforeAccountCreation()
+        {
+            var account = Account.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+
+            var now = DateTime.Now;
+            var yesterday = now.AddDays(-1);
+
+            Assert.Equal(Money.Default(), account.GetBalanceAtDate(yesterday));
+        }
     }
 }
 
