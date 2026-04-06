@@ -111,6 +111,25 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.Equal(100, account.GetTotalSpendingByCategory(withdrawCategory));
         }
+
+        [Fact]
+        public void GetSpendingSummary_Should_GroupMultipleTransactions_ByCommonCategoryName()
+        {
+            Account account = Account.Create("My Savings", Money.Create(100,Currency.USD), TypeName.Bank);
+            DateTime now = DateTime.Now;
+
+            Money coffee1 = Money.Create(5, Currency.USD);
+            Money coffee2= Money.Create(5, Currency.USD);
+            Category coffee = Category.Create("coffee", null, TransactionType.Expense);
+
+            account.Withdraw(coffee1, coffee, null, now);
+            account.Withdraw(coffee2, coffee, null, now);
+
+            var spendingCategories= account.GetSpendingSummoryByCategory();
+            var result = spendingCategories.FirstOrDefault(c => c.CategoryName == "coffee");
+
+            Assert.Equal(10, result?.TotalAmount);
+        }
     }
 }
 
