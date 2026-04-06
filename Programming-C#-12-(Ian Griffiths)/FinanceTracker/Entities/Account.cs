@@ -26,17 +26,13 @@ namespace FinanceTracker.Entities
             return new Account(name, balance, type);
         }
 
-        public override void Deposit(Money amount, DateTime createAt)
-        {
-            Deposit(amount, Category.Create("Default", null, TransactionType.Income),
+        public override Transaction Deposit(Money amount, DateTime createAt)
+           => Deposit(amount, Category.Create("Default", null, TransactionType.Income),
                     null, createAt);
-        }
 
-        public override void Withdraw(Money amount, DateTime createAt)
-        {
-            Withdraw(amount, Category.Create("Default", null, TransactionType.Expense),
+        public override Transaction Withdraw(Money amount, DateTime createAt)
+            => Withdraw(amount, Category.Create("Default", null, TransactionType.Expense),
                 null, createAt);
-        }
 
         public Transaction Withdraw(Money amount, Category category, string? description, DateTime createAt)
         {
@@ -157,6 +153,6 @@ namespace FinanceTracker.Entities
             }
         }
 
-       
+
     }
 }

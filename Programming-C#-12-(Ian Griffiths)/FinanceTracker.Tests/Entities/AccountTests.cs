@@ -132,7 +132,7 @@ namespace FinanceTracker.Tests.Entities
         }
 
         [Fact]
-        public void Indexer_Should_ReturnCorrectTransaction_ByGuid()
+        public void Indexer_Should_ReturnCorrectTransaction_ByIntegerIndex()
         {
             Account account = Account.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
             var depositAmount = Money.Create(50, Currency.USD);
@@ -143,6 +143,21 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.NotNull(tx);
             Assert.Equal(50, tx.Amount.Amount);
+        }
+
+        [Fact]
+        public void Indexer_Should_ReturnCorrectTransaction_ByGuid()
+        {
+            Account account = Account.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            var depositAmount = Money.Create(50, Currency.USD);
+            DateTime now = DateTime.Now;
+            var createdTx = account.Deposit(depositAmount, now);
+
+            var fountTx = account[createdTx.Id];
+
+            Assert.NotNull(fountTx);
+            Assert.Equal(createdTx.Id, fountTx.Id);
+            Assert.Equal(50,fountTx.Amount.Amount);
         }
     }
 }

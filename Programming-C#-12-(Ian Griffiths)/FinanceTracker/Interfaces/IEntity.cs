@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FinanceTracker.Entities;
+using FinanceTracker.ValueObjects;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
