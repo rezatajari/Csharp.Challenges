@@ -79,7 +79,9 @@ namespace FinanceTracker.Tests.Entities
             var now = DateTime.Now;
             var tommorow = now.AddDays(1);
 
-            account.Deposit(Money.Create(50, Currency.USD));
+            account.Deposit(Money.Create(50, Currency.USD),tommorow);
+
+            Assert.Equal(100, account.GetBalanceAtDate(now).Amount);
         }
     }
 }

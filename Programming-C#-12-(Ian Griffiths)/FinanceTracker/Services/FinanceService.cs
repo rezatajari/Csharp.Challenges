@@ -40,9 +40,11 @@ namespace FinanceTracker.Services
             {
                 _accountRepo.Add(newAccount);
 
+                var createAt = DateTime.Now;
+
                 if (initialDeposit.Amount > 0)
                 {
-                    newAccount.Deposit(initialDeposit);
+                    newAccount.Deposit(initialDeposit,createAt);
 
                     var depositTx = Transaction.CreateForAccount(
                         initialDeposit,
@@ -50,7 +52,7 @@ namespace FinanceTracker.Services
                         Category.Create("Initial Deposit", null, TransactionType.Income),
                         newAccount,
                         "Opening Balance",
-                        DateTime.Now
+                        createAt
                         );
 
                     _transactionRepo.Add(depositTx);
@@ -69,7 +71,7 @@ namespace FinanceTracker.Services
                 if (account == null)
                     throw new KeyNotFoundException($"Account with ID {accountId} not found.");
 
-                account.Withdraw(amount);
+                account.Withdraw(amount, DateTime.Now);
 
                 var category = Category.Create(categoryName, null, TransactionType.Expense);
 
@@ -92,8 +94,8 @@ namespace FinanceTracker.Services
                 if (fromAccount == null || toAccount == null)
                     throw new KeyNotFoundException ($"One or both accounts were not found.");
 
-                fromAccount.Withdraw(amount);
-                toAccount.Deposit(amount);
+                fromAccount.Withdraw(amount, DateTime.Now);
+                toAccount.Deposit(amount, DateTime.Now);
 
                 var transferCategory = Category.Create("Transfer", null, TransactionType.Transfer);
 
