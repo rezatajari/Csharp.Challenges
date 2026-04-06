@@ -94,6 +94,23 @@ namespace FinanceTracker.Tests.Entities
 
             Assert.Equal(Money.Default(), account.GetBalanceAtDate(yesterday));
         }
+
+        [Fact]
+        public void GetTotalSpendingByCategory_Should_OnlySumExpenses_AndIgnoreIncome()
+        {
+            Account account = Account.Create("My Savings", Money.Default(), TypeName.Bank);
+
+            DateTime now = DateTime.Now;
+            Money depositAmount = Money.Create(500, Currency.USD);
+            Category incomeCategory = Category.Create("Food", null, TransactionType.Income);
+            account.Deposit(depositAmount,incomeCategory,null,now);
+
+            Money withdrawAmount = Money.Create(100, Currency.USD);
+            Category withdrawCategory = Category.Create("Food", null, TransactionType.Expense);
+            account.Withdraw(withdrawAmount, withdrawCategory, null, now);
+
+            Assert.Equal(100, account.GetTotalSpendingByCategory(withdrawCategory));
+        }
     }
 }
 
