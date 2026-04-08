@@ -6,6 +6,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddSingleton<List<UserResponse>>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,15 +22,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
-
-
-app.MapPost("/signup", (RegisterRequest request) => {
+app.MapPost("/signup", (RegisterRequest request,List<UserResponse> users) => {
 
     var response = new UserResponse(Guid.NewGuid(), request.Email, request.Username);
 
+    users.Add(response);
+
     return TypedResults.Created($"/users/{response.Id}", response);
 });
+
+app.Run();
+
+
 public record RegisterRequest(string Email,string Username,string Password);
 public record UserResponse(Guid Id,string Email,string Username);
-
