@@ -1,0 +1,6 @@
+@AuthService.API_HostAddress = http://localhost:5008
+
+post {{AuthService.API_HostAddress}}/signup/
+Accept: application/json
+
+###

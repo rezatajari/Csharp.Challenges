@@ -1,29 +1,22 @@
 ﻿using FinanceTracker.Data;
 using FinanceTracker.Entities;
-using FinanceTracker.Exceptions;
 using FinanceTracker.Interfaces;
 using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
+using Moq;
 
 namespace FinanceTracker.Tests.Services
 {
     public class FinanceServiceTests
     {
-        private readonly Repository<IAccount> _accountRepo;
-        private readonly Repository<Transaction> _transactionRepo;
+        private readonly Mock<Repository<IAccount>> _mockAccountRepo;
         private readonly FinanceService _service;
 
         public FinanceServiceTests()
         {
-            _accountRepo=new Repository<IAccount>();
-            _transactionRepo=new Repository<Transaction>();
+            _mockAccountRepo = new Mock<Repository<IAccount>>();
 
-            _service=new FinanceService(_accountRepo, _transactionRepo);
+            _service=new FinanceService(_mockAccountRepo.Object, new Repository<Transaction>());
         }
 
         [Fact]
@@ -79,6 +72,17 @@ namespace FinanceTracker.Tests.Services
 
             Assert.Equal(300, result.Value?.Amount);
 
+        }
+
+        [Fact]
+        public void GetAccount_Should_ReturnCorrectName_WhenAccountIsMocked()
+        {
+            var testId = Guid.NewGuid();
+            var fakeAccount=Account.Create("Mock Savings",Money.Create(100,Currency.USD), TypeName.Bank);
+
+            _mockAccountRepo.Setup(repo => repo.GetById(testId)).Returns(fakeAccount);
+
+            var result=_service.
         }
     }
 }
