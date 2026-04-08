@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Components.Infrastructure;
+using System.Net.Sockets;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,7 +27,8 @@ app.MapControllers();
 
 app.MapPost("/signup", (RegisterRequest request,List<UserResponse> users) => {
 
-    var response = new UserResponse(Guid.NewGuid(), request.Email, request.Username);
+
+    var response = UserResponse.Create(request.Email, request.Username);
 
     users.Add(response);
 
@@ -34,5 +38,26 @@ app.MapPost("/signup", (RegisterRequest request,List<UserResponse> users) => {
 app.Run();
 
 
-public record RegisterRequest(string Email,string Username,string Password);
-public record UserResponse(Guid Id,string Email,string Username);
+public record RegisterRequest(string Email, string Password,string Username);
+public record UserResponse
+{
+    private UserResponse(string email, string username)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("Email must be provided.", nameof(email));
+
+        if (string.IsNullOrWhiteSpace(username))
+            throw new ArgumentException("Username must be provided.", nameof(username));
+
+        Id = Guid.NewGuid();
+        Email = email;
+        Username = username;
+    }
+
+    public Guid Id { get; init; }
+    public string Email { get; init; }
+    public string Username { get; init; }
+
+    public static UserResponse Create(string email, string username)
+        => new UserResponse( email, username);
+}
