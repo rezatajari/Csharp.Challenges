@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Sockets;
 using System.Reflection.Metadata;
 
@@ -26,7 +27,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapPost("/signup", (RegisterRequest request,List<UserResponse> users) => {
+app.MapPost("/signup", SignUp);
+
+app.Run();
+
+static IResult SignUp(RegisterRequest request, List<UserResponse> users)
+{
     try
     {
         var response = UserResponse.Create(request.Email, request.Username);
@@ -35,14 +41,19 @@ app.MapPost("/signup", (RegisterRequest request,List<UserResponse> users) => {
 
         return TypedResults.Created($"/users/{response.Id}", response);
     }
+    catch (ArgumentNullException ex)
+    {
+        return TypedResults.BadRequest(ex.Message);
+    }
     catch (Exception ex)
     {
         return TypedResults.BadRequest(ex.Message);
     }
-});
-
-app.Run();
-
+    finally
+    {
+        Console.WriteLine("Signup attempt completed.");
+    }
+}
 
 public record RegisterRequest(string Email, string Password,string Username);
 public record UserResponse
