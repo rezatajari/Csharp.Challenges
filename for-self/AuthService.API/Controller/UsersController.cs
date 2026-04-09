@@ -15,12 +15,12 @@ namespace AuthService.API.Controller
         public IActionResult Registration(User user)
         {
             if (users.Any(u => u.Email == user.Email))
-                return BadRequest("Email already exists");
+                return BadRequest(ReturnResponse<string>.Failure("Email already exists"));
             if (users.Any(u => u.Username == user.Username))
-                return BadRequest("Username already exists");
+                return BadRequest(ReturnResponse<string>.Failure("Username already exists"));
 
             users.Add(user);
-            return Ok("User registered successfully");
+            return Ok(ReturnResponse<string>.Success($"registered {user.Email}", "User registered successfully"));
         }
 
         [HttpPost("login")]
