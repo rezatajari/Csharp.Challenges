@@ -61,10 +61,10 @@ public record UserResponse
     private UserResponse(string email, string username)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email must be provided.", nameof(email));
+            throw new ArgumentNullException("Email must be provided.", nameof(email));
 
         if (string.IsNullOrWhiteSpace(username))
-            throw new ArgumentException("Username must be provided.", nameof(username));
+            throw new ArgumentNullException("Username must be provided.", nameof(username));
 
         Id = Guid.NewGuid();
         Email = email;
