@@ -15,12 +15,12 @@ namespace AuthService.API.Controller
         public IActionResult Registration(User user)
         {
             if (users.Any(u => u.Email == user.Email))
-                return BadRequest(ReturnResponse<string>.Failure("Email already exists"));
+                return BadRequest(ReturnResponse<string>.Failure(Message.Create("Email already exists")));
             if (users.Any(u => u.Username == user.Username))
-                return BadRequest(ReturnResponse<string>.Failure("Username already exists"));
+                return BadRequest(ReturnResponse<string>.Failure(Message.Create("Username already exists")));
 
             users.Add(user);
-            return Ok(ReturnResponse<string>.Success($"registered {user.Email}", "User registered successfully"));
+            return Ok(ReturnResponse<string>.Success($"registered {user.Email}", Message.Create("User registered successfully")));
         }
 
         [HttpPost("login")]
@@ -43,17 +43,17 @@ namespace AuthService.API.Controller
         public IActionResult ChangePassword(ChangePassword changePassword)
         {
             if (changePassword == null)
-                return BadRequest(ReturnResponse<bool>.Failure("Your change password model should not null"));
+                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Your change password model should not null")));
 
             var user=users.SingleOrDefault(u => u.Email == changePassword.Email && u.Password == changePassword.OldPassword);
             if (user == null)
-                return BadRequest(ReturnResponse<bool>.Failure("Invalid email or old password"));
+                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Invalid email or old password")));
 
            var isChange= user.ChangePassword(changePassword.OldPassword,changePassword.NewPassword);
 
             if (!isChange)
-                return BadRequest(ReturnResponse<bool>.Failure("Failed to change password"));
-            return Ok(ReturnResponse<bool>.Success(true, "Password changed successfully"));
+                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Failed to change password")));
+            return Ok(ReturnResponse<bool>.Success(true, Message.Create("Password changed successfully")));
         }
 
         [HttpPost("get-all")]
