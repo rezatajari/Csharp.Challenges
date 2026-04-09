@@ -27,16 +27,16 @@ namespace AuthService.API.Controller
         public IActionResult Login(Login login)
         {
             if (login == null)
-                return BadRequest(ReturnResponse<LoginResponse>.Failure("Your login model should not null"));
+                return BadRequest(ReturnResponse<LoginResponse>.Failure(Message.Create("Your login model should not null")));
 
             var user = users.FirstOrDefault(
                 u => (u.Email == login.email || u.Username == login.username) 
                 && u.Password == login.password);
             if (user == null)
-                return BadRequest(ReturnResponse<LoginResponse>.Failure("Invalid username/email or password"));
+                return BadRequest(ReturnResponse<LoginResponse>.Failure(Message.Create("Invalid username/email or password")));
 
             var result = new LoginResponse(user.Email, user.Username);
-            return Ok(ReturnResponse<LoginResponse>.Success(result, "Login successful"));
+            return Ok(ReturnResponse<LoginResponse>.Success(result, Message.Success()));
         }
 
         [HttpPost("change-password")]
@@ -54,6 +54,17 @@ namespace AuthService.API.Controller
             if (!isChange)
                 return BadRequest(ReturnResponse<bool>.Failure("Failed to change password"));
             return Ok(ReturnResponse<bool>.Success(true, "Password changed successfully"));
+        }
+
+        [HttpPost("get-all")]
+        public IActionResult GetAll() { 
+
+            var result=users.Select(u=>new GetAllResponse(u.Email,u.Username,u.Id)).ToList();
+
+            if (result.Count == 0)
+                return BadRequest(ReturnResponse<List<GetAllResponse>>.Failure(Message.Create("No users found")));
+
+            return Ok(ReturnResponse<List<GetAllResponse>>.Success(result,Message.Success()));
         }
     }
 }
