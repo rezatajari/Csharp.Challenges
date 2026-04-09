@@ -60,6 +60,8 @@ namespace AuthService.API.Controller
 
             if (!isChange)
                 return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Failed to change password")));
+
+            _database.SaveChanges();
             return Ok(ReturnResponse<bool>.Success(true, Message.Create("Password changed successfully")));
         }
 
