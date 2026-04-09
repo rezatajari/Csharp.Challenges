@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Infrastructure;
 using System.Net.Sockets;
+using System.Reflection.Metadata;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,13 +27,18 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapPost("/signup", (RegisterRequest request,List<UserResponse> users) => {
+    try
+    {
+        var response = UserResponse.Create(request.Email, request.Username);
 
+        users.Add(response);
 
-    var response = UserResponse.Create(request.Email, request.Username);
-
-    users.Add(response);
-
-    return TypedResults.Created($"/users/{response.Id}", response);
+        return TypedResults.Created($"/users/{response.Id}", response);
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest(ex.Message);
+    }
 });
 
 app.Run();
