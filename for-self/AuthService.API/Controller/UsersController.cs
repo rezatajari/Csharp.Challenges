@@ -1,5 +1,6 @@
 ﻿using AuthService.API.Models;
 using AuthService.API.Shared;
+using AuthService.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.API.Controller
@@ -26,15 +27,16 @@ namespace AuthService.API.Controller
         public IActionResult Login(Login login)
         {
             if (login == null)
-                return BadRequest("Your login model should not null");
+                return BadRequest(ReturnResponse<LoginResponse>.Failure("Your login model should not null"));
 
             var user = users.FirstOrDefault(
                 u => (u.Email == login.email || u.Username == login.username) 
                 && u.Password == login.password);
             if (user == null)
-                return BadRequest(ReturnResponse<string>.Failure("Invalid username/email or password"));
+                return BadRequest(ReturnResponse<LoginResponse>.Failure("Invalid username/email or password"));
 
-            return Ok("Login successful");
+            var result = new LoginResponse(user.Email, user.Username);
+            return Ok(ReturnResponse<LoginResponse>.Success(result, "Login successful"));
         }
 
     }

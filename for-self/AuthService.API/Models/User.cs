@@ -10,8 +10,11 @@
             this.Username = username;
             this.Email = email;
             this.Password = password;
+
+            Id=Guid.NewGuid();
         }
 
+        public Guid Id { get; set; }
         public string Username { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
