@@ -39,5 +39,21 @@ namespace AuthService.API.Controller
             return Ok(ReturnResponse<LoginResponse>.Success(result, "Login successful"));
         }
 
+        [HttpPost("change-password")]
+        public IActionResult ChangePassword(ChangePassword changePassword)
+        {
+            if (changePassword == null)
+                return BadRequest(ReturnResponse<bool>.Failure("Your change password model should not null"));
+
+            var user=users.SingleOrDefault(u => u.Email == changePassword.Email && u.Password == changePassword.OldPassword);
+            if (user == null)
+                return BadRequest(ReturnResponse<bool>.Failure("Invalid email or old password"));
+
+           var isChange= user.ChangePassword(changePassword.OldPassword,changePassword.NewPassword);
+
+            if (!isChange)
+                return BadRequest(ReturnResponse<bool>.Failure("Failed to change password"));
+            return Ok(ReturnResponse<bool>.Success(true, "Password changed successfully"));
+        }
     }
 }
