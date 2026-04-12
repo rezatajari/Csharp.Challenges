@@ -1,4 +1,6 @@
 using Application.UseCases.CreateTodo;
+using Application.UseCases.DeleteTodo;
+using Application.UseCases.GetTodo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<CreateTodoHandler>();
+builder.Services.AddScoped<DeleteTodoHandler>();
+builder.Services.AddScoped<GetTodosHandler>();      
 
 var app = builder.Build();
 
