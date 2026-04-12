@@ -1,4 +1,5 @@
-﻿using ToDoList.API.Shared;
+﻿using System.Runtime.CompilerServices;
+using ToDoList.API.Shared;
 
 namespace ToDoList.API.Entites
 {
@@ -12,6 +13,8 @@ namespace ToDoList.API.Entites
         {
             if (string.IsNullOrWhiteSpace(title))
                throw new ArgumentException("Title cannot be empty.",nameof(title));
+
+            Title = title;
         }
 
         public static TodoItem Create(string title)
@@ -26,6 +29,9 @@ namespace ToDoList.API.Entites
 
         public void UpdateTitle(string title)
         {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title cannot be empty.", nameof(title));
+
             Title = title;
         }
     }
