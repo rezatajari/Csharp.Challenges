@@ -3,9 +3,11 @@ using AuthService.API.Models;
 using AuthService.API.Shared;
 using AuthService.API.ViewModels;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AuthService.API.Controller
 {
@@ -56,19 +58,22 @@ namespace AuthService.API.Controller
             return Ok(ReturnResponse<string>.Success(token, Message.Success()));
         }
 
+        [Authorize]
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
         {
-            if (changePassword == null)
-                return BadRequest(ReturnResponse<bool>.Failure(
-                    Message.Create("Your change password model should not null")));
+            var userIdClaim = User.FindFirst("userId")?.Value;
 
-            var user=_database.Users
-                .FirstOrDefault(u => u.Email == changePassword.Email);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Invalid token")));
+
+            Guid id = Guid.Parse(userIdClaim);
+
+            var user = _database.Users.FirstOrDefault(u => u.Id == id);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(changePassword.OldPassword,user.Password))
                 return BadRequest(ReturnResponse<bool>.Failure(
-                    Message.Create("Invalid email or old password")));
+                    Message.Create("Invalid password")));
 
            var isChange= user.ChangePassword(changePassword.NewPassword);
 
@@ -76,10 +81,11 @@ namespace AuthService.API.Controller
                 return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Failed to change password")));
 
             await _database.SaveChangesAsync();
-            return Ok(ReturnResponse<bool>.Success(true, 
-                Message.Create("Password changed successfully")));
+
+            return Ok(ReturnResponse<bool>.Success(true,Message.Create("Password changed successfully")));
         }
 
+        [Authorize]
         [HttpPost("get-all")]
         public  IActionResult GetAll() { 
 
