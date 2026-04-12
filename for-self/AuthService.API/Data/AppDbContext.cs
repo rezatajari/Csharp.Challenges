@@ -18,6 +18,13 @@ namespace AuthService.API.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .Property(u=>u.IsDeleted)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<User>()
+                .HasQueryFilter(u => !u.IsDeleted);
         }
         public DbSet<User> Users { get; set; }
     }

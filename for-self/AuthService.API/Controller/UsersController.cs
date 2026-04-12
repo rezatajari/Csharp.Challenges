@@ -105,7 +105,7 @@ namespace AuthService.API.Controller
             if (user == null)
                 return NotFound(ReturnResponse<bool>.Failure(Message.Create("User not found")));
 
-            _database.Users.Remove(user);
+            user.IsDeleted = true;
             _database.SaveChanges();
 
             return Ok(ReturnResponse<bool>.Success(true, Message.Success()));
