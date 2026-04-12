@@ -14,10 +14,12 @@ namespace AuthService.API.Controller
     public class UsersController : ControllerBase
     {
         private readonly AppDbContext _database;
+        private readonly JwtTokenService _jwtTokenService;
 
-        public UsersController(AppDbContext database)
+        public UsersController(AppDbContext database,JwtTokenService jwtTokenService)
         {
             _database = database;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpPost("registration")]
@@ -40,17 +42,18 @@ namespace AuthService.API.Controller
         public IActionResult Login(Login login)
         {
             if (!login.IsValid())
-                return BadRequest(ReturnResponse<LoginResponse>.Failure(Message.Create("Your login model should not null and must contain email or username and password")));
+                return BadRequest(ReturnResponse<string>
+                    .Failure(Message.Create("Your login model should not null and must contain email or username and password")));
 
            var user=_database.Users
                 .FirstOrDefault(u=>u.Email==login.Email || u.Username==login.Username);
 
             if (user== null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
-                return BadRequest(ReturnResponse<LoginResponse>
+                return BadRequest(ReturnResponse<string>
                     .Failure(Message.Create("Invalid credentials")));
 
-            var result = new LoginResponse(user.Id, user.Email, user.Username);
-            return Ok(ReturnResponse<LoginResponse>.Success(result, Message.Success()));
+            string token = _jwtTokenService.GenerateToken(user.Id, user.Email, user.Username);
+            return Ok(ReturnResponse<string>.Success(token, Message.Success()));
         }
 
         [HttpPost("change-password")]
