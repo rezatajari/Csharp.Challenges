@@ -108,7 +108,7 @@ namespace AuthService.API.Controller
             _database.Users.Remove(user);
             _database.SaveChanges();
 
-            return Ok();
+            return Ok(ReturnResponse<bool>.Success(true, Message.Success()));
         }
     }
 }
