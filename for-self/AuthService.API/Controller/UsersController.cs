@@ -97,6 +97,7 @@ namespace AuthService.API.Controller
             return Ok(ReturnResponse<List<GetAllResponse>>.Success(result,Message.Success()));
         }
 
+        [Authorize]
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -108,6 +109,7 @@ namespace AuthService.API.Controller
                 new UserById(user.Email,user.Username),Message.Success()));
         }
 
+        [Authorize]
         [HttpDelete("delete")]
         public IActionResult Delete(Guid id)
         {
@@ -121,6 +123,7 @@ namespace AuthService.API.Controller
             return Ok(ReturnResponse<bool>.Success(true, Message.Success()));
         }
 
+        [Authorize]
         [HttpPut("update")]
         public IActionResult Update(UserUpdate userUpdate)
         {
