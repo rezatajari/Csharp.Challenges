@@ -2,6 +2,7 @@
 using AuthService.API.Models;
 using AuthService.API.Shared;
 using AuthService.API.ViewModels;
+using BCrypt.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ namespace AuthService.API.Controller
         {
             try
             {
+                user.SetHashedPassword();
                 _database.Users.Add(user);
                 await _database.SaveChangesAsync();
                 return Ok(ReturnResponse<string>.Success($"registered {user.Email}", Message.Create("User registered successfully")));
@@ -39,11 +41,12 @@ namespace AuthService.API.Controller
             if (!login.IsValid())
                 return BadRequest(ReturnResponse<LoginResponse>.Failure(Message.Create("Your login model should not null and must contain email or username and password")));
 
-            var user = _database.Users.FirstOrDefault(
-              u => (u.Email == login.Email || u.Username == login.Username)
-              && u.Password == login.Password);
-            if (user == null)
-                        return BadRequest(ReturnResponse<LoginResponse>.Failure(Message.Create("Invalid username/email or password")));
+           var user=_database.Users
+                .FirstOrDefault(u=>u.Email==login.Email || u.Username==login.Username);
+
+            if (user== null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
+                return BadRequest(ReturnResponse<LoginResponse>
+                    .Failure(Message.Create("Invalid email/username or password")));
 
             var result = new LoginResponse(user.Email, user.Username);
             return Ok(ReturnResponse<LoginResponse>.Success(result, Message.Success()));
