@@ -56,19 +56,24 @@ namespace AuthService.API.Controller
         public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
         {
             if (changePassword == null)
-                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Your change password model should not null")));
+                return BadRequest(ReturnResponse<bool>.Failure(
+                    Message.Create("Your change password model should not null")));
 
-            var user=_database.Users.SingleOrDefault(u => u.Email == changePassword.Email && u.Password == changePassword.OldPassword);
-            if (user == null)
-                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Invalid email or old password")));
+            var user=_database.Users
+                .FirstOrDefault(u => u.Email == changePassword.Email);
 
-           var isChange= user.ChangePassword(changePassword.OldPassword,changePassword.NewPassword);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(changePassword.OldPassword,user.Password))
+                return BadRequest(ReturnResponse<bool>.Failure(
+                    Message.Create("Invalid email or old password")));
+
+           var isChange= user.ChangePassword(changePassword.NewPassword);
 
             if (!isChange)
                 return BadRequest(ReturnResponse<bool>.Failure(Message.Create("Failed to change password")));
 
             await _database.SaveChangesAsync();
-            return Ok(ReturnResponse<bool>.Success(true, Message.Create("Password changed successfully")));
+            return Ok(ReturnResponse<bool>.Success(true, 
+                Message.Create("Password changed successfully")));
         }
 
         [HttpPost("get-all")]
