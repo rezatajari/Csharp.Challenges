@@ -49,7 +49,7 @@ namespace AuthService.API.Controller
                 return BadRequest(ReturnResponse<LoginResponse>
                     .Failure(Message.Create("Invalid credentials")));
 
-            var result = new LoginResponse(user.Email, user.Username);
+            var result = new LoginResponse(user.Id, user.Email, user.Username);
             return Ok(ReturnResponse<LoginResponse>.Success(result, Message.Success()));
         }
 

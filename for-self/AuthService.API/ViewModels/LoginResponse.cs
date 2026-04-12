@@ -1,4 +1,4 @@
 ﻿namespace AuthService.API.ViewModels
 {
-    public record LoginResponse(string email,string username);
+    public record LoginResponse(Guid id, string email,string username);
 }
