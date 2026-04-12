@@ -86,5 +86,16 @@ namespace AuthService.API.Controller
 
             return Ok(ReturnResponse<List<GetAllResponse>>.Success(result,Message.Success()));
         }
+
+        [HttpGet("get-by-id")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _database.Users.FindAsync(id);
+            if (user == null)
+                return NotFound(ReturnResponse<UserById>.Failure(Message.Create("User not found")));
+
+            return Ok(ReturnResponse<UserById>.Success(
+                new UserById(user.Email,user.Username),Message.Success()));
+        }
     }
 }
