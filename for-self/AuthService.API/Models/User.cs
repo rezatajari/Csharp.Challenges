@@ -10,11 +10,11 @@ namespace AuthService.API.Models
             if (string.IsNullOrWhiteSpace(username)) throw new ArgumentNullException("username");
             if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException("email");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException("password");
+            if (password.Length< 8) throw new ArgumentException("Password must be at least 8 characters long", "password");
+
             this.Username = username;
             this.Email = email;
             this.Password = password;
-
-            Id = Guid.NewGuid();
         }
 
         public Guid Id { get; private set; }

@@ -47,7 +47,7 @@ namespace AuthService.API.Controller
 
             if (user== null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
                 return BadRequest(ReturnResponse<LoginResponse>
-                    .Failure(Message.Create("Invalid email/username or password")));
+                    .Failure(Message.Create("Invalid credentials")));
 
             var result = new LoginResponse(user.Email, user.Username);
             return Ok(ReturnResponse<LoginResponse>.Success(result, Message.Success()));
