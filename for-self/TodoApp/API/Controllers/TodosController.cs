@@ -9,7 +9,12 @@ namespace API.Controllers
     [ApiController]
     public class TodosController : ControllerBase
     {
-        private readonly CreateTodoHandler _createTodoHandler = new();
+        private readonly CreateTodoHandler _createTodoHandler;
+
+        public TodosController(CreateTodoHandler createTodoHandler)
+        {
+            _createTodoHandler=createTodoHandler;
+        }
 
         [HttpPost]
         public IActionResult Create(CreateTodoDto request)
