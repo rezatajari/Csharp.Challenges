@@ -3,6 +3,7 @@ using AuthService.API.Models;
 using AuthService.API.Shared;
 using AuthService.API.ViewModels;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -121,6 +122,11 @@ namespace AuthService.API.Controller
 
             if (user==null)
                 return NotFound(ReturnResponse<bool>.Failure(Message.Create("User not found")));
+            var isUniqueness= _database.Users.FirstOrDefault(u => 
+            (u.Username == userUpdate.username || u.Email == userUpdate.email) && (u.Id != user.Id));
+
+            if (isUniqueness != null)
+                return Conflict(ReturnResponse<bool>.Failure(Message.Create("Email or Username already exists")));
 
             user.Update(userUpdate);
             _database.SaveChanges();
