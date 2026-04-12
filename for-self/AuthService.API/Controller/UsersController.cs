@@ -101,11 +101,28 @@ namespace AuthService.API.Controller
         [HttpDelete("delete")]
         public IActionResult Delete(Guid id)
         {
-            var user=_database.Users.Find(id);
+            var user=_database.Users.FirstOrDefault(u=>u.Id==id);
             if (user == null)
                 return NotFound(ReturnResponse<bool>.Failure(Message.Create("User not found")));
 
             user.IsDeleted = true;
+            _database.SaveChanges();
+
+            return Ok(ReturnResponse<bool>.Success(true, Message.Success()));
+        }
+
+        [HttpPut("update")]
+        public IActionResult Update(UserUpdate userUpdate)
+        {
+            if (userUpdate.id == Guid.Empty) 
+                return BadRequest(ReturnResponse<bool>.Failure(Message.Create("User id should not be empty")));
+
+            var user = _database.Users.FirstOrDefault(u => u.Id == userUpdate.id);
+
+            if (user==null)
+                return NotFound(ReturnResponse<bool>.Failure(Message.Create("User not found")));
+
+            user.Update(userUpdate);
             _database.SaveChanges();
 
             return Ok(ReturnResponse<bool>.Success(true, Message.Success()));

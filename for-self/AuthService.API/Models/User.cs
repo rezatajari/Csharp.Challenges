@@ -1,4 +1,7 @@
-﻿namespace AuthService.API.Models
+﻿using AuthService.API.ViewModels;
+using Microsoft.EntityFrameworkCore.Update.Internal;
+
+namespace AuthService.API.Models
 {
     public class User
     {
@@ -18,7 +21,7 @@
         public string Username { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
-        public bool IsDeleted { get; set; } = false;    
+        public bool IsDeleted { get; set; } = false;
 
         public bool ChangePassword(string newPassword)
         {
@@ -28,6 +31,15 @@
         }
 
         public void SetHashedPassword()
-            =>Password=BCrypt.Net.BCrypt.HashPassword(Password);
+            => Password = BCrypt.Net.BCrypt.HashPassword(Password);
+
+        public void Update(UserUpdate userUpdate)
+        {
+
+            if (!string.IsNullOrWhiteSpace(userUpdate.username))
+                Username = userUpdate.username;
+            if (!string.IsNullOrWhiteSpace(userUpdate.email))
+                Email = userUpdate.email;
+        }
     }
 }
