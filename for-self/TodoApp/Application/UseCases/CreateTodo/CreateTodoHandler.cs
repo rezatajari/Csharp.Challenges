@@ -1,5 +1,6 @@
 ﻿using Application.Common.TodoApp.Application.Common.Responses;
 using Application.DTOs;
+using Application.Interfaces;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,11 @@ namespace Application.UseCases.CreateTodo
 {
     public class CreateTodoHandler
     {
-        private static readonly List<TodoItem> _inMemoryStore = new();
+        private readonly ITodoRepository _repo;
+        public CreateTodoHandler(ITodoRepository repo)
+        {
+            _repo = repo;
+        }
 
         public ReturnResponse<TodoItem> Handle(CreateTodoDto request)
         {
@@ -18,7 +23,7 @@ namespace Application.UseCases.CreateTodo
 
             var todo = new TodoItem(request.Title);
 
-            _inMemoryStore.Add(todo);
+            _repo.Add(todo);
 
             return ReturnResponse<TodoItem>.Ok(todo, "Todo item created successfully.");
         }
