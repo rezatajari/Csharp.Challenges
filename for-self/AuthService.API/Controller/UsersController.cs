@@ -97,5 +97,18 @@ namespace AuthService.API.Controller
             return Ok(ReturnResponse<UserById>.Success(
                 new UserById(user.Email,user.Username),Message.Success()));
         }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete(Guid id)
+        {
+            var user=_database.Users.Find(id);
+            if (user == null)
+                return NotFound(ReturnResponse<bool>.Failure(Message.Create("User not found")));
+
+            _database.Users.Remove(user);
+            _database.SaveChanges();
+
+            return Ok();
+        }
     }
 }
