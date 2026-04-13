@@ -83,5 +83,33 @@ namespace HabitTracker.Test
 
             Assert.Contains("id", responseBody);
         }
+
+        [Fact]
+        public async Task CreateHabit_ShouldFail_WhenNameIsNull()
+        {
+            var habitReq= new CreateHabitRequest(null);
+
+            var json = JsonSerializer.Serialize(habitReq);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("/api/habits", content);
+
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task CreateHabit_ShouldFail_WhenNameIsEmpty()
+        {
+            var habitReq = new CreateHabitRequest(null);
+
+            var json = JsonSerializer.Serialize(habitReq);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("/api/habits", content);
+
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
