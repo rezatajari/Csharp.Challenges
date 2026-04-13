@@ -1,6 +1,0 @@
-@HabitTracker_HostAddress = http://localhost:5276
-
-GET {{HabitTracker_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
