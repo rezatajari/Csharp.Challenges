@@ -10,10 +10,12 @@ namespace HabitTracker.Api.Repository
         {
             _dbContext = dbContext;
         }
-        public async void Add(Habit habit)
+        public async Task<Habit> Add(Habit habit)
         {
             await _dbContext.AddAsync(habit);
             await _dbContext.SaveChangesAsync();
+
+            return habit;
         }
     }
 }

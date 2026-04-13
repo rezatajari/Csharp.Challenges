@@ -13,12 +13,14 @@ namespace HabitTracker.Api.Services
             _habitRepo = habitRepo;
         }
 
-        public async ReturnResponse<CreateHabitResponseDto> Create(CreateHabitDto createHabitDto)
+        public async Task< ReturnResponse<CreateHabitResponseDto>> Create(CreateHabitDto createHabitDto)
         {
 
             var habit = Habit.Create(createHabitDto.Name);
-            _habitRepo.Add(habit);
+            var result= await _habitRepo.Add(habit);
 
+            CreateHabitResponseDto response = new CreateHabitResponseDto(result.Id, result.Name);
+            return ReturnResponse<CreateHabitResponseDto>.Success(response);
         }
     }
 }

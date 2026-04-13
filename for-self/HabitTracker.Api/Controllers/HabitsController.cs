@@ -1,8 +1,5 @@
 ﻿using HabitTracker.Api.DTOs;
 using HabitTracker.Api.Services;
-using HabitTracker.Api.ViewModels;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HabitTracker.Api.Controllers
@@ -18,9 +15,12 @@ namespace HabitTracker.Api.Controllers
         }
 
         [HttpPost("create")]
-        public async IActionResult CreateHabit([FromBody] CreateHabitDto newHabit)
+        public async Task<IActionResult> CreateHabit([FromBody] CreateHabitDto newHabit)
         {
            var result= await _habitService.Create(newHabit);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+            return Ok(result);
         }
 
         
