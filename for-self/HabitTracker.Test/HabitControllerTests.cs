@@ -150,7 +150,7 @@ namespace HabitTracker.Test
                 response.EnsureSuccessStatusCode();
             }
 
-            var getResponse = await _client.GetAsync("/api/habits");
+            var getResponse = await _client.GetAsync("/api/habits/get-all");
             var body=await getResponse.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.OK,getResponse.StatusCode);
