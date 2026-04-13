@@ -1,11 +1,12 @@
-﻿using URLShortener.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace URLShortener.Servieces
+namespace Shortener
 {
-    public class ShortenerService
+    internal class ShortenerService
     {
         private readonly Dictionary<string, ShortLink> _store = new();
-
         public ShortLink Create(string url)
         {
             string code;
