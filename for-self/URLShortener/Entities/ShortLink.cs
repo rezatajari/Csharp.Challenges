@@ -2,6 +2,14 @@
 {
     public class ShortLink
     {
+
+        private static readonly char[] Alphabet=
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
+
+        private static readonly Random Random = new Random();
+
+        private readonly List<string> Codes = new List<string>();
+
         public string Code { get;private set; }
         public string Url { get; set; }
 
@@ -10,19 +18,24 @@
 
                 Code = CreateRandomCode();
 
-                if (!Exists(Code))
+                Codes.Add(Code);
+
+                if (!Codes.Any(c => c == Code))
                     return Code;
             }
         }
 
-        public string CreateRandomCode()
+         string CreateRandomCode(int length=6)
         {
+            var result=new char[length];
 
+            for(int i = 0; i < length; i++)
+            {
+                result[i] = Alphabet[Random.Next(Alphabet.Length)];
+            }
+
+            return new string(result);
         }
-
-        public bool Exists(string code) { 
-        }
-
 
         public void CreateShortLink(string Url) { }
     }
