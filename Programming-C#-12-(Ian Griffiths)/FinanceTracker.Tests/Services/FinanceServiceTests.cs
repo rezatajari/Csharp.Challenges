@@ -25,9 +25,7 @@ namespace FinanceTracker.Tests.Services
             var account=Account.Create("Travel Fund",Money.Create(500,Currency.USD),TypeName.Bank);
             _service.OpenAccount(account, Money.Create(500, Currency.USD));
 
-            var allAccounts = _accountRepo.GetAll();
-            Assert.Single(allAccounts);
-            Assert.Equal("Travel Fund", allAccounts[0].Name);
+            _mockAccountRepo.Verify(repo => repo.Add(account), Times.Once());
         }
 
         [Fact]
