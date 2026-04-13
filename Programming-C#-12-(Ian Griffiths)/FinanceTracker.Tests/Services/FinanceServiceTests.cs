@@ -71,16 +71,5 @@ namespace FinanceTracker.Tests.Services
             Assert.Equal(300, result.Value?.Amount);
 
         }
-
-        [Fact]
-        public void GetAccount_Should_ReturnCorrectName_WhenAccountIsMocked()
-        {
-            var testId = Guid.NewGuid();
-            var fakeAccount=Account.Create("Mock Savings",Money.Create(100,Currency.USD), TypeName.Bank);
-
-            _mockAccountRepo.Setup(repo => repo.GetById(testId)).Returns(fakeAccount);
-
-            var result=_service.
-        }
     }
 }

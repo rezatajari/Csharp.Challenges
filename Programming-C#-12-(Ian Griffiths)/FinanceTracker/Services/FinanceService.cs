@@ -34,30 +34,12 @@ namespace FinanceTracker.Services
             }
         }
 
-        public Result<Guid> OpenAccount(IAccount newAccount, Money initialDeposit)
+        public Result<Guid> OpenAccount(IAccount newAccount)
         {
            return ExecuteSafe<Guid>(() =>
             {
                 _accountRepo.Add(newAccount);
-
                 var createAt = DateTime.Now;
-
-                if (initialDeposit.Amount > 0)
-                {
-                    newAccount.Deposit(initialDeposit,createAt);
-
-                    var depositTx = Transaction.CreateForAccount(
-                        initialDeposit,
-                        TransactionType.Income,
-                        Category.Create("Initial Deposit", null, TransactionType.Income),
-                        newAccount,
-                        "Opening Balance",
-                        createAt
-                        );
-
-                    _transactionRepo.Add(depositTx);
-                }
-
                 return newAccount.Id;
             });
         }
