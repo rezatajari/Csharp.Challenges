@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HabitTracker.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/habits")]
     [ApiController]
     public class HabitsController : ControllerBase
     {
@@ -17,26 +17,12 @@ namespace HabitTracker.Api.Controllers
             _habitService = habitService;
         }
 
-        [HttpPost]
-        public IActionResult CreateHabit([FromBody] CreateHabitRequest habitReq)
+        [HttpPost("create")]
+        public async IActionResult CreateHabit([FromBody] CreateHabitDto newHabit)
         {
-            Habit newHabit = Habit.Create(habitReq.Name);
-            _habits.Add(newHabit);
-            HabitDto habitDto = new HabitDto(newHabit.Id, newHabit.Name);
-            return Created($"/api/habits/{habitDto.id}", habitDto);
+           var result= await _habitService.Create(newHabit);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetHabit([FromQuery] Guid id)
-        {
-            return Ok(_habits.FirstOrDefault(h => h.Id == id));
-        }
-
-
-        [HttpGet("get-all")]
-        public IActionResult GetAll()
-        {
-            return Ok(_habits.ToList());
-        }
+        
     }
 }
