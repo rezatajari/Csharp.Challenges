@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HabitTracker.Api.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HabitTracker.Api.Controllers
@@ -9,9 +10,9 @@ namespace HabitTracker.Api.Controllers
     {
 
         [HttpPost]
-        public IActionResult CreateHabit()
+        public IActionResult CreateHabit([FromBody] CreateHabitRequest habitReq)
         {
-            return Created("", null);
+            return Created("", habitReq);
         }
     }
 }
