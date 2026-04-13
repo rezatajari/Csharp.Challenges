@@ -3,6 +3,7 @@ using HabitTracker.Api.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -110,6 +111,23 @@ namespace HabitTracker.Test
             var response = await _client.PostAsync("/api/habits", content);
 
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetHabits_ShouldReturnCreatedHabit()
+        {
+            var habitReq = new CreateHabitRequest("Read");
+            var json= JsonSerializer.Serialize(habitReq);
+            var content=new StringContent(json, Encoding.UTF8, "application/json");
+            var postResponse = await _client.PostAsync("/api/habits", content);
+
+            Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+
+            var getResponse = await _client.GetAsync("/api/habits");
+            var responseBody=await getResponse.Content.ReadAsStringAsync();
+
+            Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+            Assert.Contains("Read", responseBody);
         }
     }
 }
