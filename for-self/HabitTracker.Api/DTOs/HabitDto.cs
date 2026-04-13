@@ -1,4 +1,10 @@
-﻿namespace HabitTracker.Api.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HabitTracker.Api.DTOs
 {
-    public record HabitDto(Guid id,string name);
+    public record CreateHabitDto
+    {
+        [Required]
+        public string Name { get; init; }
+    }
 }

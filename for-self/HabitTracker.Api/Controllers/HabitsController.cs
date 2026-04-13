@@ -1,4 +1,5 @@
 ﻿using HabitTracker.Api.DTOs;
+using HabitTracker.Api.Services;
 using HabitTracker.Api.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -10,8 +11,12 @@ namespace HabitTracker.Api.Controllers
     [ApiController]
     public class HabitsController : ControllerBase
     {
+        private readonly HabitService _habitService;
+        public HabitsController(HabitService habitService)
+        {
+            _habitService = habitService;
+        }
 
-        private static readonly List<Habit> _habits=new List<Habit>();
         [HttpPost]
         public IActionResult CreateHabit([FromBody] CreateHabitRequest habitReq)
         {
