@@ -115,7 +115,7 @@ namespace HabitTracker.Test
         }
 
         [Fact]
-        public async Task GetHabits_ShouldReturnCreatedHabit()
+        public async Task GetHabitById_ShouldReturnCreatedHabit()
         {
             var habitReq = new CreateHabitRequest("Read");
             var json= JsonSerializer.Serialize(habitReq);
@@ -123,6 +123,7 @@ namespace HabitTracker.Test
             var postResponse = await _client.PostAsync("/api/habits", content);
 
             Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+            Assert.Equal
 
             var getResponse = await _client.GetAsync("/api/habits");
             var responseBody=await getResponse.Content.ReadAsStringAsync();
