@@ -20,11 +20,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapPost("/habits", () =>
-{
-    return Results.Created("/habits", new { name = "Read" });
-});
-
 app.Run();
 
 

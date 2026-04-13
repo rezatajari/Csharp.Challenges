@@ -5,7 +5,13 @@ namespace HabitTracker.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HabitController : ControllerBase
+    public class HabitsController : ControllerBase
     {
+
+        [HttpPost]
+        public IActionResult CreateHabit()
+        {
+            return Created("", null);
+        }
     }
 }

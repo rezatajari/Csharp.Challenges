@@ -1,4 +1,6 @@
 ﻿using HabitTracker.Api;
+using HabitTracker.Api.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,10 +38,26 @@ namespace HabitTracker.Test
                 "application/json"
                 );
 
-            var response = await _client.PostAsync("/habits", content);
+            var response = await _client.PostAsync("/api/habits", content);
 
             Assert.Equal(System.Net.HttpStatusCode.Created, response.StatusCode);
         }
 
+        [Fact]
+        public async Task CreateHabit_ShouldAcceptValidRequest()
+        {
+            CreateHabitRequest habitReq = new CreateHabitRequest("Read");
+
+            string json=JsonSerializer.Serialize<CreateHabitRequest>(habitReq);
+
+            var content = new StringContent(
+                json,
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await _client.PostAsync("/api/habits", content);
+
+            Assert.NotEqual(System.Net.HttpStatusCode.BadRequest,response.StatusCode);
+        }
     }
 }
