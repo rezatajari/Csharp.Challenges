@@ -1,4 +1,4 @@
-﻿namespace HabitTracker.Api
+﻿namespace HabitTracker.Api.Models
 {
     public class Habit
     {

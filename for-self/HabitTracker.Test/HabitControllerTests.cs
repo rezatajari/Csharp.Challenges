@@ -1,5 +1,5 @@
-﻿using HabitTracker.Api;
-using HabitTracker.Api.DTOs;
+﻿using HabitTracker.Api.DTOs;
+using HabitTracker.Api.Models;
 using HabitTracker.Api.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System;
