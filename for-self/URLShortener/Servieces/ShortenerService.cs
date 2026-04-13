@@ -8,7 +8,12 @@ namespace URLShortener.Servieces
 
         public ShortLink Create(string url)
         {
-            var code = GenerateCode();
+            string code;
+
+            do
+            {
+                code = GenerateCode();
+            } while (_store.ContainsKey(code));
 
             var shortLink = ShortLink.Create(code, url);
 
@@ -39,3 +44,4 @@ namespace URLShortener.Servieces
             return new string(result);
         }
     }
+}
