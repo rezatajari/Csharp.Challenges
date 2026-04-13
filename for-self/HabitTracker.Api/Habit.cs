@@ -5,17 +5,18 @@
         public Guid Id { get; private set; }
         public string Name { get; private set; }
 
-        private Habit() { 
-         Id = Guid.NewGuid();
+        private Habit(string name)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
         }
+
         public static Habit Create(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
 
-            var habit = new Habit();
-            habit.Name = name;
-            return habit;
+            return new Habit(name);
         }
     }
 }

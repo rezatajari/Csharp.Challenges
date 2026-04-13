@@ -1,4 +1,4 @@
 ﻿namespace HabitTracker.Api.DTOs
 {
-    public record HabitDto(Guid Id,string Name);
+    public record HabitDto(Guid id,string name);
 }
