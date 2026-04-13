@@ -1,4 +1,5 @@
 ﻿using HabitTracker.Api;
+using HabitTracker.Api.DTOs;
 using HabitTracker.Api.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System;
@@ -123,13 +124,16 @@ namespace HabitTracker.Test
             var postResponse = await _client.PostAsync("/api/habits", content);
 
             Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
-            Assert.Equal
+            var postBody=await postResponse.Content.ReadAsStringAsync();
+            var createdHabit=JsonSerializer.Deserialize<HabitDto>(postBody);
 
-            var getResponse = await _client.GetAsync("/api/habits");
-            var responseBody=await getResponse.Content.ReadAsStringAsync();
+            var id = createdHabit.Id;
+
+            var getResponse = await _client.GetAsync($"/api/habits/{id}");
+            var getBody=await getResponse.Content.ReadAsStringAsync();
 
             Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
-            Assert.Contains("Read", responseBody);
+            Assert.Contains("Read", getBody);
         }
 
         [Fact]
