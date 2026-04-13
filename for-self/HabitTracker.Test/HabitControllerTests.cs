@@ -71,5 +71,17 @@ namespace HabitTracker.Test
 
             Assert.Contains("Read",responseBody);
         }
+
+        [Fact]
+        public async Task CreateHabit_ShouldReturnGeneratedId()
+        {
+            var habitReq = new CreateHabitRequest("Read");
+            var json =JsonSerializer.Serialize(habitReq);
+            var content=new StringContent(json, Encoding.UTF8,"application/json");
+            var response = await _client.PostAsync("/api/habits", content);
+            var responseBody=await response.Content.ReadAsStringAsync();
+
+            Assert.Contains("id", responseBody);
+        }
     }
 }

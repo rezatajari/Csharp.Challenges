@@ -1,5 +1,6 @@
 ﻿using HabitTracker.Api.ViewModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HabitTracker.Api.Controllers
@@ -12,7 +13,8 @@ namespace HabitTracker.Api.Controllers
         [HttpPost]
         public IActionResult CreateHabit([FromBody] CreateHabitRequest habitReq)
         {
-            return Created("", habitReq);
+            Habit newHabit = Habit.Create(habitReq.Name);
+            return Created("", newHabit);
         }
     }
 }
