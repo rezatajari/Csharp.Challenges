@@ -6,19 +6,20 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class CreditCard : BaseAccount
+    public class CreditCardAccount : BaseAccount
     {
-        private CreditCard(string name, Money initialBalance, Money limit)
+        protected CreditCardAccount() : base() { }
+        private CreditCardAccount(string name, Money initialBalance, Money limit)
             : base(name, initialBalance, TypeName.CreditCard)
         {
             CreditLimit = limit;
         }
         public Money CreditLimit { get; private set; }
 
-        public static CreditCard Create(string name, Money initialBalance, Money limit)
+        public static CreditCardAccount Create(string name, Money initialBalance, Money limit)
         {
             if (limit.Amount < 0) throw new ArgumentException("Limit must be positive.");
-            return new CreditCard(name, initialBalance, limit);
+            return new CreditCardAccount(name, initialBalance, limit);
         }
 
         public override Transaction Deposit(Money amount, DateTime createAt)

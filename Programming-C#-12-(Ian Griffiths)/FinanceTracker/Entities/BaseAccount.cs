@@ -10,6 +10,8 @@ namespace FinanceTracker.Entities
     public abstract class BaseAccount : IAccount
     {
         protected readonly Money _initialBalance;
+
+        // For database (ef core) mapping
         private ICollection<Transaction> _transactions = new List<Transaction>();
         public Guid Id { get; private set; }
         public string Name { get; protected set; }
@@ -17,6 +19,7 @@ namespace FinanceTracker.Entities
         public Money Balance { get; protected set; }
         public TypeName Type { get; protected set; }
 
+        // For expose
         public IEnumerable<Transaction> Transactions => _transactions;
 
         protected BaseAccount(string name, Money initialBalance, TypeName type)
