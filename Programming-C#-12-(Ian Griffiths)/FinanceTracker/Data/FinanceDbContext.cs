@@ -11,11 +11,13 @@ namespace FinanceTracker.Data
         public FinanceDbContext(DbContextOptions<FinanceDbContext> options)
             :base(options){}
 
+        public DbSet<BaseAccount> BaseAccounts { get; set; }
         public DbSet<SavingsAccount> Accounts{ get; set; }
+        public DbSet<CreditCardAccount> CreditCardAccounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SavingsAccount>(entity =>
+            modelBuilder.Entity<BaseAccount>(entity =>
             {
                 entity.HasKey(a => a.Id);
 
