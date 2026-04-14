@@ -4,7 +4,7 @@ using FinanceTracker.Interfaces;
 using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;
 
-var accountRepo = new Repository<IAccount>();
+var accountRepo = new JsonRepository<IAccount>("accounts.json");
 var service = new FinanceService(accountRepo, new Repository<Transaction>());
 
 
