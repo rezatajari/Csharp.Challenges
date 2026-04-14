@@ -22,7 +22,7 @@ namespace FinanceTracker.Tests.Services
         [Fact]
         public void CreateAccount_Should_AddAccountToRepository()
         {
-            var account=Account.Create("Travel Fund",Money.Create(500,Currency.USD),TypeName.Bank);
+            var account=SavingsAccount.Create("Travel Fund",Money.Create(500,Currency.USD),TypeName.Bank);
             _service.OpenAccount(account);
 
             _mockAccountRepo.Verify(repo => repo.Add(account), Times.Once());
@@ -31,9 +31,9 @@ namespace FinanceTracker.Tests.Services
         [Fact]
         public void Transfer_Should_UpdateBothBalances_WhenFundsAreSufficient()
         {
-            var acc1 = Account.Create("From Account", Money.Create(200, Currency.USD), TypeName.Bank);
+            var acc1 = SavingsAccount.Create("From Account", Money.Create(200, Currency.USD), TypeName.Bank);
             _service.OpenAccount(acc1);
-            var acc2 = Account.Create("To Account", Money.Default(), TypeName.Bank);
+            var acc2 = SavingsAccount.Create("To Account", Money.Default(), TypeName.Bank);
             _service.OpenAccount(acc2);
 
             _service.ExecuteTransfer(acc1.Id, acc2.Id, Money.Create(50, Currency.USD));
@@ -45,9 +45,9 @@ namespace FinanceTracker.Tests.Services
         [Fact]
         public void Transfer_Should_ThrowException_WhenSenderHasInsufficientFunds()
         {
-            var acc1 = Account.Create("From Account", Money.Create(10, Currency.USD), TypeName.Bank);
+            var acc1 = SavingsAccount.Create("From Account", Money.Create(10, Currency.USD), TypeName.Bank);
             _service.OpenAccount(acc1);
-            var acc2 = Account.Create("To Account", Money.Default(), TypeName.Bank);
+            var acc2 = SavingsAccount.Create("To Account", Money.Default(), TypeName.Bank);
             _service.OpenAccount(acc2);
 
             var result = _service.ExecuteTransfer(acc1.Id, acc2.Id, Money.Create(100, Currency.USD));
@@ -59,11 +59,11 @@ namespace FinanceTracker.Tests.Services
         [Fact]
         public void GetTotalBalance_Should_SumAllAccounts_InSpecificCurrency()
         {
-            var acc1 = Account.Create("Acc 1", Money.Create(100, Currency.USD), TypeName.Bank);
+            var acc1 = SavingsAccount.Create("Acc 1", Money.Create(100, Currency.USD), TypeName.Bank);
             _service.OpenAccount(acc1);
-            var acc2 = Account.Create("Acc 2", Money.Create(100, Currency.USD), TypeName.Bank);
+            var acc2 = SavingsAccount.Create("Acc 2", Money.Create(100, Currency.USD), TypeName.Bank);
             _service.OpenAccount(acc2);
-            var acc3 = Account.Create("Acc 3", Money.Create(100, Currency.USD), TypeName.Bank);
+            var acc3 = SavingsAccount.Create("Acc 3", Money.Create(100, Currency.USD), TypeName.Bank);
             _service.OpenAccount(acc3);
 
             var result =_service.GetTotalNetWorth(Currency.USD);

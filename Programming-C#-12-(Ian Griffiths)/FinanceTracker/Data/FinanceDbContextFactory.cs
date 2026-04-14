@@ -1,29 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace FinanceTracker.Data
 {
-    public class FinanceDbContextFactory :
-        IDesignTimeDbContextFactory<FinanceDbContext>
+    public class FinanceDbContextFactory : IDesignTimeDbContextFactory<FinanceDbContext>
     {
         public FinanceDbContext CreateDbContext(string[] args)
         {
+            var basePath = Directory.GetCurrentDirectory();
 
-            var optionsBuilder=new DbContextOptionsBuilder<FinanceDbContext>();
+            while (!File.Exists(Path.Combine(basePath, "appsettings.json")))
+            {
+                var parent = Directory.GetParent(basePath);
+
+                if (parent == null)
+                    throw new FileNotFoundException("appsettings.json not found in project tree");
+
+                basePath = parent.FullName;
+            }
 
             var configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: false)
-                    .Build();
-            var connectionstring = configuration.GetConnectionString("DefaultConnection");
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
 
-            optionsBuilder.UseSqlServer(connectionstring);
+            var options = new DbContextOptionsBuilder<FinanceDbContext>()
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .Options;
 
-            return new FinanceDbContext(optionsBuilder.Options);
+            return new FinanceDbContext(options);
         }
     }
 }

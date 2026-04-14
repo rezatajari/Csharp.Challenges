@@ -31,6 +31,7 @@ namespace FinanceTracker.Entities
             _initialBalance = Balance;
         }
 
+        protected BaseAccount() { }
         protected void StoreTransaction(Transaction transaction) => _transactions.Add(transaction);
         protected void EnsureSameCurrency(Money amount)
         {

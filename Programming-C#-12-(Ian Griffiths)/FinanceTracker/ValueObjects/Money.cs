@@ -7,6 +7,7 @@ namespace FinanceTracker.ValueObjects
 {
     public record Money
     {
+        protected Money() { }
         private Money(decimal amount, Currency currency)
         {
             Amount = amount;

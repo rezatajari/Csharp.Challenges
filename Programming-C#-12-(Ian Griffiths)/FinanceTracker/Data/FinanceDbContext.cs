@@ -11,18 +11,23 @@ namespace FinanceTracker.Data
         public FinanceDbContext(DbContextOptions<FinanceDbContext> options)
             :base(options){}
 
-        public DbSet<Account> Accounts{ get; set; }
+        public DbSet<SavingsAccount> Accounts{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>(entity =>
+            modelBuilder.Entity<SavingsAccount>(entity =>
             {
                 entity.HasKey(a => a.Id);
 
                 entity.OwnsOne(a => a.Balance, balance =>
                 {
-                    balance.Property(m => m.Amount).HasColumnName("BalanceAcmount").HasPrecision(18, 2);
-                    balance.Property(m => m.Currency).HasColumnName("BalanceCurrency").HasConversion<string>();
+                    balance.Property(m => m.Amount)
+                    .HasColumnName("BalanceAmount")
+                    .HasPrecision(18, 2);
+
+                    balance.Property(m => m.Currency)
+                    .HasColumnName("BalanceCurrency")
+                    .HasConversion<string>();
                 });
             });
         }

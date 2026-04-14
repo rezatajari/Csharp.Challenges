@@ -11,19 +11,20 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Account : BaseAccount
+    public class SavingsAccount : BaseAccount
     {
-        private Account(string name, Money initialBalance, TypeName type) : base(name, initialBalance, type)
+        protected SavingsAccount():base() {}
+        private SavingsAccount(string name, Money initialBalance, TypeName type) 
+            : base(name, initialBalance, type)
         {
             if (initialBalance.Amount < 0)
             {
                 throw new ArgumentException("Balance cannot be negative.", nameof(initialBalance));
             }
         }
-
-        public static Account Create(string name, Money balance, TypeName type)
+        public static SavingsAccount Create(string name, Money balance, TypeName type)
         {
-            return new Account(name, balance, type);
+            return new SavingsAccount(name, balance, type);
         }
 
         public override Transaction Deposit(Money amount, DateTime createAt)
@@ -96,7 +97,7 @@ namespace FinanceTracker.Entities
             return incomeAmount - expenseAmount;
         }
 
-        public TransferResult TransferTo(Account destination, Money amount, DateTime transferDate,
+        public TransferResult TransferTo(SavingsAccount destination, Money amount, DateTime transferDate,
               string? description = "Founds Transfer")
         {
             if (this.Id == destination.Id)

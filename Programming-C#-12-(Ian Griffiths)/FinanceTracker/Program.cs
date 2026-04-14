@@ -8,7 +8,17 @@ using Microsoft.Extensions.Configuration;
 
 
 
-using var context =new FinanceDbContext(optionsBuilder.Options);
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+var optionsBuilder = new DbContextOptionsBuilder<FinanceDbContext>();
+optionsBuilder.UseSqlServer(connectionString);
+
+using var context = new FinanceDbContext(optionsBuilder.Options);
 
 var accountRepo = new JsonRepository<IAccount>("accounts.json");
 var service = new FinanceService(accountRepo, new Repository<Transaction>());
@@ -24,7 +34,7 @@ Console.Write("Enter Initial Balance: ");
 decimal amount = decimal.Parse(Console.ReadLine() ?? "0");
 
 var initialMoney = Money.Create(amount, Currency.USD);
-var newAccount = Account.Create(name, initialMoney, TypeName.Cash);
+var newAccount = SavingsAccount.Create(name, initialMoney, TypeName.Cash);
 
 service.OpenAccount(newAccount);
 

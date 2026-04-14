@@ -24,8 +24,8 @@ namespace FinanceTracker.Entities
         public IAccount? GetAccountByName(string name)
              => _accounts.FirstOrDefault(acc => acc.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        public List<CreditCard> GetCreditCards()
-            => _accounts.OfType<CreditCard>().ToList();
+        public List<CreditCardAccount> GetCreditCards()
+            => _accounts.OfType<CreditCardAccount>().ToList();
 
         public List<IAccount> GetAccountInDebt()
             => _accounts.Where(acc=>acc.Balance.Amount<0).ToList(); 
