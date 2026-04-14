@@ -9,12 +9,12 @@ namespace FinanceTracker.Tests.Services
 {
     public class FinanceServiceTests
     {
-        private readonly Mock<Repository<IAccount>> _mockAccountRepo;
+        private readonly Mock<JsonRepository<IAccount>> _mockAccountRepo;
         private readonly FinanceService _service;
 
         public FinanceServiceTests()
         {
-            _mockAccountRepo = new Mock<Repository<IAccount>>();
+            _mockAccountRepo = new Mock<JsonRepository<IAccount>>();
 
             _service=new FinanceService(_mockAccountRepo.Object, new Repository<Transaction>());
         }
@@ -23,7 +23,7 @@ namespace FinanceTracker.Tests.Services
         public void CreateAccount_Should_AddAccountToRepository()
         {
             var account=Account.Create("Travel Fund",Money.Create(500,Currency.USD),TypeName.Bank);
-            _service.OpenAccount(account, Money.Create(500, Currency.USD));
+            _service.OpenAccount(account);
 
             _mockAccountRepo.Verify(repo => repo.Add(account), Times.Once());
         }
@@ -32,9 +32,9 @@ namespace FinanceTracker.Tests.Services
         public void Transfer_Should_UpdateBothBalances_WhenFundsAreSufficient()
         {
             var acc1 = Account.Create("From Account", Money.Create(200, Currency.USD), TypeName.Bank);
-            _service.OpenAccount(acc1, Money.Default());
+            _service.OpenAccount(acc1);
             var acc2 = Account.Create("To Account", Money.Default(), TypeName.Bank);
-            _service.OpenAccount(acc2, Money.Default());
+            _service.OpenAccount(acc2);
 
             _service.ExecuteTransfer(acc1.Id, acc2.Id, Money.Create(50, Currency.USD));
 
@@ -46,9 +46,9 @@ namespace FinanceTracker.Tests.Services
         public void Transfer_Should_ThrowException_WhenSenderHasInsufficientFunds()
         {
             var acc1 = Account.Create("From Account", Money.Create(10, Currency.USD), TypeName.Bank);
-            _service.OpenAccount(acc1, Money.Default());
+            _service.OpenAccount(acc1);
             var acc2 = Account.Create("To Account", Money.Default(), TypeName.Bank);
-            _service.OpenAccount(acc2, Money.Default());
+            _service.OpenAccount(acc2);
 
             var result = _service.ExecuteTransfer(acc1.Id, acc2.Id, Money.Create(100, Currency.USD));
 
@@ -60,11 +60,11 @@ namespace FinanceTracker.Tests.Services
         public void GetTotalBalance_Should_SumAllAccounts_InSpecificCurrency()
         {
             var acc1 = Account.Create("Acc 1", Money.Create(100, Currency.USD), TypeName.Bank);
-            _service.OpenAccount(acc1, Money.Default());
+            _service.OpenAccount(acc1);
             var acc2 = Account.Create("Acc 2", Money.Create(100, Currency.USD), TypeName.Bank);
-            _service.OpenAccount(acc2, Money.Default());
+            _service.OpenAccount(acc2);
             var acc3 = Account.Create("Acc 3", Money.Create(100, Currency.USD), TypeName.Bank);
-            _service.OpenAccount(acc3, Money.Default());
+            _service.OpenAccount(acc3);
 
             var result =_service.GetTotalNetWorth(Currency.USD);
 
