@@ -11,12 +11,12 @@ namespace FinanceTracker.Data.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(T entity)
-            => await _context.AddAsync(entity);
+        public async Task AddAsync(T entity) => await _context.AddAsync(entity);
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            entity.Delete();
+            _context.Update(entity);
         }
 
         public Task<IEnumerable<T>> GetAllAsync()
@@ -34,9 +34,9 @@ namespace FinanceTracker.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<int> SaveChangesAsync() 
+        public async Task<int> SaveChangesAsync()
             => await _context.SaveChangesAsync();
 
-      
+
     }
 }
