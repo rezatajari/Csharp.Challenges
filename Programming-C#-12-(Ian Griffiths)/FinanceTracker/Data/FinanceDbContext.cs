@@ -60,11 +60,18 @@ namespace FinanceTracker.Data
                 .HasValue<TransferTransaction>(TransactionType.Transfer);
             });
 
-            modelBuilder.Entity<TransferTransaction>()
-                .HasOne(t=>t.ToAccount)
-                .WithMany()
-                .HasForeignKey(t=>t.ToAccountId)
-                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TransferTransaction>(entity =>
+            {
+                entity.HasOne(t => t.ToAccount)
+                      .WithMany()
+                      .HasForeignKey(t => t.ToAccountId) 
+                      .OnDelete(DeleteBehavior.Restrict)
+                      .IsRequired(); 
+
+                entity.Property(t => t.ToAccountId)
+                      .HasColumnName("ToAccountId");
+            });
         }
     }
 }
