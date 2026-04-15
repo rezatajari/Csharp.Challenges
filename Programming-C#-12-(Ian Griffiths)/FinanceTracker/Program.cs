@@ -48,19 +48,14 @@ using (IServiceScope scope = host.Services.CreateScope())
         Console.WriteLine(result.ErrorMessage);
 
     Console.WriteLine($"\nSuccess! Account '{newAccount.Name}' created with ID: {newAccount.Id}");
-    // --- Start of Income Transaction Test ---
     Console.WriteLine("\n--- Testing Income Recording ---");
 
-    // 1. Simulate the DTO (InputRecordTxDto)
     Console.Write("Enter Income Amount: ");
     decimal incomeAmount = decimal.Parse(Console.ReadLine() ?? "0");
 
     Console.Write("Enter Description: ");
     string description = Console.ReadLine() ?? "Monthly Salary";
 
-    // 2. We need a Category. In a real app, you'd select this. 
-    // For this test, we'll assume a 'Salary' category exists with Type = Income.
-    // If you don't have one, you'd create it here via a CategoryRepository.
     var category = Category.Create("Salary", null, TransactionType.Income);
 
     var incomeDto = new InputRecordTxDto(
@@ -70,7 +65,6 @@ using (IServiceScope scope = host.Services.CreateScope())
         description: description
     );
 
-    // 3. Execute the Service Method
     Console.WriteLine("Processing Income...");
     var incomeResult = await financeService.RecordIncome(incomeDto);
 
@@ -78,8 +72,6 @@ using (IServiceScope scope = host.Services.CreateScope())
     {
         Console.WriteLine("Income Recorded Successfully!");
 
-        // 4. Verify the State Change (The "Skeptical" Check)
-        // In a real E2E, we'd re-fetch the account from the DB to see if Balance updated
         Console.WriteLine($"Updated Balance for Account '{newAccount.Name}': {newAccount.Balance.Amount} {newAccount.Balance.Currency}");
     }
     else
