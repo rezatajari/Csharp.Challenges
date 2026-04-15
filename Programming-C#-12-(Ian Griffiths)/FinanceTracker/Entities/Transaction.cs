@@ -12,7 +12,7 @@ namespace FinanceTracker.Entities
         public Category Category { get; private set; }
         public string? Description { get; private set; }
         public BaseAccount Account { get; private set; }
-        public TransactionType Type { get; private set; }
+        public TransactionType Type { get; protected set; }
 
         protected Transaction(Money amount, TransactionType type, Category category,
             BaseAccount account, string? description, DateTime createdAt)

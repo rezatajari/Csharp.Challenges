@@ -14,10 +14,12 @@ namespace FinanceTracker.Services
     {
 
         private readonly IBaseRepository<BaseAccount> _accountRepo;
+        private readonly IBaseRepository<Transaction> _transactionRepo;
 
-        public FinanceService(IBaseRepository<BaseAccount> accountRepo)
+        public FinanceService(IBaseRepository<BaseAccount> accountRepo,IBaseRepository<Transaction> transactionRepo)
         {
             _accountRepo = accountRepo;
+            _transactionRepo = transactionRepo;
         }
 
         public async Task<Result<bool>> OpenAccount(BaseAccount newAccount)
@@ -32,13 +34,15 @@ namespace FinanceTracker.Services
 
         public async Task<Result<bool>> RecordIncome(InputRecordTxDto IncomeTx)
         {
-            BaseAccount account = await _accountRepo.GetByIdAsync(IncomeTx.accountId);
+            var account = await _accountRepo.GetByIdAsync(IncomeTx.accountId);
             if (account == null)
                 return Result<bool>.Failure("Account not found.");
 
-            var createTx = Transaction.Create(IncomeTx.amount, TransactionType.Income,
+            var createTx=Transaction.Create(IncomeTx.amount,TransactionType.Income,
                 IncomeTx.category,account,IncomeTx.description,DateTime.UtcNow);
 
+
+            account.Deposit(IncomeTx.amount, DateTime.UtcNow);
         }
 
         public async Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTx)
