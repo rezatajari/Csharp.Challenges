@@ -27,7 +27,7 @@ var host = Host.CreateDefaultBuilder(args)
 
 using (IServiceScope scope = host.Services.CreateScope())
 {
-    var financeService = scope.ServiceProvider.GetRequiredService<FinanceService>();
+    var financeService = scope.ServiceProvider.GetRequiredService<IFinanceService>();
 
 
     Console.WriteLine("=== Welcome to FinanceTracker ===");
