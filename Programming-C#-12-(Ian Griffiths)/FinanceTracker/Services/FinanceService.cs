@@ -10,15 +10,12 @@ namespace FinanceTracker.Services
 {
     public class FinanceService
     {
-        private readonly JsonRepository<IAccount> _accountRepo;
         private readonly Repository<Transaction> _transactionRepo;
 
         public FinanceService(
-            JsonRepository<IAccount> accountRepo,
             Repository<Transaction> transactionRepo
             )
         {
-            _accountRepo = accountRepo;
             _transactionRepo = transactionRepo;
         }
 
