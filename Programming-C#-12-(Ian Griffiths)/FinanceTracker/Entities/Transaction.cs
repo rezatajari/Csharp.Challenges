@@ -5,43 +5,76 @@ namespace FinanceTracker.Entities
 {
     public abstract class Transaction:BaseEntity
     {
-        private Transaction(Money amount, TransactionType type, Category category,
-            BaseAccount account, string? description, DateTime createAt)
+
+        public int AccountId { get; set; }
+        public Money Amount { get; private set; }
+        public Category Category { get; private set; }
+        public string? Description { get; private set; }
+        public BaseAccount Account { get; private set; }
+
+        protected Transaction(Money amount, Category category,
+            BaseAccount account, string? description, DateTime createdAt)
         {
             this.Amount = amount;
-            this.Type = type;
-
             ArgumentNullException.ThrowIfNull(category, nameof(category));
             this.Category = category;
 
             ArgumentNullException.ThrowIfNull(account, nameof(account));
             this.Account = account;
 
-            if (createAt == default)
+            if (createdAt == default)
             {
-                throw new ArgumentException("Transaction data must be a valid date.",nameof(createAt));
+                throw new ArgumentException("Transaction data must be a valid date.",nameof(createdAt));
             }
-            this.CreatedAt = createAt;
-
+            this.CreatedAt = createdAt;
             this.Description = description;
         }
 
         protected Transaction() { }
 
-        public int AccountId { get; set; }
-        public Money Amount { get; private set; }
-        public TransactionType Type { get;private set; }
-        public Category Category { get; private set; }
-        public string? Description { get; private set; }
-        public BaseAccount Account { get; private set; }
-
-        internal static Transaction CreateForAccount(Money amount, TransactionType type, Category category,
-            BaseAccount account, string? description, DateTime createAt)
+        public static Transaction Create(Money,TransactionType type,Category category,
+            BaseAccount account, string? description, DateTime createdAt,BaseAccount? toAccount=null)
         {
             if (category.Type != type)
-                throw new InvalidOperationException($"Category type {category.Type} does not match transaction type {type}.");
+                throw new InvalidOperationException("Category/Type mismatch");
 
-            return new Transaction(amount, type, category, account, description, createAt);
+            return type switch
+            {
+                TransactionType.Income => new IncomeTransaction(Money, category, account, description, createdAt),
+                TransactionType.Expense => new ExpenseTransaction(Money, category, account, description, createdAt),
+                TransactionType.Transfer => throw new InvalidOperationException("Use CreateForTransfer for transfer transactions."),
+                _ => throw new ArgumentException("Invalid transaction type.", nameof(type)),
+            };
+        }
+    }
+
+
+    public class IncomeTransaction : Transaction
+    { 
+        internal IncomeTransaction(Money amount, Category category,
+            BaseAccount account, string? description, DateTime createdAt)
+            : base(amount, category, account, description, createdAt){}
+    }
+
+    public class ExpenseTransaction : Transaction
+    {
+        internal ExpenseTransaction(Money amount, Category category,
+            BaseAccount account, string? description, DateTime createdAt)
+            : base(amount, category, account, description, createdAt){}
+    }
+
+
+    public class TransferTransaction:Transaction
+    {
+
+        public int ToAccountId { get; private set; }
+        public BaseAccount ToAccount { get; private set; }
+
+        internal TransferTransaction(Money amount, Category category, BaseAccount fromAccount, BaseAccount toAccount, string? description, DateTime createdAt)
+        : base(amount, category, fromAccount, description, createdAt)
+        {
+            ArgumentNullException.ThrowIfNull(toAccount, nameof(toAccount));
+            this.ToAccount = toAccount;
         }
     }
 

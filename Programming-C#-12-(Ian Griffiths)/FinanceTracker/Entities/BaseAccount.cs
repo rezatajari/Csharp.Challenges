@@ -31,6 +31,7 @@ namespace FinanceTracker.Entities
         }
 
         protected BaseAccount() { }
+
         protected void StoreTransaction(Transaction transaction) => _transactions.Add(transaction);
         protected void EnsureSameCurrency(Money amount)
         {
@@ -40,8 +41,8 @@ namespace FinanceTracker.Entities
                     "Currency mismatch between account balance and transaction amount.");
             }
         }
-        public abstract Transaction Deposit(Money amount, DateTime createAt);
-        public abstract Transaction Withdraw(Money amount, DateTime createAt);
+        public abstract Transaction Deposit(Money amount, DateTime createdAt);
+        public abstract Transaction Withdraw(Money amount, DateTime createdAt);
     }
 
     public enum TypeName

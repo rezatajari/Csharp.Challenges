@@ -27,15 +27,15 @@ namespace FinanceTracker.Entities
             return new SavingsAccount(name, balance, type);
         }
 
-        public override Transaction Deposit(Money amount, DateTime createAt)
+        public override Transaction Deposit(Money amount, DateTime createdAt)
            => Deposit(amount, Category.Create("Default", null, TransactionType.Income),
-                    null, createAt);
+                    null, createdAt);
 
-        public override Transaction Withdraw(Money amount, DateTime createAt)
+        public override Transaction Withdraw(Money amount, DateTime createdAt)
             => Withdraw(amount, Category.Create("Default", null, TransactionType.Expense),
-                null, createAt);
+                null, createdAt);
 
-        public Transaction Withdraw(Money amount, Category category, string? description, DateTime createAt)
+        public Transaction Withdraw(Money amount, Category category, string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
 
@@ -45,7 +45,7 @@ namespace FinanceTracker.Entities
             }
 
             var transaction = Transaction.CreateForAccount(amount, TransactionType.Expense,
-                category, this, description, createAt);
+                category, this, description, createdAt);
 
             this.Balance -= amount;
             StoreTransaction(transaction);
@@ -54,12 +54,12 @@ namespace FinanceTracker.Entities
         }
 
         public Transaction Deposit(Money amount, Category category,
-            string? description, DateTime createAt)
+            string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
 
             var transaction = Transaction.CreateForAccount(amount, TransactionType.Income,
-                category, this, description, createAt);
+                category, this, description, createdAt);
 
             this.Balance += amount;
             StoreTransaction(transaction);
