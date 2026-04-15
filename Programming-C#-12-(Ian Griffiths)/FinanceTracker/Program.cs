@@ -26,7 +26,7 @@ var host = Host.CreateDefaultBuilder(args)
 
 using (IServiceScope scope = host.Services.CreateScope())
 {
-    var accountService = scope.ServiceProvider.GetRequiredService<FinanceService>();
+    var financeService = scope.ServiceProvider.GetRequiredService<FinanceService>();
 
 
     Console.WriteLine("=== Welcome to FinanceTracker ===");
@@ -41,7 +41,10 @@ using (IServiceScope scope = host.Services.CreateScope())
     var initialMoney = Money.Create(amount, Currency.USD);
     var newAccount = SavingsAccount.Create(name, initialMoney, TypeName.Cash);
 
-    service.OpenAccount(newAccount);
+    var result =await financeService.OpenAccount(newAccount);
+
+    if (!result.IsSuccess)
+        Console.WriteLine(result.ErrorMessage)
 
     Console.WriteLine($"\nSuccess! Account '{newAccount.Name}' created with ID: {newAccount.Id}");
     Console.WriteLine("Press any key to exit...");
