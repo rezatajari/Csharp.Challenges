@@ -6,11 +6,12 @@ namespace FinanceTracker.Entities
     public abstract class Transaction:BaseEntity
     {
 
-        public int AccountId { get; set; }
+        public int AccountId { get;private set; }
         public Money Amount { get; private set; }
         public Category Category { get; private set; }
         public string? Description { get; private set; }
         public BaseAccount Account { get; private set; }
+        public TransactionType Type { get; private set; }
 
         protected Transaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
