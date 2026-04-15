@@ -12,6 +12,7 @@ namespace FinanceTracker.Data
         public DbSet<BaseAccount> BaseAccounts { get; set; }
         public DbSet<SavingsAccount> SavingsAccount { get; set; }
         public DbSet<CreditCardAccount> CreditCardAccounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
