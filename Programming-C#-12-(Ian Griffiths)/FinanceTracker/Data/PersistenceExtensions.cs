@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace FinanceTracker.Data.Repositories
+namespace FinanceTracker.Data
 {
     public static class PersistenceExtensions
     {

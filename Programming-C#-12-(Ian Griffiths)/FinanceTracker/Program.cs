@@ -19,7 +19,7 @@ var host = Host.CreateDefaultBuilder(args)
         });
 
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-        services.AddScoped<FinanceService>();
+        services.AddScoped<IFinanceService, FinanceService>();
     })
     .Build();
 

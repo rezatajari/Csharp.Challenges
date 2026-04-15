@@ -1,5 +1,4 @@
-﻿using FinanceTracker.Data.Repositories;
-using FinanceTracker.Entities;
+﻿using FinanceTracker.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceTracker.Data

@@ -9,7 +9,7 @@ using System.Security;
 
 namespace FinanceTracker.Services
 {
-    public class FinanceService
+    public class FinanceService : IFinanceService
     {
 
         private readonly IBaseRepository<BaseAccount> _accountRepo;
@@ -27,6 +27,11 @@ namespace FinanceTracker.Services
             return rowsAffected > 0
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure("Failed to open account.");
+        }
+
+        public Task<Result<bool>> RecordTransaction(int accountId, Transaction transaction)
+        {
+            throw new NotImplementedException();
         }
 
         //public Result<bool> ExecutePurchase(Guid accountId, Money amount, string categoryName)
