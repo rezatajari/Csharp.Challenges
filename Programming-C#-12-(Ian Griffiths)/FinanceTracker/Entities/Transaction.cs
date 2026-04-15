@@ -32,7 +32,7 @@ namespace FinanceTracker.Entities
 
         protected Transaction() { }
 
-        public static Transaction Create(Money,TransactionType type,Category category,
+        public static Transaction Create(Money amount,TransactionType type,Category category,
             BaseAccount account, string? description, DateTime createdAt,BaseAccount? toAccount=null)
         {
             if (category.Type != type)
@@ -40,10 +40,10 @@ namespace FinanceTracker.Entities
 
             return type switch
             {
-                TransactionType.Income => new IncomeTransaction(Money, category, account, description, createdAt),
-                TransactionType.Expense => new ExpenseTransaction(Money, category, account, description, createdAt),
-                TransactionType.Transfer => throw new InvalidOperationException("Use CreateForTransfer for transfer transactions."),
-                _ => throw new ArgumentException("Invalid transaction type.", nameof(type)),
+                TransactionType.Income => new IncomeTransaction( amount, category, account, description, createdAt),
+                TransactionType.Expense => new ExpenseTransaction( amount, category, account, description, createdAt),
+                TransactionType.Transfer => new TransferTransaction( amount, category, account, toAccount!, description, createdAt),
+                _ => throw new ArgumentOutOfRangeException(nameof(type))
             };
         }
     }
@@ -62,7 +62,6 @@ namespace FinanceTracker.Entities
             BaseAccount account, string? description, DateTime createdAt)
             : base(amount, category, account, description, createdAt){}
     }
-
 
     public class TransferTransaction:Transaction
     {
