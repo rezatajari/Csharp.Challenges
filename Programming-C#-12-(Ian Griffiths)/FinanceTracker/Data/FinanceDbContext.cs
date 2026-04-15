@@ -1,11 +1,6 @@
-﻿using FinanceTracker.Entities;
-using FinanceTracker.ValueObjects;
+﻿using FinanceTracker.Data.Repositories;
+using FinanceTracker.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace FinanceTracker.Data
 {
@@ -23,31 +18,12 @@ namespace FinanceTracker.Data
             modelBuilder.Entity<BaseAccount>(entity =>
             {
                 entity.HasKey(a => a.Id);
-
-                entity.OwnsOne(a => a.Balance, balance =>
-                {
-                    balance.Property(m => m.Amount)
-                    .HasColumnName("BalanceAmount")
-                    .HasPrecision(18, 2);
-
-                    balance.Property(m => m.Currency)
-                    .HasColumnName("BalanceCurrency")
-                    .HasConversion<string>();
-                });
+                entity.MapMoney(a=>a.Balance, "Balance");
             });
 
             modelBuilder.Entity<CreditCardAccount>(entity =>
             {
-                entity.OwnsOne(m => m.CreditLimit, creditLimit =>
-                {
-                    creditLimit.Property(m => m.Amount)
-                    .HasColumnName("CreditLimitAmount")
-                    .HasPrecision(18, 2);
-
-                    creditLimit.Property(m => m.Currency)
-                    .HasColumnName("CreditLimitCurrency")
-                    .HasConversion<string>();
-                });
+               entity.MapMoney(c=>c.CreditLimit, "CreditLimit");
             });
 
             modelBuilder.Entity<Transaction>(entity =>
@@ -57,18 +33,8 @@ namespace FinanceTracker.Data
                 entity.HasOne(t => t.Account)
                 .WithMany(t => t.Transactions)
                 .HasForeignKey("AccountId");
-                
-                    .
-                entity.OwnsOne(a => a.Amount, balance =>
-                {
-                    balance.Property(m => m.Amount)
-                    .HasColumnName("BalanceAmount")
-                    .HasPrecision(18, 2);
 
-                    balance.Property(m => m.Currency)
-                    .HasColumnName("BalanceCurrency")
-                    .HasConversion<string>();
-                });
+                entity.MapMoney(a => a.Amount, "Balance");
             });
         }
     }
