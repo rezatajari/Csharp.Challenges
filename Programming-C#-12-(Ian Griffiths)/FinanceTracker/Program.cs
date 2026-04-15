@@ -44,12 +44,11 @@ using (IServiceScope scope = host.Services.CreateScope())
     var result =await financeService.OpenAccount(newAccount);
 
     if (!result.IsSuccess)
-        Console.WriteLine(result.ErrorMessage)
+        Console.WriteLine(result.ErrorMessage);
 
     Console.WriteLine($"\nSuccess! Account '{newAccount.Name}' created with ID: {newAccount.Id}");
     Console.WriteLine("Press any key to exit...");
     Console.ReadKey();
-
 }
 
 await host.RunAsync();

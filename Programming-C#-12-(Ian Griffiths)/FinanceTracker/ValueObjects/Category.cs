@@ -1,12 +1,14 @@
-﻿using System;
+﻿using FinanceTracker.Entities;
+using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.Text;
 
-namespace FinanceTracker.Entities
+namespace FinanceTracker.ValueObjects
 {
     public record Category
     {
+        protected Category() { }
         private Category(string name,string? description,TransactionType type)
         {
             ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));

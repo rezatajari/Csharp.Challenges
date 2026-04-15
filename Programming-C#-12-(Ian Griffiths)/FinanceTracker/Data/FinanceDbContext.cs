@@ -12,7 +12,7 @@ namespace FinanceTracker.Data
             :base(options){}
 
         public DbSet<BaseAccount> BaseAccounts { get; set; }
-        //public DbSet<SavingsAccount> SavingsAccount { get; set; }
+        public DbSet<SavingsAccount> SavingsAccount { get; set; }
         public DbSet<CreditCardAccount> CreditCardAccounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +29,20 @@ namespace FinanceTracker.Data
 
                     balance.Property(m => m.Currency)
                     .HasColumnName("BalanceCurrency")
+                    .HasConversion<string>();
+                });
+            });
+
+            modelBuilder.Entity<CreditCardAccount>(entity =>
+            {
+                entity.OwnsOne(m => m.CreditLimit, creditLimit =>
+                {
+                    creditLimit.Property(m => m.Amount)
+                    .HasColumnName("CreditLimitAmount")
+                    .HasPrecision(18, 2);
+
+                    creditLimit.Property(m => m.Currency)
+                    .HasColumnName("CreditLimitCurrency")
                     .HasConversion<string>();
                 });
             });

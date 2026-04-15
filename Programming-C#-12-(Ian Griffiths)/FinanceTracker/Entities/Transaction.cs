@@ -26,6 +26,7 @@ namespace FinanceTracker.Entities
             this.Description = description;
         }
 
+        protected Transaction() { }
         public Money Amount { get; private set; }
         public TransactionType Type { get;private set; }
         public Category Category { get; private set; }
