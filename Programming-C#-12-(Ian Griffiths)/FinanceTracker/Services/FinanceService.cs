@@ -3,6 +3,7 @@ using FinanceTracker.Entities;
 using FinanceTracker.Interfaces;
 using FinanceTracker.Shared;
 using FinanceTracker.ValueObjects;
+using Microsoft.Identity.Client;
 using System.Runtime.InteropServices.Marshalling;
 using System.Security;
 
@@ -10,13 +11,12 @@ namespace FinanceTracker.Services
 {
     public class FinanceService
     {
-        private readonly Repository<Transaction> _transactionRepo;
 
-        public FinanceService(
-            Repository<Transaction> transactionRepo
-            )
+        private readonly IBaseRepository<BaseAccount> _accountRepo;
+
+        public FinanceService(IBaseRepository<BaseAccount> accountRepo)
         {
-            _transactionRepo = transactionRepo;
+            _accountRepo = accountRepo;
         }
 
         private Result<T> ExecuteSafe<T>(Func<T> businessLogic)
@@ -31,14 +31,14 @@ namespace FinanceTracker.Services
             }
         }
 
-        public Result<Guid> OpenAccount(IAccount newAccount)
+        public async Task<Result<bool>> OpenAccount(BaseAccount newAccount)
         {
-           return ExecuteSafe<Guid>(() =>
-            {
-                _accountRepo.Add(newAccount);
-                var createAt = DateTime.Now;
-                return newAccount.Id;
-            });
+            await _accountRepo.AddAsync(newAccount);
+            int rowsAffected = await _accountRepo.SaveChangesAsync();
+
+            return rowsAffected > 0
+                ? Result<bool>.Success(true)
+                : Result<bool>.Failure("Failed to open account.");
         }
 
         public Result<bool> ExecutePurchase(Guid accountId, Money amount, string categoryName)
@@ -63,32 +63,32 @@ namespace FinanceTracker.Services
             });
         }
 
-        public Result<bool> ExecuteTransfer(Guid fromAccountId,Guid toAccountId,Money amount)
+        public Result<bool> ExecuteTransfer(Guid fromAccountId, Guid toAccountId, Money amount)
         {
-           return ExecuteSafe<bool>(() =>
-            {
-                var fromAccount = _accountRepo.GetById(fromAccountId);
-                var toAccount = _accountRepo.GetById(toAccountId);
+            return ExecuteSafe<bool>(() =>
+             {
+                 var fromAccount = _accountRepo.GetById(fromAccountId);
+                 var toAccount = _accountRepo.GetById(toAccountId);
 
-                if (fromAccount == null || toAccount == null)
-                    throw new KeyNotFoundException ($"One or both accounts were not found.");
+                 if (fromAccount == null || toAccount == null)
+                     throw new KeyNotFoundException($"One or both accounts were not found.");
 
-                fromAccount.Withdraw(amount, DateTime.Now);
-                toAccount.Deposit(amount, DateTime.Now);
+                 fromAccount.Withdraw(amount, DateTime.Now);
+                 toAccount.Deposit(amount, DateTime.Now);
 
-                var transferCategory = Category.Create("Transfer", null, TransactionType.Transfer);
+                 var transferCategory = Category.Create("Transfer", null, TransactionType.Transfer);
 
-                var outTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
-                    transferCategory, fromAccount, $"Transfer from {toAccount.Name}", DateTime.Now);
+                 var outTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
+                     transferCategory, fromAccount, $"Transfer from {toAccount.Name}", DateTime.Now);
 
-                var inTx = Transaction.CreateForAccount(amount, TransactionType.Income,
-                    transferCategory, toAccount, $"Transfer to {fromAccount.Name}", DateTime.Now);
+                 var inTx = Transaction.CreateForAccount(amount, TransactionType.Income,
+                     transferCategory, toAccount, $"Transfer to {fromAccount.Name}", DateTime.Now);
 
-                _transactionRepo.Add(outTx);
-                _transactionRepo.Add(inTx);
+                 _transactionRepo.Add(outTx);
+                 _transactionRepo.Add(inTx);
 
-                return true;
-            });
+                 return true;
+             });
         }
 
         public Result<Money> GetTotalNetWorth(Currency targetCurrency)
