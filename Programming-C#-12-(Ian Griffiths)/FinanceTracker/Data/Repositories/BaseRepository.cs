@@ -13,7 +13,7 @@ namespace FinanceTracker.Data.Repositories
         }
 
         public async Task AddAsync(T entity)
-            => await _context.AddAsync(entity);
+            => await _context.Set<T>().AddAsync(entity);
 
         public void Delete(T entity)
         {
@@ -28,9 +28,7 @@ namespace FinanceTracker.Data.Repositories
            => await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
 
         public void Update(T entity)
-        {
-            throw new NotImplementedException();
-        }
+           => _context.Set<T>().Update(entity);
 
         public async Task<int> SaveChangesAsync()
             => await _context.SaveChangesAsync();
