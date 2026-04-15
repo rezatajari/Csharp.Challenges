@@ -74,16 +74,16 @@ namespace FinanceTracker.Entities
             {
                 return this.Balance;
             }
-            else if (targetDate < this.CreateAt)
+            else if (targetDate < this.CreatedAt)
             {
                 return Money.Create(0, this.Balance.Currency);
             }
 
             Money incomeAmount = _initialBalance;
             Money expenseAmount = Money.Create(0, this.Balance.Currency);
-            foreach (var transaction in _transactions)
+            foreach (var transaction in Transactions)
             {
-                if (transaction.CreateAt > targetDate) continue;
+                if (transaction.CreatedAt > targetDate) continue;
                 if (transaction == null) continue;
 
                 (incomeAmount, expenseAmount) = transaction.Type switch
@@ -113,15 +113,15 @@ namespace FinanceTracker.Entities
         }
 
         public List<Transaction> GetTransactionsByCategory(Category category)
-        => _transactions.Where(tx => tx.Category == category).ToList();
+        => Transactions.Where(tx => tx.Category == category).ToList();
 
         public decimal GetTotalSpendingByCategory(Category category)
-        => _transactions
+        => Transactions
                 .Where(tx => tx.Category == category && tx.Type == TransactionType.Expense)
                 .Sum(a => a.Amount.Amount);
 
         public List<CategorySummary> GetSpendingSummoryByCategory()
-         => _transactions
+         => Transactions
                     .Where(tx => tx.Type == TransactionType.Expense)
                     .GroupBy(tx => tx.Category.Name)
                     .Select(group => new CategorySummary(
@@ -135,25 +135,9 @@ namespace FinanceTracker.Entities
         {
             get
             {
-                if (index < 0 || index >= _transactions.Count)
-                    throw new IndexOutOfRangeException("Transaction index out of bounds.");
-
-                return _transactions[index];
+                return Transactions.ElementAt(index);
             }
         }
-
-        public Transaction? this[Guid Id]
-        {
-            get
-            {
-                foreach (var tx in _transactions)
-                {
-                    if (tx.Id == Id) return tx;
-                }
-                return null;
-            }
-        }
-
 
     }
 }
