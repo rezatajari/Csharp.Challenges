@@ -45,7 +45,9 @@ namespace FinanceTracker.Entities
             {
                 TransactionType.Income => new IncomeTransaction(amount, category, account, description, createdAt),
                 TransactionType.Expense => new ExpenseTransaction(amount, category, account, description, createdAt),
-                TransactionType.Transfer => new TransferTransaction(amount, category, account, toAccount!, description, createdAt),
+                TransactionType.Transfer => (toAccount == null)
+                ? throw new ArgumentException("Transfer requires a destination account.")
+                : new TransferTransaction(amount, category, account, toAccount!, description, createdAt),
                 _ => throw new ArgumentOutOfRangeException(nameof(type))
             };
         }
