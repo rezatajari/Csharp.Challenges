@@ -14,20 +14,17 @@ namespace FinanceTracker.Services
     {
 
         private readonly IBaseRepository<BaseAccount> _accountRepo;
-        private readonly IBaseRepository<Transaction> _transactionRepo;
 
-        public FinanceService(IBaseRepository<BaseAccount> accountRepo,IBaseRepository<Transaction> transactionRepo)
+        public FinanceService(IBaseRepository<BaseAccount> accountRepo)
         {
             _accountRepo = accountRepo;
-            _transactionRepo = transactionRepo;
         }
 
         public async Task<Result<bool>> OpenAccount(BaseAccount newAccount)
         {
             await _accountRepo.AddAsync(newAccount);
-            int rowsAffected = await _accountRepo.SaveChangesAsync();
 
-            return rowsAffected > 0
+            return (await _accountRepo.SaveChangesAsync()>0)
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure("Failed to open account.");
         }
@@ -38,17 +35,12 @@ namespace FinanceTracker.Services
             if (account == null)
                 return Result<bool>.Failure("Account not found.");
 
-            DateTime now = DateTime.UtcNow;
-            var createTx=Transaction.Create(IncomeTx.amount,TransactionType.Income,
-                IncomeTx.category,account,IncomeTx.description, now);
+            account.Deposit(IncomeTx.amount, IncomeTx.category,
+                IncomeTx.description, DateTime.UtcNow);
 
-            if (account is SavingsAccount savings)
-            {
-                savings.Deposit(IncomeTx.amount,IncomeTx.category, IncomeTx.description, now);
-            }
-
-
-             await _transactionRepo.AddAsync(createTx);
+            return (await _accountRepo.SaveChangesAsync() > 0)
+                ? Result<bool>.Success(true)
+                : Result<bool>.Failure("Failed to record income.");
         }
 
         public async Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTx)
