@@ -22,12 +22,10 @@ namespace FinanceTracker.Data.Repositories
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
-            =>await _context.Set<T>().ToListAsync();
+            => await _context.Set<T>().ToListAsync();
 
-        public Task<T?> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<T?> GetByIdAsync(int id)
+           => await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
 
         public void Update(T entity)
         {
