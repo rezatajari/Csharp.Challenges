@@ -38,11 +38,17 @@ namespace FinanceTracker.Services
             if (account == null)
                 return Result<bool>.Failure("Account not found.");
 
+            DateTime now = DateTime.UtcNow;
             var createTx=Transaction.Create(IncomeTx.amount,TransactionType.Income,
-                IncomeTx.category,account,IncomeTx.description,DateTime.UtcNow);
+                IncomeTx.category,account,IncomeTx.description, now);
+
+            if (account is SavingsAccount savings)
+            {
+                savings.Deposit(IncomeTx.amount,IncomeTx.category, IncomeTx.description, now);
+            }
 
 
-            account.Deposit(IncomeTx.amount, DateTime.UtcNow);
+             await _transactionRepo.AddAsync(createTx);
         }
 
         public async Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTx)
