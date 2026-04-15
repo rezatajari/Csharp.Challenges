@@ -19,18 +19,6 @@ namespace FinanceTracker.Services
             _accountRepo = accountRepo;
         }
 
-        private Result<T> ExecuteSafe<T>(Func<T> businessLogic)
-        {
-            try
-            {
-                return Result<T>.Success(businessLogic());
-            }
-            catch (Exception ex)
-            {
-                return Result<T>.Failure(ex.Message);
-            }
-        }
-
         public async Task<Result<bool>> OpenAccount(BaseAccount newAccount)
         {
             await _accountRepo.AddAsync(newAccount);
@@ -41,82 +29,82 @@ namespace FinanceTracker.Services
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public Result<bool> ExecutePurchase(Guid accountId, Money amount, string categoryName)
-        {
-            return ExecuteSafe<bool>(() =>
-            {
-                var account = _accountRepo.GetById(accountId);
+        //public Result<bool> ExecutePurchase(Guid accountId, Money amount, string categoryName)
+        //{
+        //    return ExecuteSafe<bool>(() =>
+        //    {
+        //        var account = _accountRepo.GetById(accountId);
 
-                if (account == null)
-                    throw new KeyNotFoundException($"Account with ID {accountId} not found.");
+        //        if (account == null)
+        //            throw new KeyNotFoundException($"Account with ID {accountId} not found.");
 
-                account.Withdraw(amount, DateTime.Now);
+        //        account.Withdraw(amount, DateTime.Now);
 
-                var category = Category.Create(categoryName, null, TransactionType.Expense);
+        //        var category = Category.Create(categoryName, null, TransactionType.Expense);
 
-                var purchaseTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
-                    category, account, "Purchase", DateTime.Now);
+        //        var purchaseTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
+        //            category, account, "Purchase", DateTime.Now);
 
-                _transactionRepo.Add(purchaseTx);
+        //        _transactionRepo.Add(purchaseTx);
 
-                return true;
-            });
-        }
+        //        return true;
+        //    });
+        //}
 
-        public Result<bool> ExecuteTransfer(Guid fromAccountId, Guid toAccountId, Money amount)
-        {
-            return ExecuteSafe<bool>(() =>
-             {
-                 var fromAccount = _accountRepo.GetById(fromAccountId);
-                 var toAccount = _accountRepo.GetById(toAccountId);
+        //public Result<bool> ExecuteTransfer(Guid fromAccountId, Guid toAccountId, Money amount)
+        //{
+        //    return ExecuteSafe<bool>(() =>
+        //     {
+        //         var fromAccount = _accountRepo.GetById(fromAccountId);
+        //         var toAccount = _accountRepo.GetById(toAccountId);
 
-                 if (fromAccount == null || toAccount == null)
-                     throw new KeyNotFoundException($"One or both accounts were not found.");
+        //         if (fromAccount == null || toAccount == null)
+        //             throw new KeyNotFoundException($"One or both accounts were not found.");
 
-                 fromAccount.Withdraw(amount, DateTime.Now);
-                 toAccount.Deposit(amount, DateTime.Now);
+        //         fromAccount.Withdraw(amount, DateTime.Now);
+        //         toAccount.Deposit(amount, DateTime.Now);
 
-                 var transferCategory = Category.Create("Transfer", null, TransactionType.Transfer);
+        //         var transferCategory = Category.Create("Transfer", null, TransactionType.Transfer);
 
-                 var outTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
-                     transferCategory, fromAccount, $"Transfer from {toAccount.Name}", DateTime.Now);
+        //         var outTx = Transaction.CreateForAccount(amount, TransactionType.Expense,
+        //             transferCategory, fromAccount, $"Transfer from {toAccount.Name}", DateTime.Now);
 
-                 var inTx = Transaction.CreateForAccount(amount, TransactionType.Income,
-                     transferCategory, toAccount, $"Transfer to {fromAccount.Name}", DateTime.Now);
+        //         var inTx = Transaction.CreateForAccount(amount, TransactionType.Income,
+        //             transferCategory, toAccount, $"Transfer to {fromAccount.Name}", DateTime.Now);
 
-                 _transactionRepo.Add(outTx);
-                 _transactionRepo.Add(inTx);
+        //         _transactionRepo.Add(outTx);
+        //         _transactionRepo.Add(inTx);
 
-                 return true;
-             });
-        }
+        //         return true;
+        //     });
+        //}
 
-        public Result<Money> GetTotalNetWorth(Currency targetCurrency)
-        {
-            return ExecuteSafe<Money>(() =>
-            {
-                var allAccount = _accountRepo.GetAll();
-                decimal total = 0;
+        //public Result<Money> GetTotalNetWorth(Currency targetCurrency)
+        //{
+        //    return ExecuteSafe<Money>(() =>
+        //    {
+        //        var allAccount = _accountRepo.GetAll();
+        //        decimal total = 0;
 
-                foreach (var acc in allAccount)
-                {
-                    if (acc.Balance.Currency != targetCurrency) continue;
+        //        foreach (var acc in allAccount)
+        //        {
+        //            if (acc.Balance.Currency != targetCurrency) continue;
 
-                    if (acc.Type == TypeName.CreditCard)
-                    {
-                        total -= acc.Balance.Amount;
-                    }
-                    else
-                    {
-                        total += acc.Balance.Amount;
-                    }
-                }
+        //            if (acc.Type == TypeName.CreditCard)
+        //            {
+        //                total -= acc.Balance.Amount;
+        //            }
+        //            else
+        //            {
+        //                total += acc.Balance.Amount;
+        //            }
+        //        }
 
-                return Money.Create(total, targetCurrency);
-            });
-        }
+        //        return Money.Create(total, targetCurrency);
+        //    });
+        //}
 
-        public Result<List<Transaction>> GetAllTransactions()
-            => ExecuteSafe<List<Transaction>>(_transactionRepo.GetAll);
+        //public Result<List<Transaction>> GetAllTransactions()
+        //    => ExecuteSafe<List<Transaction>>(_transactionRepo.GetAll);
     }
 }

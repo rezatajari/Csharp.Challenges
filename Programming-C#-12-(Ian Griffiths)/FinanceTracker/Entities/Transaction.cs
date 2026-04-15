@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FinanceTracker.Entities
 {
-    public class Transaction:IEntity
+    public class Transaction:BaseEntity
     {
         private Transaction(Money amount, TransactionType type, Category category,
             IAccount account, string? description, DateTime createAt)
@@ -25,7 +25,7 @@ namespace FinanceTracker.Entities
             {
                 throw new ArgumentException("Transaction data must be a valid date.",nameof(createAt));
             }
-            this.CreateAt = createAt;
+            this.CreatedAt = createAt;
 
             this.Description = description;
         }
@@ -33,7 +33,6 @@ namespace FinanceTracker.Entities
         public Guid Id { get;private set; }
         public Money Amount { get; private set; }
         public TransactionType Type { get;private set; }
-        public DateTime CreateAt { get; private set; }
         public Category Category { get; private set; }
         public IAccount Account { get; private set; }
         public string? Description { get; private set; }
