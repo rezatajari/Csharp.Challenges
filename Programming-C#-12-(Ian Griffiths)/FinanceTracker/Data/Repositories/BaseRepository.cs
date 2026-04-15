@@ -7,32 +7,32 @@ namespace FinanceTracker.Data.Repositories
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly FinanceDbContext _context;
+        protected readonly DbSet<T> _dbSet;
         public BaseRepository(FinanceDbContext context)
         {
             _context = context;
+            _dbSet = context.Set<T>();
         }
 
         public async Task AddAsync(T entity)
-            => await _context.Set<T>().AddAsync(entity);
+            => await _dbSet.AddAsync(entity);
 
         public void Delete(T entity)
         {
             entity.Delete();
-            _context.Update(entity);
+            _dbSet.Update(entity);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
-            => await _context.Set<T>().ToListAsync();
+            => await _dbSet.ToListAsync();
 
         public async Task<T?> GetByIdAsync(int id)
-           => await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+           => await _dbSet.FindAsync(id);
 
         public void Update(T entity)
-           => _context.Set<T>().Update(entity);
+           => _dbSet.Update(entity);
 
         public async Task<int> SaveChangesAsync()
-            => await _context.SaveChangesAsync();
-
-
+            => await  _context.SaveChangesAsync();
     }
 }
