@@ -58,8 +58,8 @@ namespace FinanceTracker.Data
             {
                 entity.HasOne(t => t.ToAccount)
                       .WithMany()
-                      .HasForeignKey(t => t.ToAccountId) 
-                      .OnDelete(DeleteBehavior.Restrict)
+                      .HasForeignKey(t => t.ToAccountId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

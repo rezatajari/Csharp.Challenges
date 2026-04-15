@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceTracker.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20260415125945_init")]
+    [Migration("20260415173822_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -87,7 +87,11 @@ namespace FinanceTracker.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Transaction");
+                    b.ToTable("Transactions");
+
+                    b.HasDiscriminator<int>("Type");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("FinanceTracker.Entities.CreditCardAccount", b =>
@@ -102,6 +106,32 @@ namespace FinanceTracker.Migrations
                     b.HasBaseType("FinanceTracker.Entities.BaseAccount");
 
                     b.HasDiscriminator().HasValue("SavingsAccount");
+                });
+
+            modelBuilder.Entity("FinanceTracker.Entities.ExpenseTransaction", b =>
+                {
+                    b.HasBaseType("FinanceTracker.Entities.Transaction");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("FinanceTracker.Entities.IncomeTransaction", b =>
+                {
+                    b.HasBaseType("FinanceTracker.Entities.Transaction");
+
+                    b.HasDiscriminator().HasValue(0);
+                });
+
+            modelBuilder.Entity("FinanceTracker.Entities.TransferTransaction", b =>
+                {
+                    b.HasBaseType("FinanceTracker.Entities.Transaction");
+
+                    b.Property<int>("ToAccountId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ToAccountId");
+
+                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("FinanceTracker.Entities.BaseAccount", b =>
@@ -138,7 +168,7 @@ namespace FinanceTracker.Migrations
                     b.HasOne("FinanceTracker.Entities.BaseAccount", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.OwnsOne("FinanceTracker.ValueObjects.Money", "Amount", b1 =>
@@ -149,16 +179,16 @@ namespace FinanceTracker.Migrations
                             b1.Property<decimal>("Amount")
                                 .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("BalanceAmount");
+                                .HasColumnName("AmountAmount");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)")
-                                .HasColumnName("BalanceCurrency");
+                                .HasColumnName("AmountCurrency");
 
                             b1.HasKey("TransactionId");
 
-                            b1.ToTable("Transaction");
+                            b1.ToTable("Transactions");
 
                             b1.WithOwner()
                                 .HasForeignKey("TransactionId");
@@ -185,7 +215,7 @@ namespace FinanceTracker.Migrations
 
                             b1.HasKey("TransactionId");
 
-                            b1.ToTable("Transaction");
+                            b1.ToTable("Transactions");
 
                             b1.WithOwner()
                                 .HasForeignKey("TransactionId");
@@ -227,6 +257,17 @@ namespace FinanceTracker.Migrations
 
                     b.Navigation("CreditLimit")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FinanceTracker.Entities.TransferTransaction", b =>
+                {
+                    b.HasOne("FinanceTracker.Entities.BaseAccount", "ToAccount")
+                        .WithMany()
+                        .HasForeignKey("ToAccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ToAccount");
                 });
 
             modelBuilder.Entity("FinanceTracker.Entities.BaseAccount", b =>
