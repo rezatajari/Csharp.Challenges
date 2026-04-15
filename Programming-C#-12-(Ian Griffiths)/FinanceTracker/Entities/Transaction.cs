@@ -59,6 +59,7 @@ namespace FinanceTracker.Entities
         internal IncomeTransaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
             : base(amount,TransactionType.Income, category, account, description, createdAt) { }
+        protected IncomeTransaction():base() { }
     }
 
     public class ExpenseTransaction : Transaction
@@ -66,11 +67,11 @@ namespace FinanceTracker.Entities
         internal ExpenseTransaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
             : base(amount,TransactionType.Expense, category, account, description, createdAt) { }
+        protected ExpenseTransaction() : base() { }
     }
 
     public class TransferTransaction : Transaction
     {
-
         public int ToAccountId { get; private set; }
         public BaseAccount ToAccount { get; private set; }
 
@@ -81,6 +82,7 @@ namespace FinanceTracker.Entities
             ArgumentNullException.ThrowIfNull(toAccount, nameof(toAccount));
             this.ToAccount = toAccount;
         }
+        protected TransferTransaction() : base() { }
     }
 
     public enum TransactionType
