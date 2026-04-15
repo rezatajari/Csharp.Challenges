@@ -3,10 +3,10 @@ using FinanceTracker.ValueObjects;
 
 namespace FinanceTracker.Entities
 {
-    public abstract class Transaction:BaseEntity
+    public abstract class Transaction : BaseEntity
     {
 
-        public int AccountId { get;private set; }
+        public int AccountId { get; private set; }
         public Money Amount { get; private set; }
         public Category Category { get; private set; }
         public string? Description { get; private set; }
@@ -25,7 +25,7 @@ namespace FinanceTracker.Entities
 
             if (createdAt == default)
             {
-                throw new ArgumentException("Transaction data must be a valid date.",nameof(createdAt));
+                throw new ArgumentException("Transaction data must be a valid date.", nameof(createdAt));
             }
             this.CreatedAt = createdAt;
             this.Description = description;
@@ -33,17 +33,17 @@ namespace FinanceTracker.Entities
 
         protected Transaction() { }
 
-        public static Transaction Create(Money amount,TransactionType type,Category category,
-            BaseAccount account, string? description, DateTime createdAt,BaseAccount? toAccount=null)
+        public static Transaction Create(Money amount, TransactionType type, Category category,
+            BaseAccount account, string? description, DateTime createdAt, BaseAccount? toAccount = null)
         {
             if (category.Type != type)
                 throw new InvalidOperationException("Category/Type mismatch");
 
             return type switch
             {
-                TransactionType.Income => new IncomeTransaction( amount, category, account, description, createdAt),
-                TransactionType.Expense => new ExpenseTransaction( amount, category, account, description, createdAt),
-                TransactionType.Transfer => new TransferTransaction( amount, category, account, toAccount!, description, createdAt),
+                TransactionType.Income => new IncomeTransaction(amount, category, account, description, createdAt),
+                TransactionType.Expense => new ExpenseTransaction(amount, category, account, description, createdAt),
+                TransactionType.Transfer => new TransferTransaction(amount, category, account, toAccount!, description, createdAt),
                 _ => throw new ArgumentOutOfRangeException(nameof(type))
             };
         }
@@ -51,20 +51,20 @@ namespace FinanceTracker.Entities
 
 
     public class IncomeTransaction : Transaction
-    { 
+    {
         internal IncomeTransaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
-            : base(amount, category, account, description, createdAt){}
+            : base(amount, category, account, description, createdAt) { }
     }
 
     public class ExpenseTransaction : Transaction
     {
         internal ExpenseTransaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
-            : base(amount, category, account, description, createdAt){}
+            : base(amount, category, account, description, createdAt) { }
     }
 
-    public class TransferTransaction:Transaction
+    public class TransferTransaction : Transaction
     {
 
         public int ToAccountId { get; private set; }
