@@ -35,11 +35,11 @@ namespace FinanceTracker.Data
                 entity.HasKey(a => a.Id);
 
                 entity.HasOne(t => t.Account)
-                .WithMany()
+                .WithMany(a=>a.Transactions)
                 .HasForeignKey(t => t.AccountId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-                entity.MapMoney(a => a.Amount, "Balance");
+                entity.MapMoney(a => a.Amount, "Amount");
 
                 entity.OwnsOne(t => t.Category, category =>
                 {
