@@ -1,4 +1,5 @@
-﻿using FinanceTracker.Entities;
+﻿using Azure.Core;
+using FinanceTracker.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceTracker.Data
@@ -34,8 +35,9 @@ namespace FinanceTracker.Data
                 entity.HasKey(a => a.Id);
 
                 entity.HasOne(t => t.Account)
-                .WithMany(t => t.Transactions)
-                .HasForeignKey("AccountId");
+                .WithMany()
+                .HasForeignKey(t => t.AccountId)
+                .OnDelete(DeleteBehavior.Restrict);
 
                 entity.MapMoney(a => a.Amount, "Balance");
 
@@ -51,7 +53,18 @@ namespace FinanceTracker.Data
                     category.Property(c => c.Description)
                     .HasColumnName("CategoryDescription");
                 });
+
+                entity.HasDiscriminator<TransactionType>("Type")
+                .HasValue<IncomeTransaction>(TransactionType.Income)
+                .HasValue<ExpenseTransaction>(TransactionType.Expense)
+                .HasValue<TransferTransaction>(TransactionType.Transfer);
             });
+
+            modelBuilder.Entity<TransferTransaction>()
+                .HasOne(t=>t.ToAccount)
+                .WithMany()
+                .HasForeignKey(t=>t.ToAccountId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

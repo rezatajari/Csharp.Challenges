@@ -68,16 +68,14 @@ namespace FinanceTracker.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BaseAccountId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -89,9 +87,11 @@ namespace FinanceTracker.Migrations
 
                     b.HasIndex("AccountId");
 
+                    b.HasIndex("BaseAccountId");
+
                     b.ToTable("Transactions");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Transaction");
+                    b.HasDiscriminator<int>("Type");
 
                     b.UseTphMappingStrategy();
                 });
@@ -114,14 +114,14 @@ namespace FinanceTracker.Migrations
                 {
                     b.HasBaseType("FinanceTracker.Entities.Transaction");
 
-                    b.HasDiscriminator().HasValue("ExpenseTransaction");
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("FinanceTracker.Entities.IncomeTransaction", b =>
                 {
                     b.HasBaseType("FinanceTracker.Entities.Transaction");
 
-                    b.HasDiscriminator().HasValue("IncomeTransaction");
+                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("FinanceTracker.Entities.TransferTransaction", b =>
@@ -133,7 +133,7 @@ namespace FinanceTracker.Migrations
 
                     b.HasIndex("ToAccountId");
 
-                    b.HasDiscriminator().HasValue("TransferTransaction");
+                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("FinanceTracker.Entities.BaseAccount", b =>
@@ -168,10 +168,14 @@ namespace FinanceTracker.Migrations
             modelBuilder.Entity("FinanceTracker.Entities.Transaction", b =>
                 {
                     b.HasOne("FinanceTracker.Entities.BaseAccount", "Account")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("FinanceTracker.Entities.BaseAccount", null)
+                        .WithMany("Transactions")
+                        .HasForeignKey("BaseAccountId");
 
                     b.OwnsOne("FinanceTracker.ValueObjects.Money", "Amount", b1 =>
                         {
@@ -266,7 +270,7 @@ namespace FinanceTracker.Migrations
                     b.HasOne("FinanceTracker.Entities.BaseAccount", "ToAccount")
                         .WithMany()
                         .HasForeignKey("ToAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ToAccount");
