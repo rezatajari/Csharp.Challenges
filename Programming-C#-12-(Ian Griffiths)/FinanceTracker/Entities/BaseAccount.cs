@@ -7,15 +7,13 @@ using System.Transactions;
 
 namespace FinanceTracker.Entities
 {
-    public abstract class BaseAccount : IAccount
+    public abstract class BaseAccount : BaseEntity,IAccount
     {
         protected readonly Money _initialBalance;
 
         // For database (ef core) mapping
         private ICollection<Transaction> _transactions = new List<Transaction>();
-        public Guid Id { get; private set; }
         public string Name { get; protected set; }
-        public DateTime CreateAt { get; protected set; }
         public Money Balance { get; protected set; }
         public TypeName Type { get; protected set; }
 
@@ -24,12 +22,11 @@ namespace FinanceTracker.Entities
 
         protected BaseAccount(string name, Money initialBalance, TypeName type)
         {
-            Id = Guid.NewGuid();
             ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
             Name = name;
             Balance = initialBalance;
             Type = type;
-            CreateAt = DateTime.Now;
+            CreatedAt = DateTime.Now;
             _initialBalance = Balance;
         }
 

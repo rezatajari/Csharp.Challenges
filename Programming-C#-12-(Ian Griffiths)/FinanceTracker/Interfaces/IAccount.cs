@@ -3,7 +3,7 @@ using FinanceTracker.ValueObjects;
 
 namespace FinanceTracker.Interfaces
 {
-    public interface IAccount: IEntity
+    public interface IAccount
     {
         string Name { get; }
         Money Balance { get; }
