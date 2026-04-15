@@ -9,12 +9,12 @@ namespace FinanceTracker.Tests.Services
 {
     public class FinanceServiceTests
     {
-        private readonly Mock<JsonRepository<IAccount>> _mockAccountRepo;
+        private readonly Mock<JsonRepository<BaseAccount>> _mockAccountRepo;
         private readonly FinanceService _service;
 
         public FinanceServiceTests()
         {
-            _mockAccountRepo = new Mock<JsonRepository<IAccount>>();
+            _mockAccountRepo = new Mock<JsonRepository<BaseAccount>>();
 
             _service=new FinanceService(_mockAccountRepo.Object, new Repository<Transaction>());
         }

@@ -8,11 +8,11 @@ namespace FinanceTracker.Entities
 {
     public class Bank
     {
-        private readonly List<IAccount> _accounts = [];
+        private readonly List<BaseAccount> _accounts = [];
 
-        public IEnumerable<IAccount> Accounts => _accounts.AsReadOnly();
+        public IEnumerable<BaseAccount> Accounts => _accounts.AsReadOnly();
 
-        public void AddAccount(IAccount account) => _accounts.Add(account);
+        public void AddAccount(BaseAccount account) => _accounts.Add(account);
 
         public List<Money> GetTotalNetWorths()
             => _accounts.GroupBy(acc => acc.Balance.Currency)
@@ -21,13 +21,13 @@ namespace FinanceTracker.Entities
                     group.Key))
                 .ToList();
 
-        public IAccount? GetAccountByName(string name)
+        public BaseAccount? GetAccountByName(string name)
              => _accounts.FirstOrDefault(acc => acc.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
         public List<CreditCardAccount> GetCreditCards()
             => _accounts.OfType<CreditCardAccount>().ToList();
 
-        public List<IAccount> GetAccountInDebt()
+        public List<BaseAccount> GetAccountInDebt()
             => _accounts.Where(acc=>acc.Balance.Amount<0).ToList(); 
     }
 }
