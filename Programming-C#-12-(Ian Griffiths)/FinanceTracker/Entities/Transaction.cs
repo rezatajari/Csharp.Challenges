@@ -6,7 +6,7 @@ namespace FinanceTracker.Entities
     public class Transaction:BaseEntity
     {
         private Transaction(Money amount, TransactionType type, Category category,
-            IAccount account, string? description, DateTime createAt)
+            BaseAccount account, string? description, DateTime createAt)
         {
             this.Amount = amount;
             this.Type = type;
@@ -30,11 +30,11 @@ namespace FinanceTracker.Entities
         public Money Amount { get; private set; }
         public TransactionType Type { get;private set; }
         public Category Category { get; private set; }
-        public IAccount Account { get; private set; }
+        public BaseAccount Account { get; private set; }
         public string? Description { get; private set; }
 
         internal static Transaction CreateForAccount(Money amount, TransactionType type, Category category,
-            IAccount account, string? description, DateTime createAt)
+            BaseAccount account, string? description, DateTime createAt)
         {
             if (category.Type != type)
                 throw new InvalidOperationException($"Category type {category.Type} does not match transaction type {type}.");
