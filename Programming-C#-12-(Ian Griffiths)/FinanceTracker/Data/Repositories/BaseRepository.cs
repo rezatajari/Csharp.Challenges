@@ -1,5 +1,6 @@
 ﻿using FinanceTracker.Entities;
 using FinanceTracker.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceTracker.Data.Repositories
 {
@@ -11,7 +12,8 @@ namespace FinanceTracker.Data.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(T entity) => await _context.AddAsync(entity);
+        public async Task AddAsync(T entity)
+            => await _context.AddAsync(entity);
 
         public void Delete(T entity)
         {
@@ -19,10 +21,8 @@ namespace FinanceTracker.Data.Repositories
             _context.Update(entity);
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<T>> GetAllAsync()
+            =>await _context.Set<T>().ToListAsync();
 
         public Task<T?> GetByIdAsync(int id)
         {
