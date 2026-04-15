@@ -3,7 +3,7 @@ using FinanceTracker.ValueObjects;
 
 namespace FinanceTracker.Entities
 {
-    public class Transaction:BaseEntity
+    public abstract class Transaction:BaseEntity
     {
         private Transaction(Money amount, TransactionType type, Category category,
             BaseAccount account, string? description, DateTime createAt)
