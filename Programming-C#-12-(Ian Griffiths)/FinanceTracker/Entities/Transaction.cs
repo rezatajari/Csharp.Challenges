@@ -27,11 +27,13 @@ namespace FinanceTracker.Entities
         }
 
         protected Transaction() { }
+
+        public int AccountId { get; set; }
         public Money Amount { get; private set; }
         public TransactionType Type { get;private set; }
         public Category Category { get; private set; }
-        public BaseAccount Account { get; private set; }
         public string? Description { get; private set; }
+        public BaseAccount Account { get; private set; }
 
         internal static Transaction CreateForAccount(Money amount, TransactionType type, Category category,
             BaseAccount account, string? description, DateTime createAt)

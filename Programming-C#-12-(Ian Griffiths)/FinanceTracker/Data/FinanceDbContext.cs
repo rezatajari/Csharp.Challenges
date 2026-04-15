@@ -54,6 +54,11 @@ namespace FinanceTracker.Data
             {
                 entity.HasKey(a => a.Id);
 
+                entity.HasOne(t => t.Account)
+                .WithMany(t => t.Transactions)
+                .HasForeignKey("AccountId");
+                
+                    .
                 entity.OwnsOne(a => a.Amount, balance =>
                 {
                     balance.Property(m => m.Amount)
