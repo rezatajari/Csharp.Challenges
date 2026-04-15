@@ -22,7 +22,8 @@ namespace FinanceTracker.Entities
             return new CreditCardAccount(name, initialBalance, limit);
         }
 
-        public override Transaction Deposit(Money amount, DateTime createdAt)
+        public override Transaction Deposit(Money amount, Category category,
+            string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
 
@@ -36,7 +37,8 @@ namespace FinanceTracker.Entities
             return tx;
         }
 
-        public override Transaction Withdraw(Money amount, DateTime createdAt)
+        public override Transaction Withdraw(Money amount, Category category,
+            string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
 
