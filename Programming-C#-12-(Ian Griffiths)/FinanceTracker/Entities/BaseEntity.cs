@@ -8,6 +8,6 @@ namespace FinanceTracker.Entities
     {
         public int Id { get;protected set; }
         public DateTime CreatedAt { get;protected set; } = DateTime.Now;
-        public bool IsDeleted { get; protected set; }
+        public bool IsDeleted { get; protected set; } = false; 
     }
 }
