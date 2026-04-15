@@ -1,5 +1,6 @@
 ﻿using FinanceTracker.Interfaces;
 using FinanceTracker.ValueObjects;
+using System.Runtime.CompilerServices;
 
 namespace FinanceTracker.Entities
 {
@@ -13,7 +14,7 @@ namespace FinanceTracker.Entities
         public BaseAccount Account { get; private set; }
         public TransactionType Type { get; private set; }
 
-        protected Transaction(Money amount, Category category,
+        protected Transaction(Money amount, TransactionType type, Category category,
             BaseAccount account, string? description, DateTime createdAt)
         {
             this.Amount = amount;
@@ -29,6 +30,7 @@ namespace FinanceTracker.Entities
             }
             this.CreatedAt = createdAt;
             this.Description = description;
+            this.Type = type;
         }
 
         protected Transaction() { }
@@ -54,14 +56,14 @@ namespace FinanceTracker.Entities
     {
         internal IncomeTransaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
-            : base(amount, category, account, description, createdAt) { }
+            : base(amount,TransactionType.Income, category, account, description, createdAt) { }
     }
 
     public class ExpenseTransaction : Transaction
     {
         internal ExpenseTransaction(Money amount, Category category,
             BaseAccount account, string? description, DateTime createdAt)
-            : base(amount, category, account, description, createdAt) { }
+            : base(amount,TransactionType.Expense, category, account, description, createdAt) { }
     }
 
     public class TransferTransaction : Transaction
@@ -70,8 +72,9 @@ namespace FinanceTracker.Entities
         public int ToAccountId { get; private set; }
         public BaseAccount ToAccount { get; private set; }
 
-        internal TransferTransaction(Money amount, Category category, BaseAccount fromAccount, BaseAccount toAccount, string? description, DateTime createdAt)
-        : base(amount, category, fromAccount, description, createdAt)
+        internal TransferTransaction(Money amount, Category category, BaseAccount fromAccount,
+            BaseAccount toAccount, string? description, DateTime createdAt)
+        : base(amount,TransactionType.Transfer, category, fromAccount, description, createdAt)
         {
             ArgumentNullException.ThrowIfNull(toAccount, nameof(toAccount));
             this.ToAccount = toAccount;

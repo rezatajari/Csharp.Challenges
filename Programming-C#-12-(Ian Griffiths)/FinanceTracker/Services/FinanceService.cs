@@ -30,7 +30,18 @@ namespace FinanceTracker.Services
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public Task<Result<bool>> RecordTransaction(int accountId, Transaction transaction)
+        public async Task<Result<bool>> RecordIncome(InputRecordTxDto IncomeTx)
+        {
+            BaseAccount account = await _accountRepo.GetByIdAsync(IncomeTx.accountId);
+            if (account == null)
+                return Result<bool>.Failure("Account not found.");
+
+            var createTx = Transaction.Create(IncomeTx.amount, TransactionType.Income,
+                IncomeTx.category,account,IncomeTx.description,DateTime.UtcNow);
+
+        }
+
+        public async Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTx)
         {
             throw new NotImplementedException();
         }
@@ -39,17 +50,6 @@ namespace FinanceTracker.Services
         {
             throw new NotImplementedException();
         }
-
-        Task<Result<bool>> IFinanceService.RecordExpense(InputRecordTxDto ExpenseTx)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Result<bool>> IFinanceService.RecordIncome(InputRecordTxDto IncomeTx)
-        {
-            throw new NotImplementedException();
-        }
-
    
     }
 }

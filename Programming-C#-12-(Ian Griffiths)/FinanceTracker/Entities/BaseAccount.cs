@@ -7,7 +7,7 @@ using System.Transactions;
 
 namespace FinanceTracker.Entities
 {
-    public abstract class BaseAccount : BaseEntity,IAccount
+    public abstract class BaseAccount : BaseEntity
     {
         protected readonly Money _initialBalance;
 

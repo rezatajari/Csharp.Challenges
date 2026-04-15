@@ -44,7 +44,7 @@ namespace FinanceTracker.Entities
                 throw new InsufficientFundsException("Insufficient balance for this transaction.");
             }
 
-            var transaction = Transaction.CreateForAccount(amount, TransactionType.Expense,
+            var transaction = Transaction.Create(amount, TransactionType.Expense,
                 category, this, description, createdAt);
 
             this.Balance -= amount;
@@ -58,7 +58,7 @@ namespace FinanceTracker.Entities
         {
             EnsureSameCurrency(amount);
 
-            var transaction = Transaction.CreateForAccount(amount, TransactionType.Income,
+            var transaction = Transaction.Create(amount, TransactionType.Income,
                 category, this, description, createdAt);
 
             this.Balance += amount;

@@ -28,7 +28,7 @@ namespace FinanceTracker.Entities
 
             this.Balance += amount;
 
-            var tx = Transaction.CreateForAccount(amount, TransactionType.Income,
+            var tx = Transaction.Create(amount, TransactionType.Income,
                 Category.Create("Charge", null, TransactionType.Income), this, "Credit Payment", createdAt);
 
             StoreTransaction(tx);
@@ -46,7 +46,7 @@ namespace FinanceTracker.Entities
 
             this.Balance -= amount;
 
-            var tx = Transaction.CreateForAccount(amount, TransactionType.Expense,
+            var tx = Transaction.Create(amount, TransactionType.Expense,
                 Category.Create("Charge", null, TransactionType.Expense), this, "Credit Purchase", createdAt);
 
             StoreTransaction(tx);
