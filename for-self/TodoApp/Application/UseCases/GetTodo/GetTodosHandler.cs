@@ -18,7 +18,7 @@ namespace Application.UseCases.GetTodo
 
         public ReturnResponse<TodoItem> Handle(Guid id)
         {
-            var result=_repo.GetById(id);
+            var result=_repo.GetByIdAsync(id);
 
             if (result == null)
                 return ReturnResponse<TodoItem>.Fail("Todo item not found");

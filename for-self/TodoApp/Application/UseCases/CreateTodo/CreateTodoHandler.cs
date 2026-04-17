@@ -2,7 +2,6 @@
 using Application.DTOs;
 using Application.Interfaces;
 using Domain.Entities;
-using System.Threading.Tasks;
 
 namespace Application.UseCases.CreateTodo
 {
