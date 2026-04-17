@@ -1,6 +1,5 @@
 ﻿using Application.Common.TodoApp.Application.Common.Responses;
-using Application.DTOs;
-using Application.Interfaces;
+using Application.DTOs
 using Domain.Entities;
 
 namespace Application.UseCases.CreateTodo

@@ -1,14 +1,11 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.Interfaces
 {
-    public interface ITodoRepository
+    public interface ITodoRepository: IUnitOfWork
     {
-        TodoItem? GetById(Guid id);
-        void Add(TodoItem todo);
-        List<TodoItem> GetAll();
+        TodoItem? GetByIdAsync(Guid id);
+        Task AddAsync(TodoItem todo);
+        IEnumerable<TodoItem> GetAllAsync();
     }
 }
