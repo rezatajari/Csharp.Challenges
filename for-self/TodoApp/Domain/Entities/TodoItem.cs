@@ -1,8 +1,4 @@
 ﻿using Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Domain.Entities
 {
     public class TodoItem
@@ -14,9 +10,8 @@ namespace Domain.Entities
 
         private TodoItem() { }
 
-        public TodoItem(string title)
+        private TodoItem(string title)
         {
-            Id = Guid.NewGuid();
             Title = title;
             IsCompleted = false;
             CreatedAt = DateTime.UtcNow;
