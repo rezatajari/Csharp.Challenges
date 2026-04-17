@@ -6,7 +6,6 @@ namespace Domain.Entities
        
         public string Title { get; private set; }
         public bool IsCompleted { get; private set; }
-        public DateTime CreatedAt { get; private set; }
 
         private TodoItem() { }
 
@@ -14,7 +13,6 @@ namespace Domain.Entities
         {
             Title = title;
             IsCompleted = false;
-            CreatedAt = DateTime.UtcNow;
         }
 
         public static TodoItem Create(string title)

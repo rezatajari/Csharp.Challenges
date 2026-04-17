@@ -6,8 +6,11 @@ namespace Domain.Entities
 {
     public class BaseEntity
     {
-        public int Id { get; private set; }
-        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-        public bool IsDeleted { get; set; } = false;
+        public int Id { get; protected set; }
+        public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; protected set; } = false;
+
+        public void Delete()
+       => IsDeleted = true;
     }
 }
