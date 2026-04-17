@@ -1,9 +1,9 @@
 ﻿using Domain.Exceptions;
 namespace Domain.Entities
 {
-    public class TodoItem
+    public class TodoItem:BaseEntity
     {
-        public Guid Id { get; private set; }
+       
         public string Title { get; private set; }
         public bool IsCompleted { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -15,6 +15,14 @@ namespace Domain.Entities
             Title = title;
             IsCompleted = false;
             CreatedAt = DateTime.UtcNow;
+        }
+
+        public static TodoItem Create(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title cannot be empty.");
+
+            return new TodoItem(title);
         }
 
         public void Complete()
