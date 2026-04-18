@@ -18,10 +18,9 @@ namespace Application.UseCases.GetTodo
         {
             var result=await _repo.GetByIdAsync(id);
 
-            if (result == null)
-                return ReturnResponse<TodoItem>.Fail("Todo item not found");
-
-            return ReturnResponse<TodoItem>.Ok(result);
+             return (result == null)
+                ? ReturnResponse<TodoItem>.Fail("Todo item not found")
+                : ReturnResponse<TodoItem>.Ok(result);
         }
 
     }
