@@ -21,10 +21,8 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public TodoItem? GetById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<TodoItem?> GetByIdAsync(int id)
+            => await _context.FindAsync<TodoItem>(id);
 
         public TodoItem? GetByIdAsync(Guid id)
         {
@@ -33,7 +31,5 @@ namespace Infrastructure.Repositories
 
         public async Task<int> SaveChangesAsync()
             => await _context.SaveChangesAsync();
-
-       
     }
 }

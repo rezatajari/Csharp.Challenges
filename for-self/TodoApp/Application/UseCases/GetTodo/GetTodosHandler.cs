@@ -1,6 +1,7 @@
 ﻿using Application.Common;
 using Application.Interfaces;
 using Domain.Entities;
+using System.Threading.Tasks;
 
 namespace Application.UseCases.GetTodo
 {
@@ -13,9 +14,9 @@ namespace Application.UseCases.GetTodo
             _repo = repo;
         }
 
-        public ReturnResponse<TodoItem> Handle(Guid id)
+        public async Task<ReturnResponse<TodoItem>> Handle(int id)
         {
-            var result=_repo.GetByIdAsync(id);
+            var result=await _repo.GetByIdAsync(id);
 
             if (result == null)
                 return ReturnResponse<TodoItem>.Fail("Todo item not found");
