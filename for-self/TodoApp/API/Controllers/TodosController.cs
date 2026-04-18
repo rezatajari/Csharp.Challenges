@@ -37,22 +37,22 @@ namespace API.Controllers
         }
 
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _deleteTodoHandler.Handle(id);
             return (result.Success) ? Ok(result) : BadRequest(result);
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _getTodoHandler.Handle(id);
             return (result.Success) ? Ok(result) : BadRequest(result);
         }
 
-        [HttpPut("update")]
-        public async Task<IActionResult> Update(UpdateTodoDto request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateTodoDto request)
         {
             var result= await _updateTodoHandler.Handle(request);
             return (result.Success) ? Ok(result) : BadRequest(result);
