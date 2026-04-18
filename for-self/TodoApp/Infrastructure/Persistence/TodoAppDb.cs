@@ -15,6 +15,8 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<TodoItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
+
+                entity.HasQueryFilter(x => !x.IsDeleted);
             });
         }
     }
