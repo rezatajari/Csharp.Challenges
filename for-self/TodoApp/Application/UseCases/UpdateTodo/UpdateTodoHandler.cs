@@ -15,11 +15,11 @@ namespace Application.UseCases.UpdateTodo
 
         public async Task<ReturnResponse<bool>> Handle(UpdateTodoDto request)
         {
-            var todo= await _todoRepo.GetByIdAsync(request.id);
+            var todo= await _todoRepo.GetByIdAsync(request.Id);
             if (todo == null)
                 return ReturnResponse<bool>.Fail("Todo item not found.");
 
-            todo.Update(request.title);
+            todo.Update(request.Title);
             var result =await _todoRepo.SaveChangesAsync();
 
             return (result>0)
