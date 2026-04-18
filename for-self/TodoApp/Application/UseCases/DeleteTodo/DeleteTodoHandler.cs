@@ -1,8 +1,5 @@
 ﻿using Application.Common;
 using Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.UseCases.DeleteTodo
 {
@@ -16,7 +13,7 @@ namespace Application.UseCases.DeleteTodo
 
         public async Task<ReturnResponse<bool>> Handle(int id)
         {
-
+            var todo=await _todoRepo.GetByIdAsync(id);
         }
     }
 }
