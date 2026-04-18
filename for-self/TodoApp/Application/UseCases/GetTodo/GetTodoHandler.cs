@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.GetTodo
 {
-    public class GetTodosHandler
+    public class GetTodoHandler
     {
         private readonly ITodoRepository _repo;
 
-        public GetTodosHandler(ITodoRepository repo)
+        public GetTodoHandler(ITodoRepository repo)
         {
             _repo = repo;
         }

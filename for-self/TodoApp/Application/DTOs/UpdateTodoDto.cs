@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Application.DTOs
 {
-    public record UpdateTodoDto(string title);
+    public record UpdateTodoDto(int id, string title);
 }

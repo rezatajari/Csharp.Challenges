@@ -31,12 +31,13 @@ namespace Domain.Entities
             IsCompleted = true;
         }
 
-        public void Rename(string newTitle)
+        public bool Update(string newTitle)
         {
             if (string.IsNullOrWhiteSpace(newTitle))
                 throw new ArgumentException("Title cannot be empty.");
 
             Title = newTitle;
+            return true;
         }
     }
 }
