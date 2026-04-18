@@ -22,10 +22,10 @@ namespace Application.UseCases.CreateTodo
 
             await _todoRepo.AddAsync(todo);
             var result = await _todoRepo.SaveChangesAsync();
-            if (result > 0)
-                return ReturnResponse<TodoItem>.Ok(todo);
-
-            return ReturnResponse<TodoItem>.Fail("Failed to create todo item.");
+            
+            return (result > 0)
+                ? ReturnResponse<TodoItem>.Ok(todo, "Todo item added successfully.")
+                : ReturnResponse<TodoItem>.Fail("Failed to delete the todo item.");
         }
     }
 }
