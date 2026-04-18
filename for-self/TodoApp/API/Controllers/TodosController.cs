@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.UseCases.CompleteTodo;
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
 using Application.UseCases.GetTodo;
@@ -15,18 +16,21 @@ namespace API.Controllers
         private readonly DeleteTodoHandler _deleteTodoHandler;
         private readonly GetTodoHandler _getTodoHandler;
         private readonly UpdateTodoHandler _updateTodoHandler;
+        private readonly CompleteTodoHandler _completeTodoHandler;
 
         public TodosController(
             CreateTodoHandler createTodoHandler,
             DeleteTodoHandler deleteTodoHandler,
             GetTodoHandler getTodoHandler,
-            UpdateTodoHandler updateTodoHandler
+            UpdateTodoHandler updateTodoHandler,
+            CompleteTodoHandler completeTodoHandler
             )
         {
             _createTodoHandler = createTodoHandler;
             _deleteTodoHandler = deleteTodoHandler;
             _getTodoHandler = getTodoHandler;
             _updateTodoHandler = updateTodoHandler;
+            _completeTodoHandler= completeTodoHandler;
         }
 
         [HttpPost("create")]
@@ -55,6 +59,13 @@ namespace API.Controllers
         public async Task<IActionResult> Update(int id, UpdateTodoDto request)
         {
             var result= await _updateTodoHandler.Handle(request);
+            return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
+        }
+
+        [HttpPost("complete/{id}")]
+        public async Task<IActionResult> Complete(int id)
+        {
+            var result=await _completeTodoHandler.Handle(id);
             return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
         }
     }
