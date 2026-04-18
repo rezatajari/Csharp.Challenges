@@ -9,8 +9,5 @@ namespace Domain.Entities
         public int Id { get; protected set; }
         public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
         public bool IsDeleted { get; protected set; } = false;
-
-        public void Delete()
-       => IsDeleted = true;
-    }
+      }
 }

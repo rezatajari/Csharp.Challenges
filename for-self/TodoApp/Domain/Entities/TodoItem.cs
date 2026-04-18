@@ -6,7 +6,7 @@ namespace Domain.Entities
        
         public string Title { get; private set; }
         public bool IsCompleted { get; private set; }
-
+        public DateTime? CompletedAt { get; set; }
         private TodoItem() { }
 
         private TodoItem(string title)
@@ -22,13 +22,19 @@ namespace Domain.Entities
 
             return new TodoItem(title);
         }
+        public void Delete()
+     => IsDeleted = true;
 
         public void Complete()
         {
+            if (IsDeleted)
+                throw new DomainException("Cannot complete a deleted todo.");
+
             if (IsCompleted)
                 throw new DomainException("Todo is already completed.");
 
             IsCompleted = true;
+            CompletedAt = DateTime.UtcNow;
         }
 
         public bool Update(string newTitle)

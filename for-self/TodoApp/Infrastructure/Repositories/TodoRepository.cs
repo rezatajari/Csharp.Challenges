@@ -16,11 +16,6 @@ namespace Infrastructure.Repositories
         public async Task AddAsync(TodoItem todo)
            => await _context.TodoItems.AddAsync(todo);
 
-        Task<IEnumerable<TodoItem>> ITodoRepository.GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<TodoItem?> GetByIdAsync(int id)
             => await _context.FindAsync<TodoItem>(id);
 
