@@ -12,14 +12,16 @@ namespace API.Controllers
 
         public TodosController(CreateTodoHandler createTodoHandler)
         {
-            _createTodoHandler=createTodoHandler;
+            _createTodoHandler = createTodoHandler;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(CreateTodoDto request)
         {
-            var result=await _createTodoHandler.Handle(request);
-            return Ok(result);
+            var result = await _createTodoHandler.Handle(request);
+            return (result.Success) ? Ok(result) : BadRequest(result);
         }
+
+
     }
 }

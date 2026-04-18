@@ -2,10 +2,10 @@
 
 namespace Application.Interfaces
 {
-    public interface ITodoRepository: IUnitOfWork
+    public interface ITodoRepository : IUnitOfWork
     {
         TodoItem? GetByIdAsync(Guid id);
         Task AddAsync(TodoItem todo);
-        IEnumerable<TodoItem> GetAllAsync();
+        Task<IEnumerable<TodoItem>> GetAllAsync();
     }
 }
