@@ -19,9 +19,10 @@ namespace Application.UseCases.UpdateTodo
             if (todo == null)
                 return ReturnResponse<bool>.Fail("Todo item not found.");
 
-            var result= todo.Update(request.title);
+            todo.Update(request.title);
+            var result =await _todoRepo.SaveChangesAsync();
 
-            return result
+            return (result>0)
                 ? ReturnResponse<bool>.Ok(true, "Todo item updated successfully.")
                 : ReturnResponse<bool>.Fail("Failed to update the todo item.");
         }

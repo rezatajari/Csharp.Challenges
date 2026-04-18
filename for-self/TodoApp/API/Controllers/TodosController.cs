@@ -2,6 +2,7 @@
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
 using Application.UseCases.GetTodo;
+using Application.UseCases.UpdateTodo;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -12,17 +13,20 @@ namespace API.Controllers
     {
         private readonly CreateTodoHandler _createTodoHandler;
         private readonly DeleteTodoHandler _deleteTodoHandler;
-        private readonly GetTodosHandler _getTodoHandler;
+        private readonly GetTodoHandler _getTodoHandler;
+        private readonly UpdateTodoHandler _updateTodoHandler;
 
         public TodosController(
             CreateTodoHandler createTodoHandler,
             DeleteTodoHandler deleteTodoHandler,
-            GetTodosHandler getTodoHandler
+            GetTodoHandler getTodoHandler,
+            UpdateTodoHandler updateTodoHandler
             )
         {
             _createTodoHandler = createTodoHandler;
             _deleteTodoHandler = deleteTodoHandler;
             _getTodoHandler = getTodoHandler;
+            _updateTodoHandler = updateTodoHandler;
         }
 
         [HttpPost("create")]
@@ -44,6 +48,13 @@ namespace API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var result = await _getTodoHandler.Handle(id);
+            return (result.Success) ? Ok(result) : BadRequest(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(UpdateTodoDto request)
+        {
+            var result= await _updateTodoHandler.Handle(request);
             return (result.Success) ? Ok(result) : BadRequest(result);
         }
     }
