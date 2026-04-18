@@ -23,7 +23,7 @@ namespace Application.UseCases.UpdateTodo
             var result =await _todoRepo.SaveChangesAsync();
 
             return (result>0)
-                ? ReturnResponse<bool>.Ok(true, "Todo item updated successfully.")
+                ? ReturnResponse<bool>.Ok(true)
                 : ReturnResponse<bool>.Fail("Failed to update the todo item.");
         }
     }

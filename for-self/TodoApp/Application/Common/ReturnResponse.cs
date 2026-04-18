@@ -9,13 +9,12 @@
 
         private ReturnResponse() { }
 
-        public static ReturnResponse<T> Ok(T data, string? message = null)
+        public static ReturnResponse<T> Ok(T data)
         {
             return new ReturnResponse<T>
             {
                 Success = true,
                 Data = data,
-                Message = message,
                 Errors = null
             };
         }

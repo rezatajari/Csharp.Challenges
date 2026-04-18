@@ -21,7 +21,7 @@ namespace Application.UseCases.DeleteTodo
             var result = await _todoRepo.SaveChangesAsync();
 
             return (result > 0)
-                ? ReturnResponse<bool>.Ok(true, "Todo item deleted successfully.")
+                ? ReturnResponse<bool>.Ok(true)
                 : ReturnResponse<bool>.Fail("Failed to delete the todo item.");
         }
     }

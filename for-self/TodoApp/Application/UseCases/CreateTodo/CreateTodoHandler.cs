@@ -24,8 +24,8 @@ namespace Application.UseCases.CreateTodo
             var result = await _todoRepo.SaveChangesAsync();
             
             return (result > 0)
-                ? ReturnResponse<TodoItem>.Ok(todo, "Todo item added successfully.")
-                : ReturnResponse<TodoItem>.Fail("Failed to delete the todo item.");
+                ? ReturnResponse<TodoItem>.Ok(todo)
+                : ReturnResponse<TodoItem>.Fail("Failed to create todo item.");
         }
     }
 }
