@@ -1,9 +1,6 @@
-﻿using Application.Common.TodoApp.Application.Common.Responses;
+﻿using Application.Common;
 using Application.Interfaces;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.UseCases.GetTodo
 {

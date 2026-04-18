@@ -5,7 +5,7 @@ using System.Net;
 
 namespace Infrastructure.Repositories
 {
-    internal class TodoRepository : ITodoRepository
+    public class TodoRepository : ITodoRepository
     {
         private readonly TodoAppDb _context;
         public TodoRepository(TodoAppDb context)

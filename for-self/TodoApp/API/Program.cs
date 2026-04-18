@@ -1,7 +1,9 @@
+using Application.Interfaces;
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
 using Application.UseCases.GetTodo;
 using Infrastructure.Persistence;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,7 @@ builder.Services.AddDbContext<TodoAppDb>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<CreateTodoHandler>();
 builder.Services.AddScoped<DeleteTodoHandler>();
 builder.Services.AddScoped<GetTodosHandler>();      
@@ -36,3 +39,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+app.MapGet("/ping", () => "pong");

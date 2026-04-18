@@ -1,4 +1,4 @@
-﻿using Application.Common.TodoApp.Application.Common.Responses;
+﻿using Application.Common;
 using Application.DTOs;
 using Application.Interfaces;
 using Domain.Entities;
@@ -21,9 +21,11 @@ namespace Application.UseCases.CreateTodo
             var todo = TodoItem.Create(request.Title);
 
             await _todoRepo.AddAsync(todo);
-            await _todoRepo.SaveChangesAsync();
+            var result = await _todoRepo.SaveChangesAsync();
+            if (result > 0)
+                return ReturnResponse<TodoItem>.Ok(todo);
 
-            return ReturnResponse<TodoItem>.Ok(todo, "Todo item created successfully.");
+            return ReturnResponse<TodoItem>.Fail("Failed to create todo item.");
         }
     }
 }

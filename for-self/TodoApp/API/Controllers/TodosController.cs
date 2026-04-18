@@ -1,6 +1,5 @@
 ﻿using Application.DTOs;
 using Application.UseCases.CreateTodo;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,9 +16,9 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateTodoDto request)
+        public async Task<IActionResult> Create(CreateTodoDto request)
         {
-            var result= _createTodoHandler.Handle(request);
+            var result=await _createTodoHandler.Handle(request);
             return Ok(result);
         }
     }
