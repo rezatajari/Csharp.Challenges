@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FinanceTracker.Shared
+﻿namespace Domain.Shared
 {
     public class Result<T>
     {

@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using FinanceTracker.Exceptions;
+using Domain.Exceptions;
 using FinanceTracker.ValueObjects;
 
 namespace FinanceTracker.Tests.Entities

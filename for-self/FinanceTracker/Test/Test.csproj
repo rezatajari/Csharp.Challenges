@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\FinanceTracker.Core\FinanceTracker.Core.csproj" />
   </ItemGroup>
 
