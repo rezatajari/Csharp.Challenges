@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FinanceTracker\FinanceTracker.csproj" />
+    <ProjectReference Include="..\FinanceTracker.Core\FinanceTracker.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
