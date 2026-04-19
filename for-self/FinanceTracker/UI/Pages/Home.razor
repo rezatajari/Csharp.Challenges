@@ -1,7 +1,38 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Home - My Finance App</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="main-container">
+    <header class="mb-4">
+        <h1 class="display-4">Hello, User!</h1>
+        <p class="lead">Here is your financial status for today.</p>
+    </header>
 
-Welcome to your new app.
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Total Balance</div>
+                <div class="card-body">
+                    <h2 class="card-title">@currentBalance.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card border-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Action</h5>
+                    <button class="btn btn-primary" @onclick="RefreshBalance">Update View</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+    private decimal currentBalance = 1234.56m;
+    private void RefreshBalance()
+    {
+        currentBalance += 100.00m;
+    }
+}
