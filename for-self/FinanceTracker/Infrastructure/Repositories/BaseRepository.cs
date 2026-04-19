@@ -1,8 +1,9 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceTracker.Data.Repositories
+namespace Infrastructure.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {

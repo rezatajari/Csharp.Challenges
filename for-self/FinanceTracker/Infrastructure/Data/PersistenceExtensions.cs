@@ -1,12 +1,7 @@
 ﻿using FinanceTracker.ValueObjects;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace FinanceTracker.Data
+namespace Infrastructure.Data
 {
     public static class PersistenceExtensions
     {

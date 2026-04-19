@@ -1,8 +1,7 @@
-﻿using Azure.Core;
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using FinanceTracker.Data;
 
-namespace FinanceTracker.Data
+namespace Infrastructure.Data
 {
     public class FinanceDbContext : DbContext
     {
