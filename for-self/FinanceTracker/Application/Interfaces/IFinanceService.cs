@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Application.Dtos;
+﻿using Application.Dtos;
+using Domain.Entities;
 using Domain.Shared;
 using Domain.ValueObjects;
 
