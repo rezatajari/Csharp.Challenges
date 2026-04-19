@@ -1,9 +1,8 @@
-﻿using FinanceTracker.Dtos;
-using Domain.Entities;
-using FinanceTracker.Shared;
+﻿using Domain.Entities;
 using FinanceTracker.ValueObjects;
+using Application.Dtos;
 
-namespace FinanceTracker.Interfaces
+namespace Application.Interfaces
 {
     internal interface IFinanceService
     {

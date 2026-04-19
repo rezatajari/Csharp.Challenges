@@ -2,13 +2,13 @@
 using FinanceTracker.Data.Repositories;
 using FinanceTracker.Dtos;
 using Domain.Entities;
-using FinanceTracker.Interfaces;
 using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Application.Interfaces;
 
 
 var host = Host.CreateDefaultBuilder(args)

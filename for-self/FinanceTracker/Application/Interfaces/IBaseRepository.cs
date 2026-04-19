@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace FinanceTracker.Interfaces
+namespace Application.Interfaces
 {
     public interface IBaseRepository<T> where T:BaseEntity
     {
