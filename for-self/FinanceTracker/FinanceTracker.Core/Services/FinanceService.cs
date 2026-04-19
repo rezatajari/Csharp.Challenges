@@ -1,12 +1,8 @@
-﻿using FinanceTracker.Data;
-using FinanceTracker.Dtos;
+﻿using FinanceTracker.Dtos;
 using FinanceTracker.Entities;
 using FinanceTracker.Interfaces;
 using FinanceTracker.Shared;
 using FinanceTracker.ValueObjects;
-using Microsoft.Identity.Client;
-using System.Runtime.InteropServices.Marshalling;
-using System.Security;
 
 namespace FinanceTracker.Services
 {
