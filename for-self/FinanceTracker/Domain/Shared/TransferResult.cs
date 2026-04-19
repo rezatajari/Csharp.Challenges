@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.Dtos
+namespace Domain.Shared
 {
     public record TransferResult(Transaction sourceTx,Transaction destTx);
 }

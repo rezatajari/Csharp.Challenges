@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using FinanceTracker.ValueObjects;
 using Application.Dtos;
+using Domain.Shared;
 
 namespace Application.Interfaces
 {

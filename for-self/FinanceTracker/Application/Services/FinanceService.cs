@@ -2,6 +2,7 @@
 using FinanceTracker.ValueObjects;
 using Application.Dtos;
 using Application.Interfaces;
+using Domain.Shared;
 
 namespace FinanceTracker.Services
 {

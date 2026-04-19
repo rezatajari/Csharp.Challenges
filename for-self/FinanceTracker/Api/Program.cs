@@ -1,5 +1,4 @@
-﻿using FinanceTracker.Dtos;
-using Domain.Entities;
+﻿using Domain.Entities;
 using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;
 using Microsoft.EntityFrameworkCore;

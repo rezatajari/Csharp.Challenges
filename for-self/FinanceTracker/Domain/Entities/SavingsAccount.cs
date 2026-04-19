@@ -1,4 +1,6 @@
-﻿using FinanceTracker.ValueObjects;
+﻿using Domain.Exceptions;
+using Domain.Shared;
+using FinanceTracker.ValueObjects;
 using System.Data;
 
 namespace Domain.Entities

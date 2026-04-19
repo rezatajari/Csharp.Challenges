@@ -1,4 +1,4 @@
-using FinanceTracker.UI;
+using UI;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

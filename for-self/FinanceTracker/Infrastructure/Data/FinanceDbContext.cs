@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using FinanceTracker.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {

@@ -1,4 +1,6 @@
 ﻿using FinanceTracker.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Data
