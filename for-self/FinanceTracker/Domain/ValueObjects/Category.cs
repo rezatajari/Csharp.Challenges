@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.Text;
 
-namespace FinanceTracker.ValueObjects
+namespace Domain.ValueObjects
 {
     public record Category
     {

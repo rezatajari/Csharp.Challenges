@@ -1,4 +1,4 @@
-﻿using FinanceTracker.ValueObjects;
+﻿using Domain.ValueObjects;
 
 namespace Application.Dtos
 {

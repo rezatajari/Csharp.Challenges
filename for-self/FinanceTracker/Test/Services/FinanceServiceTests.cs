@@ -1,11 +1,9 @@
-﻿using FinanceTracker.Data;
-using Domain.Entities;
-using FinanceTracker.Interfaces;
-using FinanceTracker.Services;
-using FinanceTracker.ValueObjects;
+﻿using Domain.Entities;
 using Moq;
+using Domain.ValueObjects;
+using Application.Services;
 
-namespace FinanceTracker.Tests.Services
+namespace Test.Services
 {
     public class FinanceServiceTests
     {

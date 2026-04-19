@@ -1,10 +1,10 @@
 ﻿using Domain.Entities;
-using FinanceTracker.ValueObjects;
 using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
+using Domain.ValueObjects;
 
-namespace FinanceTracker.Services
+namespace Application.Services
 {
     public class FinanceService : IFinanceService
     {

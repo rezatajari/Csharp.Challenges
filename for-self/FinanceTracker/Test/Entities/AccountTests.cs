@@ -1,8 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.Exceptions;
-using FinanceTracker.ValueObjects;
+using Domain.ValueObjects;
 
-namespace FinanceTracker.Tests.Entities
+namespace Test.Entities
 {
     public class AccountTests
     {

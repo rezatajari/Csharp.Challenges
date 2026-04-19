@@ -1,4 +1,4 @@
-﻿namespace FinanceTracker.ValueObjects
+﻿namespace Domain.ValueObjects
 {
     public record Money
     {
