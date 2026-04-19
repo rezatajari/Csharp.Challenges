@@ -1,4 +1,4 @@
-﻿using FinanceTracker.Entities;
+﻿using Domain.Entities;
 
 namespace FinanceTracker.Dtos
 {

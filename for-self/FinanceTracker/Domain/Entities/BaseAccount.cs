@@ -1,11 +1,6 @@
-﻿using FinanceTracker.Interfaces;
-using FinanceTracker.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Transactions;
+﻿using FinanceTracker.ValueObjects;
 
-namespace FinanceTracker.Entities
+namespace Domain.Entities
 {
     public abstract class BaseAccount : BaseEntity
     {

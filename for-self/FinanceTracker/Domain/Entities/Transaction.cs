@@ -1,8 +1,6 @@
-﻿using FinanceTracker.Interfaces;
-using FinanceTracker.ValueObjects;
-using System.Runtime.CompilerServices;
+﻿using FinanceTracker.ValueObjects;
 
-namespace FinanceTracker.Entities
+namespace Domain.Entities
 {
     public abstract class Transaction : BaseEntity
     {

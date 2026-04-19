@@ -1,7 +1,7 @@
 ﻿using FinanceTracker.Data;
 using FinanceTracker.Data.Repositories;
 using FinanceTracker.Dtos;
-using FinanceTracker.Entities;
+using Domain.Entities;
 using FinanceTracker.Interfaces;
 using FinanceTracker.Services;
 using FinanceTracker.ValueObjects;

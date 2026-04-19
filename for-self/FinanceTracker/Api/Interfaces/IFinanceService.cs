@@ -1,5 +1,5 @@
 ﻿using FinanceTracker.Dtos;
-using FinanceTracker.Entities;
+using Domain.Entities;
 using FinanceTracker.Shared;
 using FinanceTracker.ValueObjects;
 

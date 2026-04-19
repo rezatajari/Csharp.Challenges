@@ -1,5 +1,5 @@
 ﻿using Azure.Core;
-using FinanceTracker.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceTracker.Data

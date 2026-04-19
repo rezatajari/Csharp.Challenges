@@ -1,7 +1,6 @@
-﻿using FinanceTracker.Exceptions;
-using FinanceTracker.ValueObjects;
+﻿using FinanceTracker.ValueObjects;
 
-namespace FinanceTracker.Entities
+namespace Domain.Entities
 {
     public class CreditCardAccount : BaseAccount
     {

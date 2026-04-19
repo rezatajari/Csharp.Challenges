@@ -1,4 +1,4 @@
-﻿using FinanceTracker.Entities;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;

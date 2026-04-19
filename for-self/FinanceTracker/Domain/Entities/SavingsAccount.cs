@@ -1,9 +1,7 @@
-﻿using FinanceTracker.Dtos;
-using FinanceTracker.Exceptions;
-using FinanceTracker.ValueObjects;
+﻿using FinanceTracker.ValueObjects;
 using System.Data;
 
-namespace FinanceTracker.Entities
+namespace Domain.Entities
 {
     public class SavingsAccount : BaseAccount
     {
