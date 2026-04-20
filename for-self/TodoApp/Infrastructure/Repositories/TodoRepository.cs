@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Persistence;
-using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -15,6 +15,9 @@ namespace Infrastructure.Repositories
 
         public async Task AddAsync(TodoItem todo)
            => await _context.TodoItems.AddAsync(todo);
+
+        public async Task<IEnumerable<TodoItem>> GetAllAsync()
+            => await _context.TodoItems.ToListAsync();
 
         public async Task<TodoItem?> GetByIdAsync(int id)
             => await _context.FindAsync<TodoItem>(id);

@@ -1,0 +1,33 @@
+﻿@page "/todos"
+@using Application.DTOs
+@using UI.Services
+@inject TodoService TodoService
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">My Todos</h2>
+
+    <ul class="list-group">
+        @foreach (var todo in todos)
+        {
+            <li class="list-group-item d-flex justify-content-between">
+                @todo.Title
+            </li>
+        }
+    </ul>
+
+</div>
+
+@code {
+    private List<ResponseTodoItemDto> todos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await TodoService.GetAllAsync();
+
+        if (result.Success)
+        {
+            todos = result.Data;
+        }
+    }
+}

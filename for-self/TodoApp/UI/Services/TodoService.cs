@@ -41,5 +41,15 @@ namespace UI.Services
 
             return content;
         }
+
+        public async Task<ApiResponse<ResponseTodoItemDto>> GetAllAsync()
+        {
+            var result = await _client.GetFromJsonAsync<IEnumerable<ResponseTodoItemDto>>("api/get-all");
+            var content = await result.Content.ReadFromJsonAsync<ApiResponse<ResponseTodoItemDto>>();
+            if (content == null)
+                throw new Exception("Failed to read response content.");
+
+            return content;
+        }
     }
 }

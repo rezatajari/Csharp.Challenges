@@ -79,5 +79,15 @@ namespace API.Controllers
                 ? Ok(new ApiResponse<bool>(true, Data: result.Data))
                 : BadRequest(new ApiResponse<bool>(false, Message: result.Message));
         }
+
+
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _completeTodoHandler.Handle(id);
+            return (result.Success)
+                ? Ok(new ApiResponse<bool>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<bool>(false, Message: result.Message));
+        }
     }
 }
