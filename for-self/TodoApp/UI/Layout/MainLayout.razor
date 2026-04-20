@@ -1,20 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="d-flex">
+<div class="container-fluid">
+    <div class="row">
 
-    <!-- Sidebar -->
-    <div class="bg-dark text-white p-3" style="width: 200px; height: 100vh;">
-        <h4>Todo App</h4>
+        <div class="col-2 bg-dark text-white min-vh-100 p-3">
+            <h4 class="mb-4">Todo App</h4>
 
-        <hr />
+            <a class="text-white d-block mb-2" href="/">Home</a>
+            <a class="text-white d-block mb-2" href="/todos">Todos</a>
+        </div>
 
-        <a class="text-white d-block" href="/">Home</a>
-        <a class="text-white d-block" href="/todos">Todos</a>
+        <div class="col-10 p-4">
+            @Body
+        </div>
+
     </div>
-
-    <!-- Main content -->
-    <div class="flex-grow-1 p-4">
-        @Body
-    </div>
-
 </div>
