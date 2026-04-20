@@ -13,19 +13,21 @@ namespace Application.UseCases.CreateTodo
             _todoRepo = todoRepo;
         }
 
-        public async Task<ReturnResponse<TodoItem>> Handle(CreateTodoDto request)
+        public async Task<ReturnResponse<ResponseTodoItemDto>> Handle(CreateTodoDto request)
         {
             if (string.IsNullOrWhiteSpace(request.Title))
-                return ReturnResponse<TodoItem>.Fail("Title cannot be empty.");
+                return ReturnResponse<ResponseTodoItemDto>.Fail("Title cannot be empty.");
 
             var todo = TodoItem.Create(request.Title);
 
             await _todoRepo.AddAsync(todo);
             var result = await _todoRepo.SaveChangesAsync();
-            
+
+            ResponseTodoItemDto responseDto = new ResponseTodoItemDto( todo.Id,todo.Title);
+
             return (result > 0)
-                ? ReturnResponse<TodoItem>.Ok(todo)
-                : ReturnResponse<TodoItem>.Fail("Failed to create todo item.");
+                ? ReturnResponse<ResponseTodoItemDto>.Ok(responseDto)
+                : ReturnResponse<ResponseTodoItemDto>.Fail("Failed to create todo item.");
         }
     }
 }

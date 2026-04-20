@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Application.DTOs
+@using Domain.Entities
 @using UI.Services
 @inject TodoService TodoService
 
@@ -26,11 +27,19 @@
 
 @code {
     private string title = string.Empty;
+    private List<TodoItem> todos = new();
 
     private async Task AddTodo()
     {
         var dto = new CreateTodoDto(title);
-        await TodoService.CreateTodoAsync(dto);
 
+        var result = await TodoService.CreateTodoAsync(dto);
+
+
+        if (result != null && result.Success)
+        {
+            todos.Add(result.Data); // update UI state
+            title = "";
+        }
     }
 }
