@@ -27,7 +27,7 @@
 
 @code {
     private string title = string.Empty;
-    private List<TodoItem> todos = new();
+    private List<ResponseTodoItemDto> todos = new();
 
     private async Task AddTodo()
     {
@@ -35,11 +35,9 @@
 
         var result = await TodoService.CreateTodoAsync(dto);
 
-
-        if (result != null && result.Success)
+        if (result.Success)
         {
-            todos.Add(result.Data); // update UI state
-            title = "";
+            todos.Add(result.Data);
         }
     }
 }

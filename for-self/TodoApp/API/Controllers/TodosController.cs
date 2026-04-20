@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.UseCases.CompleteTodo;
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
@@ -30,14 +31,16 @@ namespace API.Controllers
             _deleteTodoHandler = deleteTodoHandler;
             _getTodoHandler = getTodoHandler;
             _updateTodoHandler = updateTodoHandler;
-            _completeTodoHandler= completeTodoHandler;
+            _completeTodoHandler = completeTodoHandler;
         }
 
         [HttpPost("create")]
         public async Task<IActionResult> Create(CreateTodoDto request)
         {
             var result = await _createTodoHandler.Handle(request);
-            return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
+            return (result.Success)
+                ? Ok(new ApiResponse<ResponseTodoItemDto>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<ResponseTodoItemDto>(false, Message: result.Message));
         }
 
 
@@ -58,14 +61,14 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateTodoDto request)
         {
-            var result= await _updateTodoHandler.Handle(request);
+            var result = await _updateTodoHandler.Handle(request);
             return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
         }
 
         [HttpPost("complete/{id}")]
         public async Task<IActionResult> Complete(int id)
         {
-            var result=await _completeTodoHandler.Handle(id);
+            var result = await _completeTodoHandler.Handle(id);
             return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
         }
     }
