@@ -1,3 +1,20 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<div class="d-flex">
+
+    <!-- Sidebar -->
+    <div class="bg-dark text-white p-3" style="width: 200px; height: 100vh;">
+        <h4>Todo App</h4>
+
+        <hr />
+
+        <a class="text-white d-block" href="/">Home</a>
+        <a class="text-white d-block" href="/todos">Todos</a>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-grow-1 p-4">
+        @Body
+    </div>
+
+</div>

@@ -1,86 +1,24 @@
 ﻿@page "/"
-@using Application.DTOs
-@using Domain.Entities
-@using UI.Services
 @inject NavigationManager Nav
-@inject TodoService TodoService
 
-<div class="container mt-5">
+<div class="container mt-5 text-center">
 
-    <h1 class="mb-4">Todo App</h1>
+    <h1 class="mb-3">Todo App</h1>
 
-    <!-- Create section -->
-    <div class="input-group mb-3">
-        <input class="form-control" placeholder="Enter todo..." @bind="title" />
-        <button class="btn btn-primary" @onclick="AddTodo">Add</button>
-    </div>
+    <p class="text-muted">
+        Simple task management system. Create, complete and track your todos.
+    </p>
 
-    @foreach (var todo in todos)
-    {
-
-        <li class="list-group-item">
-            <button class="btn btn-info btn-sm"
-                    @onclick="() => GoToTodo(todo.Id)">
-                ℹ️
-            </button>
-            @todo.Title
-            <button class="btn btn-danger btn-sm" @onclick="() => DeleteTodo(todo.Id)">
-                🗑️
-            </button>
-        </li>
-    }
-
-    <!-- List section -->
-    <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            Sample Todo
-            <button class="btn btn-success btn-sm">Done</button>
-        </li>
-    </ul>
+    <button class="btn btn-primary mt-3"
+            @onclick="GoToTodos">
+        Go to Todos
+    </button>
 
 </div>
 
-
 @code {
-
-
-    private string title = string.Empty;
-    private List<ResponseTodoItemDto> todos = new();
-    private string ErrorMessage = string.Empty;
-
-    private void GoToTodo(int id)
+    private void GoToTodos()
     {
-        Nav.NavigateTo($"/todo/{id}");
-    }
-
-    private async Task AddTodo()
-    {
-        var dto = new CreateTodoDto(title);
-
-        var result = await TodoService.CreateTodoAsync(dto);
-
-        if (result.Success)
-        {
-            if (result.Data == null)
-            {
-                ErrorMessage = "Todo not found.";
-                return;
-            }
-
-            todos.Add(result.Data);
-        }
-    }
-
-    private async Task DeleteTodo(int id)
-    {
-        var result = await TodoService.DeleteTodoAsync(id);
-        if (result.Success)
-        {
-            var todoToRemove = todos.FirstOrDefault(t => t.Id == id);
-            if (todoToRemove != null)
-            {
-                todos.Remove(todoToRemove);
-            }
-        }
+        Nav.NavigateTo("/todos");
     }
 }
