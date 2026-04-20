@@ -48,28 +48,36 @@ namespace API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _deleteTodoHandler.Handle(id);
-            return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
+            return (result.Success)
+                ? Ok(new ApiResponse<bool>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<bool>(false, Message: result.Message));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _getTodoHandler.Handle(id);
-            return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
+            return (result.Success)
+                ? Ok(new ApiResponse<ResponseTodoItemDto>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<ResponseTodoItemDto>(false, Message: result.Message));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateTodoDto request)
         {
             var result = await _updateTodoHandler.Handle(request);
-            return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
+            return (result.Success)
+                ? Ok(new ApiResponse<bool>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<bool>(false, Message: result.Message));
         }
 
         [HttpPost("complete/{id}")]
         public async Task<IActionResult> Complete(int id)
         {
             var result = await _completeTodoHandler.Handle(id);
-            return (result.Success) ? Ok(result.Data) : BadRequest(result.Message);
+            return (result.Success)
+                ? Ok(new ApiResponse<bool>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<bool>(false, Message: result.Message));
         }
     }
 }

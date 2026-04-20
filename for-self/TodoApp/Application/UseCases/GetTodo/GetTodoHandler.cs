@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.DTOs;
 using Application.Interfaces;
 using Domain.Entities;
 using System.Threading.Tasks;
@@ -14,13 +15,13 @@ namespace Application.UseCases.GetTodo
             _repo = repo;
         }
 
-        public async Task<ReturnResponse<TodoItem>> Handle(int id)
+        public async Task<ReturnResponse<ResponseTodoItemDto>> Handle(int id)
         {
-            var result=await _repo.GetByIdAsync(id);
+            var todo =await _repo.GetByIdAsync(id);
 
-             return (result == null)
-                ? ReturnResponse<TodoItem>.Fail("Todo item not found")
-                : ReturnResponse<TodoItem>.Ok(result);
+            return (todo == null)
+                ? ReturnResponse<ResponseTodoItemDto>.Fail("Todo item not found")
+                : ReturnResponse<ResponseTodoItemDto>.Ok(new ResponseTodoItemDto(todo.Id, todo.Title));
         }
 
     }

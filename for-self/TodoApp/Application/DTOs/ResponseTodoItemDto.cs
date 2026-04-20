@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Application.DTOs
 {
-    public record ResponseTodoItemDto(int id,string title);
+    public record ResponseTodoItemDto(int Id,string Title);
 }
