@@ -34,22 +34,20 @@ namespace UI.Services
 
         public async Task<ApiResponse<ResponseTodoItemDto>> GetTodoByIdAsync(int id)
         {
-            var result = await _client.GetAsync($"api/todos/{id}");
-            var content = await result.Content.ReadFromJsonAsync<ApiResponse<ResponseTodoItemDto>>();
-            if (content == null)
+            var result = await _client.GetFromJsonAsync<ApiResponse<ResponseTodoItemDto>>($"api/todos/{id}");
+            if (result == null)
                 throw new Exception("Failed to read response content.");
 
-            return content;
+            return result;
         }
 
-        public async Task<ApiResponse<ResponseTodoItemDto>> GetAllAsync()
+        public async Task<ApiResponse<IEnumerable<ResponseTodoItemDto>>> GetAllAsync()
         {
-            var result = await _client.GetFromJsonAsync<IEnumerable<ResponseTodoItemDto>>("api/get-all");
-            var content = await result.Content.ReadFromJsonAsync<ApiResponse<ResponseTodoItemDto>>();
-            if (content == null)
+            var result = await _client.GetFromJsonAsync<ApiResponse<IEnumerable<ResponseTodoItemDto>>>("api/get-all");
+            if (result == null)
                 throw new Exception("Failed to read response content.");
 
-            return content;
+            return result;
         }
     }
 }
