@@ -1,0 +1,53 @@
+﻿@page "/todo/{Id:int}"
+@using Application.DTOs
+@using UI.Services
+@inject TodoService TodoService
+
+<div class="container mt-5">
+
+    <h1 class="mb-4">Todo App</h1>
+
+    @if (todo is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <div class="input-group mb-3">
+            <input class="form-control" value="@todo.Title" />
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private string? ErrorMessage { get; set; } = string.Empty;
+    private ResponseTodoItemDto? todo;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var result = await TodoService.GetTodoByIdAsync(Id);
+        if (result.Success)
+        {
+            if (result.Data == null)
+            {
+                ErrorMessage = "Todo not found.";
+                return;
+            }
+            else
+            {
+                todo = result.Data;
+            }
+        }
+        else
+        {
+            ErrorMessage = result.Message;
+        }
+        ;
+
+
+
+    }
+}

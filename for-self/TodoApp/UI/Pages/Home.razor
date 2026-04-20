@@ -2,6 +2,7 @@
 @using Application.DTOs
 @using Domain.Entities
 @using UI.Services
+@inject NavigationManager Nav
 @inject TodoService TodoService
 
 <div class="container mt-5">
@@ -16,7 +17,12 @@
 
     @foreach (var todo in todos)
     {
+
         <li class="list-group-item">
+            <button class="btn btn-info btn-sm"
+                    @onclick="() => GoToTodo(todo.Id)">
+                ℹ️
+            </button>
             @todo.Title
             <button class="btn btn-danger btn-sm" @onclick="() => DeleteTodo(todo.Id)">
                 🗑️
@@ -36,8 +42,16 @@
 
 
 @code {
+
+
     private string title = string.Empty;
     private List<ResponseTodoItemDto> todos = new();
+    private string ErrorMessage = string.Empty;
+
+    private void GoToTodo(int id)
+    {
+        Nav.NavigateTo($"/todo/{id}");
+    }
 
     private async Task AddTodo()
     {
@@ -47,6 +61,12 @@
 
         if (result.Success)
         {
+            if (result.Data == null)
+            {
+                ErrorMessage = "Todo not found.";
+                return;
+            }
+
             todos.Add(result.Data);
         }
     }
