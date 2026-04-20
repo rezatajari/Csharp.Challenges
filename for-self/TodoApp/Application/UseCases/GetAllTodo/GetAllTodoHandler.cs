@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.Common;
+using Application.DTOs;
 using Application.Interfaces;
 
 namespace Application.UseCases.GetAllTodo
@@ -11,9 +12,15 @@ namespace Application.UseCases.GetAllTodo
             _todoRepo = todoRepo;
         }
 
-        public async Task<IEnumerable<ResponseTodoItemDto>> Handle()
+        public async Task<ReturnResponse<IEnumerable<ResponseTodoItemDto>>> Handle()
         {
-            var todos=await _todoRepo.
+            var todos = await _todoRepo.GetAllAsync();
+            if (todos is null)
+                return ReturnResponse<IEnumerable<ResponseTodoItemDto>>.Fail("No todo items found.");
+
+            var responseDtos = todos.Select(todo => new ResponseTodoItemDto(todo.Id, todo.Title)).ToList();
+
+            return ReturnResponse<IEnumerable<ResponseTodoItemDto>>.Ok(responseDtos);   
         }
     }
 }
