@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.UseCases.CompleteTodo;
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
+using Application.UseCases.GetAllTodo;
 using Application.UseCases.GetTodo;
 using Application.UseCases.UpdateTodo;
 using Infrastructure.Persistence;
@@ -37,6 +38,7 @@ builder.Services.AddScoped<DeleteTodoHandler>();
 builder.Services.AddScoped<GetTodoHandler>();
 builder.Services.AddScoped<UpdateTodoHandler>();
 builder.Services.AddScoped<CompleteTodoHandler>();
+builder.Services.AddScoped<GetAllTodoHandler>();
 
 var app = builder.Build();
 
