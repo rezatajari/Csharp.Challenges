@@ -41,9 +41,9 @@ namespace UI.Services
             return result;
         }
 
-        public async Task<ApiResponse<IEnumerable<ResponseTodoItemDto>>> GetAllAsync()
+        public async Task<ApiResponse<List<ResponseTodoItemDto>>> GetAllAsync()
         {
-            var result = await _client.GetFromJsonAsync<ApiResponse<IEnumerable<ResponseTodoItemDto>>>("api/todos/get-all");
+            var result = await _client.GetFromJsonAsync<ApiResponse<List<ResponseTodoItemDto>>>("api/todos/get-all");
             if (result == null)
                 throw new Exception("Failed to read response content.");
 

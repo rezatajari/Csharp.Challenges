@@ -90,8 +90,8 @@ namespace API.Controllers
         {
             var result = await _getAllTodoHandler.Handle();
             return (result.Success)
-                ? Ok(new ApiResponse<IEnumerable<ResponseTodoItemDto>>(true, Data: result.Data))
-                : BadRequest(new ApiResponse<IEnumerable<ResponseTodoItemDto>>(false, Message: result.Message));
+                ? Ok(new ApiResponse<List<ResponseTodoItemDto>>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<List<ResponseTodoItemDto>>(false, Message: result.Message));
         }
     }
 }

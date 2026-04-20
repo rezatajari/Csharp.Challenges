@@ -19,10 +19,44 @@
         }
     </ul>
 
+    <button class="btn btn-primary" @onclick="ShowModal">
+        Create Todo
+    </button>
+
+    @if (isModalOpen)
+    {
+        <div class="modal fade show d-block">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Todo</h5>
+                        <button class="btn-close" @onclick="CloseModal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input class="form-control" @bind="title" placeholder="Enter todo..." />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                        <button class="btn btn-primary"
+                                @onclick="AddTodo"
+                                disabled="@string.IsNullOrWhiteSpace(title)">
+                            Add
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-backdrop fade show"></div>
+    }
 </div>
 
 @code {
-    private IEnumerable<ResponseTodoItemDto>? todos = Enumerable.Empty<ResponseTodoItemDto>();
+    private List<ResponseTodoItemDto>? todos = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,6 +65,31 @@
         if (result.Success)
         {
             todos = result.Data;
+        }
+    }
+
+    private bool isModalOpen = false;
+    private string title = "";
+
+    private void ShowModal()
+    {
+        isModalOpen = true;
+    }
+
+    private void CloseModal()
+    {
+        isModalOpen = false;
+    }
+
+    public async Task AddTodo()
+    {
+        var newTodo = new CreateTodoDto(title);
+        var result = await TodoService.CreateTodoAsync(newTodo);
+        if (result.Success && result.Data is not null)
+        {
+            todos.Add(result.Data);
+            title = "";
+            CloseModal();
         }
     }
 }
