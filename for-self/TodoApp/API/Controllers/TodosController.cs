@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/todos")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TodosController : ControllerBase
     {

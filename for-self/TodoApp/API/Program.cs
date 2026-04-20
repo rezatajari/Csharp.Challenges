@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Application.UseCases.CompleteTodo;
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
 using Application.UseCases.GetTodo;
@@ -35,6 +36,7 @@ builder.Services.AddScoped<CreateTodoHandler>();
 builder.Services.AddScoped<DeleteTodoHandler>();
 builder.Services.AddScoped<GetTodoHandler>();
 builder.Services.AddScoped<UpdateTodoHandler>();
+builder.Services.AddScoped<CompleteTodoHandler>();
 
 var app = builder.Build();
 
@@ -47,8 +49,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 
+app.UseRouting();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
