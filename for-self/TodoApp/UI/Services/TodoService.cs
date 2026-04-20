@@ -12,10 +12,10 @@ namespace UI.Services
             _client = client;
         }
 
-        public async Task<ReturnResponse<ResponseTodoItemDto>> CreateTodoAsync(CreateTodoDto todoModel)
+        public async Task<ApiResponse<ResponseTodoItemDto>> CreateTodoAsync(CreateTodoDto todoModel)
         {
             var result = await _client.PostAsJsonAsync("api/todos/create", todoModel);
-            var content = await result.Content.ReadFromJsonAsync<ReturnResponse<ResponseTodoItemDto>>();
+            var content = await result.Content.ReadFromJsonAsync<ApiResponse<ResponseTodoItemDto>>();
             if (content == null)
                 throw new Exception("Failed to read response content.");
 
