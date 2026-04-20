@@ -18,6 +18,9 @@
     {
         <li class="list-group-item">
             @todo.Title
+            <button class="btn btn-danger btn-sm" @onclick="() => DeleteTodo(todo.Id)">
+                🗑️
+            </button>
         </li>
     }
 
@@ -45,6 +48,19 @@
         if (result.Success)
         {
             todos.Add(result.Data);
+        }
+    }
+
+    private async Task DeleteTodo(int id)
+    {
+        var result = await TodoService.DeleteTodoAsync(id);
+        if (result.Success)
+        {
+            var todoToRemove = todos.FirstOrDefault(t => t.Id == id);
+            if (todoToRemove != null)
+            {
+                todos.Remove(todoToRemove);
+            }
         }
     }
 }

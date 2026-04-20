@@ -21,5 +21,15 @@ namespace UI.Services
 
             return content;
         }
+
+        public async Task<ApiResponse<bool>> DeleteTodoAsync(int id)
+        {
+            var result = await _client.DeleteAsync($"api/todos/{id}");
+            var content = await result.Content.ReadFromJsonAsync<ApiResponse<bool>>();
+            if (content == null)
+                throw new Exception("Failed to read response content.");
+
+            return content;
+        }
     }
 }
