@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using System.Net.Http.Json;
 
 namespace UI.Services
 {
@@ -10,9 +11,9 @@ namespace UI.Services
             _client= client;
         }
 
-        public async Task CreateTodo(CreateTodoDto todoModel)
+        public async Task CreateTodoAsync(CreateTodoDto todoModel)
         {
-
+            await _client.PostAsJsonAsync("api/todos/create", todoModel);
         }
     }
 }
