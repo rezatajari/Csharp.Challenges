@@ -20,7 +20,7 @@ namespace Application.UseCases.GetAllTodo
 
             var responseDtos = todos.Select(todo => new ResponseTodoItemDto(todo.Id, todo.Title)).ToList();
 
-            return ReturnResponse<IEnumerable<ResponseTodoItemDto>>.Ok(responseDtos);   
+            return ReturnResponse<IEnumerable<ResponseTodoItemDto>>.Ok(responseDtos);
         }
     }
 }

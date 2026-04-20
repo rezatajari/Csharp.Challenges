@@ -3,6 +3,7 @@ using Application.DTOs;
 using Application.UseCases.CompleteTodo;
 using Application.UseCases.CreateTodo;
 using Application.UseCases.DeleteTodo;
+using Application.UseCases.GetAllTodo;
 using Application.UseCases.GetTodo;
 using Application.UseCases.UpdateTodo;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,15 @@ namespace API.Controllers
         private readonly GetTodoHandler _getTodoHandler;
         private readonly UpdateTodoHandler _updateTodoHandler;
         private readonly CompleteTodoHandler _completeTodoHandler;
+        private readonly GetAllTodoHandler _getAllTodoHandler;
 
         public TodosController(
             CreateTodoHandler createTodoHandler,
             DeleteTodoHandler deleteTodoHandler,
             GetTodoHandler getTodoHandler,
             UpdateTodoHandler updateTodoHandler,
-            CompleteTodoHandler completeTodoHandler
+            CompleteTodoHandler completeTodoHandler,
+            GetAllTodoHandler getAllTodoHandler
             )
         {
             _createTodoHandler = createTodoHandler;
@@ -32,6 +35,7 @@ namespace API.Controllers
             _getTodoHandler = getTodoHandler;
             _updateTodoHandler = updateTodoHandler;
             _completeTodoHandler = completeTodoHandler;
+            _getAllTodoHandler = getAllTodoHandler;
         }
 
         [HttpPost("create")]
@@ -84,10 +88,10 @@ namespace API.Controllers
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _completeTodoHandler.Handle(id);
+            var result = await _getAllTodoHandler.Handle();
             return (result.Success)
-                ? Ok(new ApiResponse<bool>(true, Data: result.Data))
-                : BadRequest(new ApiResponse<bool>(false, Message: result.Message));
+                ? Ok(new ApiResponse<IEnumerable<ResponseTodoItemDto>>(true, Data: result.Data))
+                : BadRequest(new ApiResponse<IEnumerable<ResponseTodoItemDto>>(false, Message: result.Message));
         }
     }
 }
