@@ -1,9 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.Pkcs;
 
 namespace Api.Controllers
 {
@@ -24,6 +22,12 @@ namespace Api.Controllers
             return (result.IsSuccess)
                 ? Ok(ApiResult<bool>.Success(result.Value))
                 : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
+        }
+
+
+        [HttpGet("accounts")]
+        public async Task<IActionResult> GetAllAccounts() { 
+            var result=await _financeService.
         }
     }
 }

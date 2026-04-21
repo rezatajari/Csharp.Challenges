@@ -16,7 +16,7 @@ namespace UI.Services
 
         public async Task<ApiResult<bool>> CreateAccount(CreateAccountDto dto)
         {
-            var response = await _client.PostAsJsonAsync("api/Finance/create-account", dto);
+            var response = await _client.PostAsJsonAsync("api/finance/create-account", dto);
 
             return await response.Content.ReadFromJsonAsync<ApiResult<bool>>()
                 ?? ApiResult<bool>.Failure("Error connect to server");
@@ -24,7 +24,7 @@ namespace UI.Services
 
         public async Task<ApiResult<List<AccountDto>>> GetAllAccounts()
         {
-                var response = await _http.GetFromJsonAsync<ApiResult<List<AccountDto>>>("api/accounts");
+                var response = await _client.GetFromJsonAsync<ApiResult<List<AccountDto>>>("api/finance/accounts");
                 return response ?? ApiResult<List<AccountDto>>.Failure("Empty response from server");
             }
                 return ApiResult<List<AccountDto>>.Failure(ex.Message);

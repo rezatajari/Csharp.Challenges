@@ -1,7 +1,9 @@
 ﻿@page "/accounts"
 @using Application.Dtos
+@using Domain.Entities
+@using Domain.ValueObjects
 @using UI.Services
-@inject AccountService AccountService
+@inject AccountService accountServic
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -11,57 +13,63 @@
         </a>
     </div>
 
-
     @if (message == "created")
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
             <strong>Success!</strong> Your new account has been created successfully.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
 
-    @if (accounts == null)
+    @if (accountlist == null)
     {
-        <div class="text-center">
+        <div class="text-center py-5">
             <div class="spinner-border text-primary" role="status"></div>
-            <p>Loading your accounts...</p>
+            <p class="mt-2 text-muted">Loading your accounts...</p>
         </div>
     }
-    else if (!accounts.Any())
+    else if (!accountlist.Any())
     {
-        <div class="alert alert-info">
+        <div class="alert alert-info border-0 shadow-sm">
+            <i class="bi bi-info-circle me-2"></i>
             You haven't opened any accounts yet. Click "New Account" to start!
         </div>
     }
     else
     {
         <div class="row">
-            @foreach (var acc in accounts)
+            @foreach (var acc in accountlist)
             {
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm border-0 h-100" style="border-radius: 15px;">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
                                     <h5 class="card-title fw-bold mb-1">@acc.Name</h5>
-                                    <span class="badge @(acc.Type == AccountType.CreditCard ? "bg-info" : "bg-success") mb-3">
+                                    <span class="badge @(acc.Type == AccountType.CreditCard ? "bg-info text-dark" : "bg-success")">
                                         @acc.Type
                                     </span>
                                 </div>
-                                <i class="bi @(acc.Type == AccountType.CreditCard ? "bi-credit-card" : "bi-piggy-bank") fs-3 text-muted"></i>
+                                <div class="rounded-circle bg-light p-2">
+                                    <i class="bi @(acc.Type == AccountType.CreditCard ? "bi-credit-card" : "bi-piggy-bank") fs-4 text-primary"></i>
+                                </div>
                             </div>
 
-                            <h3 class="fw-bold text-dark">@acc.Balance.Amount.ToString("C")</h3>
+                            <h3 class="fw-bold text-dark mb-0">@acc.Balance.Amount.ToString("C")</h3>
 
-                            @if (acc.Type == AccountType.CreditCard)
+                            @if (acc.Type == AccountType.CreditCard && acc.CreditLimit != null)
                             {
-                                <div class="mt-2 small text-muted">
-                                    Limit: @acc.CreditLimit.Amount.ToString("C")
+                                <div class="mt-3 pt-3 border-top">
+                                    <div class="d-flex justify-content-between small">
+                                        <span class="text-muted">Credit Limit:</span>
+                                        <span class="fw-bold text-primary">@acc.CreditLimit.Amount.ToString("C")</span>
+                                    </div>
                                 </div>
                             }
                         </div>
-                        <div class="card-footer bg-transparent border-0 pb-3">
-                            <button class="btn btn-outline-primary btn-sm w-100">View Details</button>
+                        <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                            <button class="btn btn-light btn-sm w-100 fw-bold shadow-sm">View Details</button>
                         </div>
                     </div>
                 </div>
@@ -71,18 +79,21 @@
 </div>
 
 @code {
-    private List<AccountDto>? accounts;
+    private List<AccountDto>? accountlist;
+
     [SupplyParameterFromQuery]
     public string? message { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await AccountService.GetAllAccounts();
-        if (result.IsSuccess)
+        var result = await accountServic.GetAllAccounts();
+        if (result != null && result.IsSuccess)
         {
-            accounts = result.Value;
+            accountlist = result.Value;
+        }
+        else
+        {
+            accountlist = new List<AccountDto>();
         }
     }
-
-
 }

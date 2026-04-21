@@ -64,5 +64,8 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
+        public Task<Result<List<BaseAccount>>> GetAccounts()
+        {
+        }
     }
 }
