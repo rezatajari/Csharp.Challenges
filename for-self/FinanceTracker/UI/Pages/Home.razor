@@ -18,3 +18,37 @@
     <TransactionItem Title="Starbucks Coffee" Amount="5.50m" Date="DateTime.Now.AddHours(-2)" Icon="bi-cup-hot" IsIncome="false" />
     <TransactionItem Title="Netflix Subscription" Amount="15.99m" Date="DateTime.Now.AddDays(-1)" Icon="bi-play-circle" IsIncome="false" />
 </div>
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        <div class="col-lg-8 col-md-12">
+            <BalanceCard Amount="15250.75m" />
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+            <h6 class="text-muted mb-3">Quick Actions</h6>
+            <div class="row g-2">
+                <div class="col-6">
+                    <QuickAction Label="Add Income" Icon="bi-plus-circle" ColorClass="text-success" />
+                </div>
+                <div class="col-6">
+                    <QuickAction Label="Add Expense" Icon="bi-dash-circle" ColorClass="text-danger" />
+                </div>
+                <div class="col-6">
+                    <QuickAction Label="Transfer" Icon="bi-arrow-left-right" ColorClass="text-primary" />
+                </div>
+                <div class="col-6">
+                    <QuickAction Label="Reports" Icon="bi-bar-chart" ColorClass="text-info" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h5 class="mb-4 fw-bold">Recent Activity</h5>
+            <TransactionItem Title="Monthly Salary" Amount="5000" Date="DateTime.Now" Icon="bi-wallet2" IsIncome="true" />
+            <TransactionItem Title="Starbucks Coffee" Amount="5.50m" Date="DateTime.Now.AddHours(-2)" Icon="bi-cup-hot" IsIncome="false" />
+        </div>
+    </div>
+</div>

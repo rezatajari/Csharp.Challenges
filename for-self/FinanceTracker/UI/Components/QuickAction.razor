@@ -1,0 +1,13 @@
+﻿<div class="action-card p-3 text-center rounded shadow-sm border bg-white" @onclick="OnClick">
+    <div class="icon-circle mb-2 mx-auto @ColorClass">
+        <i class="bi @Icon"></i>
+    </div>
+    <span class="small fw-bold text-secondary">@Label</span>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public string ColorClass { get; set; } = "text-primary";
+    [Parameter] public EventCallback OnClick { get; set; }
+}
