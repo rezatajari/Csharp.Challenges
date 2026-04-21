@@ -57,4 +57,3 @@ app.MapControllers();
 
 app.Run();
 
-app.MapGet("/ping", () => "pong");
