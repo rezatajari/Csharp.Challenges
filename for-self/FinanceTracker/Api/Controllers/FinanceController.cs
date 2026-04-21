@@ -17,9 +17,9 @@ namespace Api.Controllers
         }
 
         [HttpPost("create-account")]
-        public Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
+        public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
         {
-            
+            var result=await _financeService.OpenAccount()        
         }
     }
 }

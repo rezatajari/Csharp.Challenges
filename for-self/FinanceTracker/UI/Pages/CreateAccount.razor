@@ -1,5 +1,6 @@
 ﻿@page "/create-account"
 @using Application.Dtos
+@using Domain.Entities
 @using Domain.ValueObjects
 
 <div class="container mt-5">
@@ -8,24 +9,40 @@
             <div class="card shadow-sm border-0" style="border-radius: 15px;">
                 <div class="card-body p-4">
                     <h3 class="fw-bold mb-3">Open New Account</h3>
-                    <p class="text-muted mb-4">Fill in the details to start your new financial journey.</p>
 
                     <EditForm Model="@formModel" OnValidSubmit="HandleSubmit">
                         <div class="mb-3">
+                            <label class="form-label fw-semibold">Account Type</label>
+                            <InputSelect class="form-select form-control-lg" @bind-Value="formModel.Type">
+                                <option value="@AccountType.Savings">Savings Account</option>
+                                <option value="@AccountType.CreditCard">Credit Card Account</option>
+                            </InputSelect>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label fw-semibold">Account Name</label>
-                            <InputText class="form-control form-control-lg"
-                                       @bind-Value="formModel.Name"
-                                       placeholder="e.g. Daily Expenses" />
+                            <InputText class="form-control form-control-lg" @bind-Value="formModel.Name" />
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Initial Balance</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <InputNumber class="form-control form-control-lg"
-                                             @bind-Value="formModel.Amount" />
+                                <InputNumber class="form-control form-control-lg" @bind-Value="formModel.Amount" />
                             </div>
                         </div>
+
+                        @if (formModel.Type == AccountType.CreditCard)
+                        {
+                            <div class="mb-4 p-3 bg-light rounded-3 border">
+                                <label class="form-label fw-bold text-primary">Credit Limit</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white">$</span>
+                                    <InputNumber class="form-control form-control-lg" @bind-Value="formModel.CreditLimitAmount" />
+                                </div>
+                                <small class="text-muted">Define the maximum credit for this card.</small>
+                            </div>
+                        }
 
                         <button type="submit" class="btn btn-primary btn-lg w-100" style="border-radius: 10px;">
                             Confirm & Create
@@ -44,16 +61,22 @@
     {
         var accountModel = new CreateAccountDto(
             formModel.Name,
-            Money.Create(formModel.Amount, Currency.USD)
-    );
+            Money.Create(formModel.Amount, Currency.USD),
+            formModel.Type,
+            formModel.Type == AccountType.CreditCard
+                ? Money.Create(formModel.CreditLimitAmount, Currency.USD)
+                : Money.Default()
+        );
 
-        Console.WriteLine($"Ready to send to Server: {accountModel.Name} with {accountModel.Balance.Amount}");
-
+        Console.WriteLine($"Type: {accountModel.Type}, Limit: {formModel.CreditLimitAmount}");
     }
 
     public class FormModel
     {
         public string Name { get; set; } = string.Empty;
         public decimal Amount { get; set; }
+        public AccountType Type { get; set; } = AccountType.Savings;
+
+        public decimal CreditLimitAmount { get; set; }
     }
 }

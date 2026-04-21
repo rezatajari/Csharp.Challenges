@@ -3,5 +3,10 @@ using Domain.ValueObjects;
 
 namespace Application.Dtos
 {
-    public record CreateAccountDto(string Name,Money Balance, AccountType Type);
+    public record CreateAccountDto(
+        string Name,
+        Money Balance, 
+        AccountType Type,
+        Money CreditLimit
+        );
 }
