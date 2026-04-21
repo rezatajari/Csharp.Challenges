@@ -2,6 +2,9 @@
 @using Application.Dtos
 @using Domain.Entities
 @using Domain.ValueObjects
+@inject NavigationManager Navigation
+@using UI.Services
+@inject AccountService accService
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -11,6 +14,13 @@
                     <h3 class="fw-bold mb-3">Open New Account</h3>
 
                     <EditForm Model="@formModel" OnValidSubmit="HandleSubmit">
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <div>@errorMessage</div>
+                            </div>
+                        }
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Account Type</label>
                             <InputSelect class="form-select form-control-lg" @bind-Value="formModel.Type">
@@ -44,8 +54,16 @@
                             </div>
                         }
 
-                        <button type="submit" class="btn btn-primary btn-lg w-100" style="border-radius: 10px;">
-                            Confirm & Create
+                        <button type="submit" class="btn btn-primary w-100" disabled="@isSubmitting">
+                            @if (isSubmitting)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span> Processing...</span>
+                            }
+                            else
+                            {
+                                <span>Confirm & Create</span>
+                            }
                         </button>
                     </EditForm>
                 </div>
@@ -56,10 +74,15 @@
 
 @code {
     private FormModel formModel = new();
+    private string? errorMessage; 
+    private bool isSubmitting;    
 
-    private void HandleSubmit()
+    private async Task HandleSubmit()
     {
-        var accountModel = new CreateAccountDto(
+        isSubmitting = true;
+        errorMessage = null; 
+
+        var dto = new CreateAccountDto(
             formModel.Name,
             Money.Create(formModel.Amount, Currency.USD),
             formModel.Type,
@@ -68,10 +91,21 @@
                 : Money.Default()
         );
 
-        Console.WriteLine($"Type: {accountModel.Type}, Limit: {formModel.CreditLimitAmount}");
+        var result = await accService.CreateAccount(dto);
+
+        if (result.IsSuccess)
+        {
+            Navigation.NavigateTo("/accounts");
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage;
+        }
+
+        isSubmitting = false;
     }
 
-    public class FormModel
+    private class FormModel
     {
         public string Name { get; set; } = string.Empty;
         public decimal Amount { get; set; }
