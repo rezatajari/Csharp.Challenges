@@ -18,7 +18,7 @@ namespace Api.Controllers
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
         {
-            var result=await _financeService.OpenAccount(createAccModel);
+            var result = await _financeService.OpenAccount(createAccModel);
             return (result.IsSuccess)
                 ? Ok(ApiResult<bool>.Success(result.Value))
                 : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
@@ -26,8 +26,12 @@ namespace Api.Controllers
 
 
         [HttpGet("accounts")]
-        public async Task<IActionResult> GetAllAccounts() { 
-            var result=await _financeService.
+        public async Task<IActionResult> GetAllAccounts()
+        {
+            var result = await _financeService.GetAccounts();
+            return (result.IsSuccess)
+                 ? Ok(ApiResult<List<AccountDto>>.Success(result.Value))
+                 : BadRequest(ApiResult<List<AccountDto>>.Failure(result.ErrorMessage));
         }
     }
 }
