@@ -13,7 +13,7 @@ namespace Test.Entities
             var initialAmount = Money.Create(100, Currency.USD);
 
             // Act
-            var account = SavingsAccount.Create("My Savings", initialAmount, TypeName.Bank);
+            var account = SavingsAccount.Create("My Savings", initialAmount, AccountType.Bank);
 
             // Assert
             Assert.Equal(100, account.Balance.Amount);
@@ -24,7 +24,7 @@ namespace Test.Entities
         {
             var initialAmount = Money.Create(100, Currency.USD);
             var depositAmount = Money.Create(50, Currency.USD);
-            var account = SavingsAccount.Create("My Savings", initialAmount, TypeName.Bank);
+            var account = SavingsAccount.Create("My Savings", initialAmount, AccountType.Bank);
 
             account.Deposit(depositAmount, Category.Create("Income", null, TransactionType.Income), null, DateTime.Now);
 
@@ -34,7 +34,7 @@ namespace Test.Entities
         [Fact]
         public void Withdraw_Should_DecreaseBalance_WhenFundsAreSufficient()
         {
-            var account = SavingsAccount.Create("My Savings", Money.Create(200, Currency.USD), TypeName.Bank);
+            var account = SavingsAccount.Create("My Savings", Money.Create(200, Currency.USD), AccountType.Bank);
 
             account.Withdraw(Money.Create(80, Currency.USD),DateTime.Now);
 
@@ -44,7 +44,7 @@ namespace Test.Entities
         [Fact]
         public void Withdraw_Should_ThrowException_WhenBalanceIsTooLow()
         {
-            var account = SavingsAccount.Create("My Savings", Money.Create(50, Currency.USD), TypeName.Bank);
+            var account = SavingsAccount.Create("My Savings", Money.Create(50, Currency.USD), AccountType.Bank);
 
             Assert.Throws<InsufficientFundsException>(() => account.Withdraw(Money.Create(100, Currency.USD),DateTime.Now));
         }
@@ -52,12 +52,12 @@ namespace Test.Entities
         [Fact]
         public void Constructor_Should_ThrowArgumentException_WhenInitialBalanceIsNegative()
             => Assert.Throws<ArgumentException>(()
-                => SavingsAccount.Create("My Savings", Money.Create(-100, Currency.USD), TypeName.Bank));
+                => SavingsAccount.Create("My Savings", Money.Create(-100, Currency.USD), AccountType.Bank));
 
         [Fact]
         public void TransferTo_Should_ThrowInvalidOperation_WhenSourceAndDestinationAreSame()
         {
-            var account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            var account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), AccountType.Bank);
             Assert.Throws<InvalidOperationException>(()
                 => account.TransferTo(account, Money.Create(50, Currency.USD), DateTime.Now));
         }
@@ -65,7 +65,7 @@ namespace Test.Entities
         [Fact]
         public void GetBalanceAtDate_Should_ReturnInitialBalance_WhenNoTransactionsExist()
         {
-            var account=SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            var account=SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), AccountType.Bank);
             var result=account.GetBalanceAtDate(DateTime.Now);
 
             Assert.Equal(100, result.Amount);
@@ -74,7 +74,7 @@ namespace Test.Entities
         [Fact]
         public void GetBalanceAtDate_Should_IgnoreFutureTransactions_WhenDateIsPast()
         {
-            var account=SavingsAccount.Create("My Savings",Money.Create(100,Currency.USD),TypeName.Bank);
+            var account=SavingsAccount.Create("My Savings",Money.Create(100,Currency.USD),AccountType.Bank);
 
             var now = DateTime.Now;
             var tommorow = now.AddDays(1);
@@ -87,7 +87,7 @@ namespace Test.Entities
         [Fact]
         public void GetBalanceAtDate_Should_ReturnZero_WhenDateIsBeforeAccountCreation()
         {
-            var account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            var account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), AccountType.Bank);
 
             var now = DateTime.Now;
             var yesterday = now.AddDays(-1);
@@ -98,7 +98,7 @@ namespace Test.Entities
         [Fact]
         public void GetTotalSpendingByCategory_Should_OnlySumExpenses_AndIgnoreIncome()
         {
-            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Default(), TypeName.Bank);
+            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Default(), AccountType.Bank);
 
             DateTime now = DateTime.Now;
             Money depositAmount = Money.Create(500, Currency.USD);
@@ -115,7 +115,7 @@ namespace Test.Entities
         [Fact]
         public void GetSpendingSummary_Should_GroupMultipleTransactions_ByCommonCategoryName()
         {
-            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Create(100,Currency.USD), TypeName.Bank);
+            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Create(100,Currency.USD), AccountType.Bank);
             DateTime now = DateTime.Now;
 
             Money coffee1 = Money.Create(5, Currency.USD);
@@ -134,7 +134,7 @@ namespace Test.Entities
         [Fact]
         public void Indexer_Should_ReturnCorrectTransaction_ByIntegerIndex()
         {
-            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), AccountType.Bank);
             var depositAmount = Money.Create(50, Currency.USD);
             DateTime now = DateTime.Now;
              account.Deposit(depositAmount,now);
@@ -148,7 +148,7 @@ namespace Test.Entities
         [Fact]
         public void Indexer_Should_ReturnCorrectTransaction_ByGuid()
         {
-            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), TypeName.Bank);
+            SavingsAccount account = SavingsAccount.Create("My Savings", Money.Create(100, Currency.USD), AccountType.Bank);
             var depositAmount = Money.Create(50, Currency.USD);
             DateTime now = DateTime.Now;
             var createdTx = account.Deposit(depositAmount, now);

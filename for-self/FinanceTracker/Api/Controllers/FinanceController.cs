@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Dtos;
+using Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.Pkcs;
 
 namespace Api.Controllers
 {
@@ -7,12 +10,16 @@ namespace Api.Controllers
     [ApiController]
     public class FinanceController : ControllerBase
     {
-
-        [HttpGet]
-        public IActionResult GetTransactions()
+        private readonly IFinanceService _financeService;
+        public FinanceController(IFinanceService financeService)
         {
-            var transactions = new[] { "Salary:$5000", "Rent:$1500", "Groceries:$300"};
-            return Ok(transactions);
+            _financeService = financeService;
+        }
+
+        [HttpPost("create-account")]
+        public Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
+        {
+            
         }
     }
 }

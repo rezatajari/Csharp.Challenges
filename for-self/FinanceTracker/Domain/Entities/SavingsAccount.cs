@@ -8,7 +8,7 @@ namespace Domain.Entities
     public class SavingsAccount : BaseAccount
     {
         protected SavingsAccount():base() {}
-        private SavingsAccount(string name, Money initialBalance, TypeName type) 
+        private SavingsAccount(string name, Money initialBalance, AccountType type) 
             : base(name, initialBalance, type)
         {
             if (initialBalance.Amount < 0)
@@ -16,7 +16,7 @@ namespace Domain.Entities
                 throw new ArgumentException("Balance cannot be negative.", nameof(initialBalance));
             }
         }
-        public static SavingsAccount Create(string name, Money balance, TypeName type)
+        public static SavingsAccount Create(string name, Money balance, AccountType type)
         {
             return new SavingsAccount(name, balance, type);
         }

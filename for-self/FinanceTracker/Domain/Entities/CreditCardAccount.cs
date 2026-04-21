@@ -7,7 +7,7 @@ namespace Domain.Entities
     {
         protected CreditCardAccount() : base() { }
         private CreditCardAccount(string name, Money initialBalance, Money limit)
-            : base(name, initialBalance, TypeName.CreditCard)
+            : base(name, initialBalance, AccountType.CreditCard)
         {
             CreditLimit = limit;
         }
