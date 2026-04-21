@@ -1,0 +1,24 @@
+﻿<div class="d-flex align-items-center justify-content-between p-3 mb-2 bg-white rounded shadow-sm border-start border-4 @(IsIncome ? "border-success" : "border-danger")">
+    <div class="d-flex align-items-center">
+        <div class="rounded-circle bg-light p-3 me-3 text-primary">
+            <i class="bi @Icon"></i>
+        </div>
+        <div>
+            <h6 class="mb-0 fw-bold">@Title</h6>
+            <small class="text-muted">@Date.ToString("MMM dd, yyyy")</small>
+        </div>
+    </div>
+    <div class="text-end">
+        <span class="fw-bold @(IsIncome ? "text-success" : "text-dark")">
+            @(IsIncome ? "+" : "-") @Amount.ToString("C")
+        </span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public decimal Amount { get; set; }
+    [Parameter] public DateTime Date { get; set; }
+    [Parameter] public string Icon { get; set; } = "bi-cash";
+    [Parameter] public bool IsIncome { get; set; }
+}
