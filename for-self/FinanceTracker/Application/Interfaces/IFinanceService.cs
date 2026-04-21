@@ -7,9 +7,9 @@ namespace Application.Interfaces
 {
     public interface IFinanceService
     {
-        Task<Result<bool>> OpenAccount(BaseAccount newAccount);
-        Task<Result<bool>> RecordIncome(InputRecordTxDto IncomeTx);
-        Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTx);
+        Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto);
+        Task<Result<bool>> RecordIncome(InputRecordTxDto IncomeTxDto);
+        Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTxDto);
         Task<Result<bool>> TransferFunds(int fromId, int toId, Money amount);
     }
 }

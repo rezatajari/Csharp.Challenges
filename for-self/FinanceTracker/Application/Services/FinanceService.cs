@@ -16,8 +16,12 @@ namespace Application.Services
             _accountRepo = accountRepo;
         }
 
-        public async Task<Result<bool>> OpenAccount(BaseAccount newAccount)
+        public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto)
         {
+            if (createAccDto.Type==AccountType.Savings)
+                SavingsAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.Type);
+            if (createAccDto.Type == AccountType.CreditCard)
+                CreditCardAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit);
             await _accountRepo.AddAsync(newAccount);
 
             return (await _accountRepo.SaveChangesAsync()>0)
@@ -25,7 +29,7 @@ namespace Application.Services
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public async Task<Result<bool>> RecordIncome(InputRecordTxDto IncomeTx)
+        public async Task<Result<bool>> RecordIncome(InputRecordTxDto IncomeTxDto)
         {
             var account = await _accountRepo.GetByIdAsync(IncomeTx.accountId);
             if (account == null)
@@ -39,7 +43,7 @@ namespace Application.Services
                 : Result<bool>.Failure("Failed to record income.");
         }
 
-        public async Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTx)
+        public async Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTxDto)
         {
             throw new NotImplementedException();
         }

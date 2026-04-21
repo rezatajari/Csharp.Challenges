@@ -19,7 +19,7 @@ namespace Api.Controllers
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
         {
-            var result=await _financeService.OpenAccount()        
+            var result=await _financeService.OpenAccount(createAccModel);        
         }
     }
 }
