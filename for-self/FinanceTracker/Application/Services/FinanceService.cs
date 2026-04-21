@@ -22,11 +22,11 @@ namespace Application.Services
 
             if (createAccDto.Type == AccountType.Savings)
             {
-                newAccount = SavingsAccount.Create(createAccDto.Name, createAccDto.Balance,createAccDto.Type);
+                newAccount = SavingsAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.Type);
             }
             else if (createAccDto.Type == AccountType.CreditCard)
             {
-                newAccount = CreditCardAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit,createAccDto.Type);
+                newAccount = CreditCardAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit, createAccDto.Type);
             }
 
             if (newAccount == null)
@@ -64,8 +64,29 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Result<List<BaseAccount>>> GetAccounts()
+        public async Task<Result<List<AccountDto>>> GetAccounts()
         {
+            var accounts = await _accountRepo.GetAllAsync();
+
+            var accountDtos = accounts.Select(acc => acc switch
+            {
+                SavingsAccount s => new AccountDto(
+                    s.Id,
+                    s.Name,
+                    s.Balance,
+                    AccountType.Savings),
+
+                CreditCardAccount c => new AccountDto(
+                    c.Id,
+                    c.Name,
+                    c.Balance,
+                    AccountType.CreditCard,
+                    c.CreditLimit),
+
+               _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
+            }).ToList();
+
+            return Result<List<AccountDto>>.Success(accountDtos);
         }
     }
 }
