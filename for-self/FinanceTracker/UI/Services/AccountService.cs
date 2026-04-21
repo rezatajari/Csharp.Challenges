@@ -24,10 +24,8 @@ namespace UI.Services
 
         public async Task<ApiResult<List<AccountDto>>> GetAllAccounts()
         {
-                var response = await _client.GetFromJsonAsync<ApiResult<List<AccountDto>>>("api/finance/accounts");
-                return response ?? ApiResult<List<AccountDto>>.Failure("Empty response from server");
-            }
-                return ApiResult<List<AccountDto>>.Failure(ex.Message);
+            var response = await _client.GetFromJsonAsync<ApiResult<List<AccountDto>>>("api/finance/accounts");
+            return response ?? ApiResult<List<AccountDto>>.Failure("Empty response from server");
         }
     }
 }

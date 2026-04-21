@@ -30,7 +30,7 @@ namespace Api.Controllers
         {
             var result = await _financeService.GetAccounts();
             return (result.IsSuccess)
-                 ? Ok(ApiResult<List<AccountDto>>.Success(result.Value))
+                 ? Ok(ApiResult<List<AccountDto>?>.Success(result.Value))
                  : BadRequest(ApiResult<List<AccountDto>>.Failure(result.ErrorMessage));
         }
     }

@@ -64,7 +64,7 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Result<List<AccountDto>>> GetAccounts()
+        public async Task<Result<List<AccountDto>?>> GetAccounts()
         {
             var accounts = await _accountRepo.GetAllAsync();
 
@@ -86,7 +86,7 @@ namespace Application.Services
                _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
             }).ToList();
 
-            return Result<List<AccountDto>>.Success(accountDtos);
+            return Result<List<AccountDto>?>.Success(accountDtos);
         }
     }
 }
