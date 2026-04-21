@@ -1,0 +1,6 @@
+﻿using Domain.ValueObjects;
+
+namespace Application.Dtos
+{
+    public record CreateAccountDto(string Name,Money Balance);
+}
