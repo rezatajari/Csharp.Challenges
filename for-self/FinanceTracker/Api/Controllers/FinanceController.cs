@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Interfaces;
+using Domain.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.Pkcs;
@@ -19,7 +20,10 @@ namespace Api.Controllers
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
         {
-            var result=await _financeService.OpenAccount(createAccModel);        
+            var result=await _financeService.OpenAccount(createAccModel);
+            return (result.IsSuccess)
+                ? Ok(ApiResult<bool>.Success(result.Value))
+                : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
         }
     }
 }
