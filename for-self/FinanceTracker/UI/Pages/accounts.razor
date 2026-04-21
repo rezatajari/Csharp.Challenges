@@ -3,7 +3,7 @@
 @using Domain.Entities
 @using Domain.ValueObjects
 @using UI.Services
-@inject AccountService accountServic
+@inject AccountService accService
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -86,7 +86,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await accountServic.GetAllAccounts();
+        var result = await accService.GetAllAccounts();
         if (result != null && result.IsSuccess)
         {
             accountlist = result.Value;
