@@ -2,6 +2,7 @@
 using Domain.Shared;
 using System.Net.Http.Json;
 using UI.Pages;
+using static System.Net.WebRequestMethods;
 
 namespace UI.Services
 {
@@ -19,6 +20,14 @@ namespace UI.Services
 
             return await response.Content.ReadFromJsonAsync<ApiResult<bool>>()
                 ?? ApiResult<bool>.Failure("Error connect to server");
+        }
+
+        public async Task<ApiResult<List<AccountDto>>> GetAllAccounts()
+        {
+                var response = await _http.GetFromJsonAsync<ApiResult<List<AccountDto>>>("api/accounts");
+                return response ?? ApiResult<List<AccountDto>>.Failure("Empty response from server");
+            }
+                return ApiResult<List<AccountDto>>.Failure(ex.Message);
         }
     }
 }
