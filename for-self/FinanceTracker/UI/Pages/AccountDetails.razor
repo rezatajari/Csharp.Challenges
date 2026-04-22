@@ -1,6 +1,7 @@
 ﻿@page "/account-details/{Id:int}"
 @using Application.Dtos
 @using Domain.Entities
+@using Domain.ValueObjects
 @using UI.Services
 @inject FinanceService _accService
 
@@ -37,8 +38,16 @@ else
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <lablel class="form-label">Amount</lablel>
-                        <input type="number" class="form-control" @bind="formModel.Amount" />
+                        <lablel class="form-label">Amount & Currency</lablel>
+                        <div class="input-group">
+                            <input type="number" class="form-control" @bind="formModel.Amount" step="0.01"/>
+                            <select class="form-select" style="max-width:100px;" @bind="formModel.Currency">
+                                @foreach(var curr in Enum.GetValues<Currency>())
+                                {
+                                    <option valur="@curr">@curr</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Category Name</label>
@@ -136,15 +145,16 @@ else
         isLoading = false;
     }
 
-    private void SaveTransaction()
+    private async Task SaveTransaction()
     {
-
+        var result=await _accService.
     }
 
-    private class TransactionFrom
+    public class TransactionFrom
     {
         public int AccountId { get; set; } 
         public decimal Amount { get; set; }
+        public Currency Currency { get; set; } = Currency.USD;
         public string CategoryName { get; set; } 
         public string? CategoryDescription { get; set; } 
         public TransactionType CategoryType { get; set; } 

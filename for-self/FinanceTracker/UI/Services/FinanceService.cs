@@ -1,6 +1,8 @@
 ﻿using Application.Dtos;
 using Domain.Shared;
+using Domain.ValueObjects;
 using System.Net.Http.Json;
+using static UI.Pages.AccountDetails;
 
 namespace UI.Services
 {
@@ -37,6 +39,12 @@ namespace UI.Services
         {
             var response = await _client.GetFromJsonAsync<ApiResult<List<TransactionDto>>>($"api/finance/transaction/{Id}");
             return response ?? ApiResult<List<TransactionDto>>.Failure("There is no any transactions");
+        }
+
+        public async Task<ApiResult<bool> AddTransaction(TransactionFrom formModel)
+        {
+            var category = Category.Create(formModel.CategoryName, formModel.CategoryDescription, formModel.CategoryType);
+            var inputTxDto = new InputTxDto(formModel.AccountId, formModel.Amount, category, formModel.TransactionDescription);
         }
     }
 }
