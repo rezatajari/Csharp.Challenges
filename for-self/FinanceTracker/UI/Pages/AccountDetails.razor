@@ -82,6 +82,13 @@ else
 }
 
 <h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="alert @statusClass alert-dismissible fade show" role="alert">
+        @statusMessage
+        <button type="button" class="btn-close" @onclick="() => statusMessage = null"></button>
+    </div>
+}
 <button class="btn btn-primary mb-3" @onclick="OpenModal">Add Transaction</button>
 <table class="table table-hover border">
     <thead class="table-light">
@@ -122,12 +129,15 @@ else
     private List<TransactionDto> transactions = new();
     private bool isModalOpen = false;
     private TransactionFrom formModel = new();
+    private string? statusMessage;
+    private string statusClass = "";
 
     private void OpenModal() => isModalOpen = true;
     private void CloseModal() => isModalOpen = false;
 
     protected override async Task OnInitializedAsync()
     {
+        formModel.AccountId = Id;
         var accountResult = await _accService.GetAccount(Id);
         if (accountResult.IsSuccess)
         {
@@ -148,6 +158,26 @@ else
     private async Task SaveTransaction()
     {
         var result = await _accService.AddTransaction(formModel);
+
+        if (result.IsSuccess)
+        {
+            statusMessage = "Transaction added successfully!";
+            statusClass = "alert-success";
+
+            CloseModal();
+
+            var txResult = await _accService.GetTransactionsByAccountId(Id);
+            if (txResult.IsSuccess)
+            {
+                transactions = txResult.Value;
+            }
+        }
+        else
+        {
+            statusMessage = $"Error: {result.ErrorMessage}";
+            statusClass = "alert-danger";
+            CloseModal();
+        }
     }
 
     public class TransactionFrom
