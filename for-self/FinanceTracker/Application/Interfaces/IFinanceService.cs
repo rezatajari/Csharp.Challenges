@@ -12,5 +12,6 @@ namespace Application.Interfaces
         Task<Result<bool>> RecordExpense(InputRecordTxDto ExpenseTxDto);
         Task<Result<bool>> TransferFunds(int fromId, int toId, Money amount);
         Task<Result<List<AccountDto>>> GetAccounts();
+        Task<Result<AccountDto>> GetAccount(int Id);
     }
 }
