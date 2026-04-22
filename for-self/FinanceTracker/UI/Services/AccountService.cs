@@ -35,6 +35,7 @@ namespace UI.Services
             return response ?? ApiResult<AccountDto>.Failure("Empty response from server");
         }
 
-
+        public async Task<ApiResult<List<TransactionDto>>> GetTransactionsByAccountId(int Id) { 
+        }
     }
 }
