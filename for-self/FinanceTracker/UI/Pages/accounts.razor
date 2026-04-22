@@ -4,6 +4,7 @@
 @using Domain.ValueObjects
 @using UI.Services
 @inject AccountService accService
+@inject NavigationManager Nav
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -69,7 +70,7 @@
                             }
                         </div>
                         <div class="card-footer bg-transparent border-0 px-4 pb-4">
-                            <button class="btn btn-light btn-sm w-100 fw-bold shadow-sm">View Details</button>
+                            <button class="btn btn-light btn-sm w-100 fw-bold shadow-sm" onclick="()=>AccDetails(@acc.Id)">View Details</button>
                         </div>
                     </div>
                 </div>
@@ -95,5 +96,10 @@
         {
             accountlist = new List<AccountDto>();
         }
+    }
+
+    private void AccDetails(int Id)
+    {
+        Nav.NavigateTo($"/AccountDetails/{Id}");
     }
 }
