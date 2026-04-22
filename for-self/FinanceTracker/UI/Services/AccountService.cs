@@ -35,7 +35,10 @@ namespace UI.Services
             return response ?? ApiResult<AccountDto>.Failure("Empty response from server");
         }
 
-        public async Task<ApiResult<List<TransactionDto>>> GetTransactionsByAccountId(int Id) { 
+        public async Task<ApiResult<List<TransactionDto>>> GetTransactionsByAccountId(int Id) 
+        {
+            var response = await _client.GetFromJsonAsync<ApiResult<List<TransactionDto>>>($"api/finance/transaction/{Id}")
+            return response ?? ApiResult<List<TransactionDto>>.Failure("There is no any transactions");
         }
     }
 }
