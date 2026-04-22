@@ -37,7 +37,7 @@ namespace Api.Controllers
         [HttpGet("account/{id}")]
         public async Task<IActionResult> GetAccount(int id)
         {
-            var result = await _financeService.
+            var result = await _financeService.GetAccount(id);
         }
     }
 }

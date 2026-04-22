@@ -64,7 +64,7 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Result<List<AccountDto>?>> GetAccounts()
+        public async Task<Result<List<AccountDto>>?> GetAccounts()
         {
             var accounts = await _accountRepo.GetAllAsync();
 
@@ -86,7 +86,27 @@ namespace Application.Services
                _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
             }).ToList();
 
-            return Result<List<AccountDto>?>.Success(accountDtos);
+            return Result<List<AccountDto>>.Success(accountDtos);
+        }
+
+        public async Task<Result<AccountDto>> GetAccount(int Id)
+        {
+            var accountResult = await _accountRepo.GetByIdAsync(Id);
+            if (accountResult == null)
+                return Result<AccountDto>.Failure("Your account is not exist");
+
+            var account = accountResult switch
+            {
+                SavingsAccount s => new AccountDto(
+                    Id, s.Name, s.Balance, AccountType.Savings),
+
+                CreditCardAccount c => new AccountDto(
+                    Id, c.Name, c.Balance, AccountType.CreditCard, c.CreditLimit),
+
+                _ => throw new NotSupportedException($"Unknown account type: {accountResult.GetType()}")
+            };
+
+            return Result<AccountDto>.Success(account);
         }
     }
 }
