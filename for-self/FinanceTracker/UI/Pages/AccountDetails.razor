@@ -26,34 +26,51 @@ else
     </div>
 }
 
-<div class="modal fade show" style="display:block;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">New Transaction</h5>
-                <button type="button" class="btn-close" @onclick="CloseModal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <lablel>Amount</lablel>
-                    <input type="number" class="form-control"/>
+@if (isModalOpen)
+{
+    <div class="modal fade show" style="display:block; background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Transaction</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
                 </div>
-                <div class="mb-3">
-                    <label>Category</label>
-                    <select class="form-select">...</select>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <lablel class="form-label">Amount</lablel>
+                        <input type="number" class="form-control" @bind="formModel.Amount" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" @bind="formModel.CategoryName" placeholder="e.g. Shopping" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Category Details</label>
+                        <input type="text" class="form-control" @bind="formModel.CategoryDescription" placeholder="Optional notes" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Category Type</label>
+                        <select class="form-select" @bind="formModel.CategoryType">
+                            <option value="@TransactionType.Expense">Expense</option>
+                            <option value="@TransactionType.Income">Income</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Transaction Details</label>
+                        <textarea class="form-control" @bind="formModel.TransactionDescription"></textarea>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label>Description</label>
-                    <textarea class="form-control"></textarea>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                    <button class="btn btn-primary" @onclick="SaveTransaction">Save</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
-                <button class="btn btn-primary" @onclick="SaveTransaction">Save</button>
             </div>
         </div>
     </div>
-</div>
+}
 
 <h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
 <button class="btn btn-primary mb-3" @onclick="OpenModal">Add Transaction</button>
@@ -94,6 +111,11 @@ else
     private AccountDto? account;
     private bool isLoading = true;
     private List<TransactionDto> transactions = new();
+    private bool isModalOpen = false;
+    private TransactionFrom formModel = new();
+
+    private void OpenModal() => isModalOpen = true;
+    private void CloseModal() => isModalOpen = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -114,5 +136,18 @@ else
         isLoading = false;
     }
 
+    private void SaveTransaction()
+    {
 
+    }
+
+    private class TransactionFrom
+    {
+        public int AccountId { get; set; } 
+        public decimal Amount { get; set; }
+        public string CategoryName { get; set; } 
+        public string? CategoryDescription { get; set; } 
+        public TransactionType CategoryType { get; set; } 
+        public string? TransactionDescription { get; set; }
+    }
 }
