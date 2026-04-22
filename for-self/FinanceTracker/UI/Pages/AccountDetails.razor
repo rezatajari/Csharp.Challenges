@@ -33,9 +33,20 @@ else
                 <h5 class="modal-title">New Transaction</h5>
                 <button type="button" class="btn-close" @onclick="CloseModal"></button>
             </div>
-            <input type="number" class="form-control" />
-            <select class="form-select">...</select>
-            <textarea class="form-control"></textarea>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <lablel>Amount</lablel>
+                    <input type="number" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <label>Category</label>
+                    <select class="form-select">...</select>
+                </div>
+                <div class="mb-3">
+                    <label>Description</label>
+                    <textarea class="form-control"></textarea>
+                </div>
+            </div>
         </div>
     </div>
 </div>
