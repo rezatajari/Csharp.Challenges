@@ -1,8 +1,11 @@
-﻿namespace Domain.ValueObjects
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.ValueObjects
 {
     public record Money
     {
         protected Money() { }
+        [JsonConstructor]
         private Money(decimal amount, Currency currency)
         {
             Amount = amount;
