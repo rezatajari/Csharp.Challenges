@@ -26,7 +26,15 @@ else
     </div>
 }
 
-<div class="modal fade show" style="display:block;"></div>
+<div class="modal fade show" style="display:block;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="number" class="form-control" />
+            <select class="form-select">...</select>
+            <textarea class="form-control"></textarea>
+        </div>
+    </div>
+</div>
 
 <h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
 <button class="btn btn-primary mb-3" @onclick="OpenModal">Add Transaction</button>
