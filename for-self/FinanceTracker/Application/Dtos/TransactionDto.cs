@@ -6,5 +6,10 @@ using System.Text;
 
 namespace Application.Dtos
 {
-    public record TransactionDto(Money Amount,Category Category,string? Desctiprion,TransactionType Type,DateTime CreatedAt)
+    public record TransactionDto(
+        Money Amount,
+        Category Category,
+        string? Description,
+        TransactionType Type,
+        DateTime CreatedAt);
 }

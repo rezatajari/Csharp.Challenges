@@ -44,8 +44,12 @@ namespace Api.Controllers
         }
 
         [HttpGet("transaction/{id}")]
-        public async Task<IActionResult> GetTransaction(int id) { 
-            var result=_financeService.
+        public async Task<IActionResult> GetTransaction(int id)
+        {
+            var result = await _financeService.GetTransactionById(id);
+            return (result.IsSuccess)
+                ? Ok(ApiResult<List<TransactionDto>>.Success(result.Value))
+                : BadRequest(ApiResult<List<TransactionDto>>.Failure(result.ErrorMessage));
         }
     }
 }

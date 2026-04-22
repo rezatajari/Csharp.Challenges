@@ -110,7 +110,7 @@ namespace Application.Services
             return Result<AccountDto>.Success(account);
         }
 
-        public async Task<Result<List<TransactionDto>>> GetTransactions(int Id)
+        public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id)
         {
             var account = await _accountRepo.GetByIdAsync(Id);
             if (account == null || account.Transactions == null)

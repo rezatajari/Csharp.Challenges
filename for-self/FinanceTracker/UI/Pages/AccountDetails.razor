@@ -1,7 +1,8 @@
 ﻿@page "/account-details/{Id:int}"
 @using Application.Dtos
+@using Domain.Entities
 @using UI.Services
-@inject AccountService _accService
+@inject FinanceService _accService
 
 <h3>Account Details</h3>
 
@@ -40,7 +41,7 @@ else
         @foreach (var tx in transactions)
         {
             <tr class="align-middle">
-                <td class="text-muted">@tx.Date.ToShortDateString()</td>
+                <td class="text-muted">@tx.CreatedAt.ToShortDateString()</td>
                 <td>@tx.Description</td>
                 <td>@tx.Category.Name</td>
                 <td>
@@ -62,6 +63,7 @@ else
     private string? ErrorMessage;
     private AccountDto? account;
     private bool isLoading = true;
+    private List<TransactionDto> transactions = new();
 
     protected override async Task OnInitializedAsync()
     {
