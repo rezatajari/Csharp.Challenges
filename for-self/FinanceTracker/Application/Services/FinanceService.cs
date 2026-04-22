@@ -3,6 +3,7 @@ using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
 using Domain.ValueObjects;
+using System.Transactions;
 
 namespace Application.Services
 {
@@ -83,7 +84,7 @@ namespace Application.Services
                     AccountType.CreditCard,
                     c.CreditLimit),
 
-               _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
+                _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
             }).ToList();
 
             return Result<List<AccountDto>>.Success(accountDtos);
@@ -107,6 +108,19 @@ namespace Application.Services
             };
 
             return Result<AccountDto>.Success(account);
+        }
+
+        public async Task<Result<List<TransactionDto>>> GetTransactions(int Id)
+        {
+            var account = await _accountRepo.GetByIdAsync(Id);
+            if (account == null || account.Transactions == null)
+                return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
+
+            var tx = account.Transactions.Select(tx => 
+            new TransactionDto(tx.Amount, tx.Category, tx.Description,
+                tx.Type, tx.CreatedAt)).ToList();
+
+            return Result<List<TransactionDto>>.Success(tx);
         }
     }
 }

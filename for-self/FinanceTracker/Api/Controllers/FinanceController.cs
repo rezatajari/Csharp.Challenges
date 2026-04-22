@@ -42,5 +42,10 @@ namespace Api.Controllers
                 ? Ok(ApiResult<AccountDto>.Success(result.Value))
                 : BadRequest(ApiResult<AccountDto>.Failure(result.ErrorMessage));
         }
+
+        [HttpGet("transaction/{id}")]
+        public async Task<IActionResult> GetTransaction(int id) { 
+            var result=_financeService.
+        }
     }
 }
