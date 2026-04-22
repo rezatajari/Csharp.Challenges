@@ -1,0 +1,49 @@
+﻿@page "/account-details/{Id:int}"
+@using Application.Dtos
+@using UI.Services
+@inject AccountService _accService
+
+<h3>Account Details</h3>
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <div>@ErrorMessage</div>
+    </div>
+}else if (account == null)
+{
+    <div class="spinner-border text-primary" role="status"></div>
+}
+else
+{
+    <div class="card shadow-sm p-4">
+        <h4>@account.Name</h4>
+        <p>Type: @account.Type</p>
+        <p>Balance: @account.Balance.Amount.ToString("C")</p>
+    </div>
+}
+
+
+
+@code{
+    [Parameter]
+    public int Id{ get; set; }
+    private string? ErrorMessage;
+    private AccountDto? account;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _accService.GetAccount(Id);
+        if (result.IsSuccess)
+        {
+            account = result.Value;
+            ErrorMessage = string.Empty;
+        }
+        else
+        {
+            ErrorMessage = result.ErrorMessage;
+        }
+
+    }
+}

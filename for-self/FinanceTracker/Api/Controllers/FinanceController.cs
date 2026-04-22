@@ -33,5 +33,11 @@ namespace Api.Controllers
                  ? Ok(ApiResult<List<AccountDto>?>.Success(result.Value))
                  : BadRequest(ApiResult<List<AccountDto>>.Failure(result.ErrorMessage));
         }
+
+        [HttpGet("account/{id}")]
+        public async Task<IActionResult> GetAccount(int id)
+        {
+
+        }
     }
 }
