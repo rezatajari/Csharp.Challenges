@@ -51,5 +51,11 @@ namespace Api.Controllers
                 ? Ok(ApiResult<List<TransactionDto>>.Success(result.Value))
                 : BadRequest(ApiResult<List<TransactionDto>>.Failure(result.ErrorMessage));
         }
+
+        [HttpPost("transaction/add")]
+        public async Task<IActionResult> AddTransaction(InputTxDto inputTxDto)
+        {
+
+        }
     }
 }

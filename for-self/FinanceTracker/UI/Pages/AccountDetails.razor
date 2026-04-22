@@ -147,7 +147,7 @@ else
 
     private async Task SaveTransaction()
     {
-        var result=await _accService.
+        var result = await _accService.AddTransaction(formModel);
     }
 
     public class TransactionFrom

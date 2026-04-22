@@ -44,7 +44,13 @@ namespace UI.Services
         public async Task<ApiResult<bool> AddTransaction(TransactionFrom formModel)
         {
             var category = Category.Create(formModel.CategoryName, formModel.CategoryDescription, formModel.CategoryType);
-            var inputTxDto = new InputTxDto(formModel.AccountId, formModel.Amount, category, formModel.TransactionDescription);
+            var amount=Money.Create(formModel.Amount,formModel.Currency);
+            var inputTxDto = new InputTxDto(formModel.AccountId, amount, category, formModel.TransactionDescription);
+
+            var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
+            var content = await response.Content.ReadFromJsonAsync<ApiResult<bool>>();
+
+            return content ?? ApiResult<bool>.Failure("Cannot save your transaction");
         }
     }
 }
