@@ -56,22 +56,31 @@ else
     </tbody>
 </table>
 
-@code{
+@code {
     [Parameter]
-    public int Id{ get; set; }
+    public int Id { get; set; }
     private string? ErrorMessage;
     private AccountDto? account;
     private bool isLoading = true;
 
-
     protected override async Task OnInitializedAsync()
     {
-        var result = await _accService.GetAccount(Id);
-        if (result.IsSuccess)
-            account = result.Value;
+        var accountResult = await _accService.GetAccount(Id);
+        if (accountResult.IsSuccess)
+        {
+            account = accountResult.Value;
+            var txResult = await _accService.GetTransactionsByAccountId(Id);
+
+            if (txResult.IsSuccess)
+                transactions = txResult.Value;
+        }
         else
-            ErrorMessage = result.ErrorMessage;
+        {
+            ErrorMessage = accountResult.ErrorMessage;
+        }
 
         isLoading = false;
     }
+
+
 }
