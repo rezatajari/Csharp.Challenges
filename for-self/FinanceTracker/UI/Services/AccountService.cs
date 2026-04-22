@@ -31,7 +31,8 @@ namespace UI.Services
 
         public async Task<ApiResult<AccountDto>> GetAccount(int Id)
         {
-
+            var response = await _client.GetFromJsonAsync<ApiResult<AccountDto>>($"api/finance/account/{Id}");
+            return response ?? ApiResult<AccountDto>.Failure("Empty response from server");
         }
 
 
