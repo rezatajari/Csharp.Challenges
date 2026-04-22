@@ -25,7 +25,6 @@ namespace Api.Controllers
                 : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
         }
 
-
         [HttpGet("accounts")]
         public async Task<IActionResult> GetAllAccounts()
         {
