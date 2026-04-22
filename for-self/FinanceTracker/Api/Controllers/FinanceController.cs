@@ -55,7 +55,11 @@ namespace Api.Controllers
         [HttpPost("transaction/add")]
         public async Task<IActionResult> AddTransaction(InputTxDto inputTxDto)
         {
-
+            var result= await _financeService.IncomeTransaction(inputTxDto);   
+            return (result.IsSuccess)
+                ? Ok(ApiResult<bool>.Success(result.Value))
+                : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
         }
+
     }
 }

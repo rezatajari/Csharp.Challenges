@@ -7,8 +7,8 @@ namespace Application.Interfaces
     public interface IFinanceService
     {
         Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto);
-        Task<Result<bool>> Income(InputTxDto IncomeTxDto);
-        Task<Result<bool>> Expense(InputTxDto ExpenseTxDto);
+        Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto);
+        Task<Result<bool>> ExpenseTransaction(InputTxDto ExpenseTxDto);
         Task<Result<bool>> TransferFunds(int fromId, int toId, Money amount);
         Task<Result<List<AccountDto>>?> GetAccounts();
         Task<Result<AccountDto>> GetAccount(int Id);

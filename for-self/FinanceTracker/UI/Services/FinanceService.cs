@@ -41,7 +41,7 @@ namespace UI.Services
             return response ?? ApiResult<List<TransactionDto>>.Failure("There is no any transactions");
         }
 
-        public async Task<ApiResult<bool> AddTransaction(TransactionFrom formModel)
+        public async Task<ApiResult<bool>> AddTransaction(TransactionFrom formModel)
         {
             var category = Category.Create(formModel.CategoryName, formModel.CategoryDescription, formModel.CategoryType);
             var amount=Money.Create(formModel.Amount,formModel.Currency);

@@ -41,7 +41,7 @@ namespace Application.Services
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public async Task<Result<bool>> Income(InputTxDto IncomeTxDto)
+        public async Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto)
         {
             var account = await _accountRepo.GetByIdAsync(IncomeTxDto.accountId);
             if (account == null)
@@ -55,7 +55,7 @@ namespace Application.Services
                 : Result<bool>.Failure("Failed to record income.");
         }
 
-        public async Task<Result<bool>> Expense(InputTxDto ExpenseTxDto)
+        public async Task<Result<bool>> ExpenseTransaction(InputTxDto ExpenseTxDto)
         {
             throw new NotImplementedException();
         }
