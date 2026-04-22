@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Api.Controllers
 {
@@ -38,6 +39,9 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAccount(int id)
         {
             var result = await _financeService.GetAccount(id);
+            return (result.IsSuccess)
+                ? Ok(ApiResult<AccountDto>.Success(result.Value))
+                : BadRequest(ApiResult<AccountDto>.Failure(result.ErrorMessage));
         }
     }
 }
