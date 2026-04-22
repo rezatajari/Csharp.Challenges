@@ -1,15 +1,13 @@
 ﻿using Application.Dtos;
 using Domain.Shared;
 using System.Net.Http.Json;
-using UI.Pages;
-using static System.Net.WebRequestMethods;
 
 namespace UI.Services
 {
-    public class AccountService
+    public class FinanceService
     {
         private readonly HttpClient _client;
-        public AccountService(HttpClient client)
+        public FinanceService(HttpClient client)
         {
             _client = client;
         }
