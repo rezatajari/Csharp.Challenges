@@ -14,6 +14,13 @@
                     <button type="button" class="btn-close" @onclick="Hide"></button>
                 </div>
                 <div class="modal-body">
+                    @if (!string.IsNullOrEmpty(statusMessage))
+                    {
+                        <div class="alert @statusClass alert-dismissible fade show" role="alert">
+                            @statusMessage
+                            <button type="button" class="btn-close" @onclick="() => statusMessage = null"></button>
+                        </div>
+                    }
                     <div class="mb-3">
                         <lablel class="form-label">Amount & Currency</lablel>
                         <div class="input-group">
@@ -50,6 +57,20 @@
                         </select>
                     </div>
 
+                    @if (addTxModel.Type == TransactionType.Transfer)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">To Account</label>
+                            <select class="form-select" @bind="addTxModel.TargetAccountId">
+                                <option value="0">-- Select Account --</option>
+                                @foreach (var acc in otherAccounts)
+                                {
+                                    <option value="@acc.Id">@acc.Name</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" @onclick="Hide">Cancel</button>
@@ -65,13 +86,13 @@
     [Parameter]
     public int Id { get; set; }
     [Parameter] 
-    public EventCallback OnSave { get; set; }
+    public EventCallback<string> OnSave { get; set; }
     private bool IsVisible{ get; set; }
     private AddTransactionFrom addTxModel = new();
     private List<AccountDto> otherAccounts = new();
     private List<TransactionDto> transactions = new();
-    public string? statusMessage;
-    public string statusClass = "";
+    private string? statusMessage;
+    private string statusClass = "";
 
     public void Show() => IsVisible = true;
     public void Hide() => IsVisible = false;
@@ -79,19 +100,17 @@
     private async Task SaveTransaction()
     {
         var result = await _accService.AddTransaction(addTxModel);
-
         if (result.IsSuccess)
         {
             statusMessage = "Transaction added successfully!";
             statusClass = "alert-success";
-
+            await OnSave.InvokeAsync("Success! Your money is moved.");
             Hide();
         }
         else
         {
             statusMessage = $"Error: {result.ErrorMessage}";
             statusClass = "alert-danger";
-            Hide();
         }
     }
 

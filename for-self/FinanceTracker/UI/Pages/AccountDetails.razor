@@ -29,26 +29,47 @@ else
 }
 
 <h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
-@if (!string.IsNullOrEmpty(transactionModal.statusMessage))
-{
-    <div class="alert @transactionModal.statusClass alert-dismissible fade show" role="alert">
-        @transactionModal.statusMessage
-        <button type="button" class="btn-close" @onclick="() => transactionModal.statusMessage = null"></button>
-    </div>
-}
+
 <button class="btn btn-primary mb-3" @onclick="()=>transactionModal.Show()">Add Transaction</button>
-<TransactionTable Transaction="transactions"></TransactionTable>
+<TransactionTable Transaction="transactions"/>
+<TransactionFormModal @ref="transactionModal" Id="Id" OnSave="HandleSaveFinished" />
+@if (!string.IsNullOrEmpty(pageMessage))
+{
+    <div class="alert alert-success">@pageMessage</div>
+}
+
+
 
 @code {
     [Parameter]
     public int Id { get; set; }
     private AccountDto? account;
     private List<TransactionDto> transactions = new();
-    private TransactionFormModal transactionModal;  // Component
+    private TransactionFormModal transactionModal=default!;  // Component
     private List<AccountDto> otherAccounts = new();
     private string? ErrorMessage;
     private bool isLoading = true;
+    private string? pageMessage;
 
+    private async Task HandleSaveFinished(string message)
+    {
+        pageMessage = message; 
+        await RefreshData(); 
+    }
+
+    private async Task RefreshData()
+    {
+        var accountResult = await _accService.GetAccount(Id);
+        if (accountResult.IsSuccess)
+        {
+            account = accountResult.Value; 
+
+            var txResult = await _accService.GetTransactionsByAccountId(Id);
+            if (txResult.IsSuccess)
+                transactions = txResult.Value;
+        }
+        StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {
