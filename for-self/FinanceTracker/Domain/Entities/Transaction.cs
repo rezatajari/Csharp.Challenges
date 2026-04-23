@@ -19,9 +19,6 @@ namespace Domain.Entities
             ArgumentNullException.ThrowIfNull(category, nameof(category));
             this.Category = category;
 
-            ArgumentNullException.ThrowIfNull(account, nameof(account));
-            this.Account = account;
-
             if (createdAt == default)
             {
                 throw new ArgumentException("Transaction data must be a valid date.", nameof(createdAt));
@@ -40,47 +37,6 @@ namespace Domain.Entities
         }
     }
 
-
-    //public class IncomeTransaction : Transaction
-    //{
-    //    internal IncomeTransaction(Money amount, Category category,
-    //        BaseAccount account, string? description, DateTime createdAt)
-    //        : base(amount,TransactionType.Income, category, account, description, createdAt) { }
-    //    protected IncomeTransaction():base() { }
-    //    public static Transaction Create(Money amount, TransactionType type, Category category,
-    //BaseAccount account, string? description, DateTime createdAt)
-    //=> new IncomeTransaction(amount, category, account, description, createdAt);
-    //}
-
-    //public class ExpenseTransaction : Transaction
-    //{
-    //    internal ExpenseTransaction(Money amount, Category category,
-    //        BaseAccount account, string? description, DateTime createdAt)
-    //        : base(amount,TransactionType.Expense, category, account, description, createdAt) { }
-    //    protected ExpenseTransaction() : base() { }
-    //    public static Transaction Create(Money amount, TransactionType type, Category category,
-    //     BaseAccount account, string? description, DateTime createdAt)
-    //     => new ExpenseTransaction(amount, category, account,  description, createdAt);
-    //}
-
-    //public class TransferTransaction : Transaction
-    //{
-    //    public int ToAccountId { get; private set; }
-    //    public BaseAccount ToAccount { get; private set; }
-
-    //    internal TransferTransaction(Money amount, Category category, BaseAccount fromAccount,
-    //        BaseAccount toAccount, string? description, DateTime createdAt)
-    //    : base(amount,TransactionType.Transfer, category, fromAccount, description, createdAt)
-    //    {
-    //        ArgumentNullException.ThrowIfNull(toAccount, nameof(toAccount));
-    //        this.ToAccount = toAccount;
-    //    }
-    //    protected TransferTransaction() : base() { }
-
-    //    public static Transaction Create(Money amount,  Category category,
-    //       BaseAccount fromAccount, string? description, DateTime createdAt, BaseAccount toAccount)
-    //       =>  new TransferTransaction(amount, category, fromAccount, toAccount, description, createdAt);
-    //}
 
     public enum TransactionType
     {
