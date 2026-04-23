@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Application.Interfaces
 {
-    public interface IFinanceRepository
+    public interface IFinanceRepository:IBaseRepository<BaseAccount>
     {
+        Task<BaseAccount?> GetAccountWithTransactionsAsync(int id);
     }
 }
