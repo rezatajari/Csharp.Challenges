@@ -1,4 +1,5 @@
 ﻿using Domain.ValueObjects;
+using System.Security.Cryptography;
 
 namespace Domain.Entities
 {
@@ -40,6 +41,8 @@ namespace Domain.Entities
             string? description, DateTime createdAt);
         public abstract Transaction Withdraw(Money amount, Category category,
             string? description, DateTime createdAt);
+
+        public abstract Transaction TransferTo(int from, int to, Money amount);
     }
 
     public enum AccountType

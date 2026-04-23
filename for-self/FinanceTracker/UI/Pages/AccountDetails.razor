@@ -68,6 +68,21 @@ else
                         </select>
                     </div>
 
+                    @if (formModel.CategoryType == TransactionType.Transfer)
+                    {
+                        <div class="mb-3 animate__animated animate__fadeIn">
+                            <label class="form-label text-primary fw-bold">Transfer to Account</label>
+                            <select class="form-select border-primary" @bind="formModel.TargetAccountId">
+                                <option value="0">-- Select Target Account --</option>
+                                @foreach (var acc in otherAccounts)
+                                {
+                                    <option value="@acc.Id">@acc.Name (@acc.Balance.Amount.ToString("N2") @acc.Balance.Currency)</option>
+                                }
+                            </select>
+                            <div class="form-text">Money will be moved from this account to the selected one.</div>
+                        </div>
+                    }
+
                     <div class="mb-3">
                         <label class="form-label">Transaction Details</label>
                         <textarea class="form-control" @bind="formModel.TransactionDescription"></textarea>
@@ -209,6 +224,7 @@ else
     public class TransactionFrom
     {
         public int AccountId { get; set; } 
+        public int TargetAccountId { get; set; }
         public decimal Amount { get; set; }
         public Currency Currency { get; set; } = Currency.USD;
         public string CategoryName { get; set; } 

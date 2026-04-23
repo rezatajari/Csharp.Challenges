@@ -40,12 +40,6 @@ namespace Application.Services
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-
-        public Task<Result<bool>> TransferFunds(int fromId, int toId, Money amount)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Result<List<AccountDto>>?> GetAccounts()
         {
             var accounts = await _financeRepo.GetAllAsync();
@@ -115,10 +109,14 @@ namespace Application.Services
                 account.Withdraw(IncomeTxDto.amount, IncomeTxDto.category,
                     IncomeTxDto.description, DateTime.UtcNow);
             }
-            else
+            else if (IncomeTxDto.transactionType==TransactionType.Expense) 
             {
                 account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
                     IncomeTxDto.description, DateTime.UtcNow);
+            }
+            else
+            {
+                account.
             }
 
             var result = await _financeRepo.SaveChangesAsync() > 0;
