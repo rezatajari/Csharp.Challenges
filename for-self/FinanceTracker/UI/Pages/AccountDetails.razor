@@ -2,6 +2,7 @@
 @using Application.Dtos
 @using Domain.Entities
 @using Domain.ValueObjects
+@using UI.Components
 @using UI.Services
 @inject FinanceService _accService
 
@@ -106,43 +107,17 @@ else
     </div>
 }
 <button class="btn btn-primary mb-3" @onclick="OpenModal">Add Transaction</button>
-<table class="table table-hover border">
-    <thead class="table-light">
-        <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Description</th>
-            <th scope="col">Category</th>
-            <th scope="col">Type</th>
-            <th scope="col" class="text-end">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tx in transactions)
-        {
-            <tr class="align-middle">
-                <td class="text-muted">@tx.CreatedAt.ToShortDateString()</td>
-                <td>@tx.Description</td>
-                <td>@tx.Category.Name</td>
-                <td>
-                    <span class="badge @(tx.Type == TransactionType.Income ? "bg-success" : "bg-danger")">
-                        @tx.Type
-                    </span>
-                </td>
-                <td class="text-end fw-semibold">
-                    @tx.Amount.Amount @tx.Amount.Currency
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<TransactionTable Transaction="transactions"></TransactionTable>
+
+
 
 @code {
     [Parameter]
     public int Id { get; set; }
-    private string? ErrorMessage;
     private AccountDto? account;
-    private bool isLoading = true;
     private List<TransactionDto> transactions = new();
+    private string? ErrorMessage;
+    private bool isLoading = true;
     private bool isModalOpen = false;
     private TransactionFrom formModel = new();
     private string? statusMessage;
