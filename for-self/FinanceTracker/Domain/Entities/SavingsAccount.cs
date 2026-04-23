@@ -8,8 +8,8 @@ namespace Domain.Entities
 {
     public class SavingsAccount : BaseAccount
     {
-        protected SavingsAccount():base() {}
-        private SavingsAccount(string name, Money initialBalance, AccountType type) 
+        protected SavingsAccount() : base() { }
+        private SavingsAccount(string name, Money initialBalance, AccountType type)
             : base(name, initialBalance, type)
         {
             if (initialBalance.Amount < 0)
@@ -22,63 +22,39 @@ namespace Domain.Entities
             return new SavingsAccount(name, balance, type);
         }
 
-        public override Transaction Withdraw(Money amount, Category category, string? description, DateTime createdAt)
+        public override Transaction Deposit(Money amount,TransactionType type, Category category,
+          string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
+            this.Balance += amount;
+            var transaction =Transaction.Create(amount, type, category, description, createdAt);
+            StoreTransaction(transaction);
+            return transaction;
+        }
 
-            if (Balance < amount)
-            {
-                throw new InsufficientFundsException("Insufficient balance for this transaction.");
-            }
-
-            var transaction = ExpenseTransaction.Create(amount, category.Type,
-                category, this, description, createdAt);
+        public override Transaction Withdraw(Money amount, TransactionType type,Category category, string? description, DateTime createdAt)
+        {
+            EnsureSameCurrency(amount);
+            EnsureAvailableFunds(amount);
 
             this.Balance -= amount;
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
-
             return transaction;
         }
 
-        public override Transaction Deposit(Money amount, Category category,
-            string? description, DateTime createdAt)
-        {
-            EnsureSameCurrency(amount);
-
-            var transaction = IncomeTransaction.Create(amount, category.Type,
-                category, this, description, createdAt);
-
-            this.Balance += amount;
-            StoreTransaction(transaction);
-
-            return transaction;
-        }
-
-        public override Transaction TransferTo(Money amount, Category category, 
+        public override Transaction TransferTo(Money amount,TransactionType type,  Category category, 
             string? description, DateTime createdAt, BaseAccount toAccount)
         {
             EnsureSameCurrency(amount);
-
-            if (Balance < amount)
-                throw new InsufficientFundsException("Insufficient balance for transfer.");
-
-            var transaction =TransferTransaction.Create(
-                amount,
-                TransactionType.Transfer,
-                category,
-                this,        
-                description,
-                createdAt,
-                toAccount    
-            );
-
+            EnsureAvailableFunds(amount);
             this.Balance -= amount;
-            toAccount.Deposit(amount,category,description,createdAt);
-
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
-
+            toAccount.Deposit(amount, type, category, description, createdAt);
             return transaction;
         }
+
         public Money GetBalanceAtDate(DateTime targetDate)
         {
 
@@ -109,7 +85,6 @@ namespace Domain.Entities
             return incomeAmount - expenseAmount;
         }
 
-    
         public List<Transaction> GetTransactionsByCategory(Category category)
         => Transactions.Where(tx => tx.Category == category).ToList();
 

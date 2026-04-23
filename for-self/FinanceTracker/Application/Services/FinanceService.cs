@@ -3,6 +3,7 @@ using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
 using Domain.ValueObjects;
+using Microsoft.Win32.SafeHandles;
 
 namespace Application.Services
 {
@@ -122,6 +123,11 @@ namespace Application.Services
                 DateTime now= DateTime.UtcNow;
 
                 account.TransferTo(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now, toAccount);
+
+               var transferTransaction= TransferTransaction.Create(IncomeTxDto.amount, TransactionType.Transfer, IncomeTxDto.category, account, IncomeTxDto.description, now, toAccount);
+
+                account.StoreTransaction(transferTransaction);
+                toAccount.StoreTransaction(transferTransaction);
             }
 
             var result = await _financeRepo.SaveChangesAsync() > 0;
