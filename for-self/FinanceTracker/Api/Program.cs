@@ -25,8 +25,8 @@ builder.Services.AddDbContext<FinanceDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IBaseRepository<BaseAccount>, BaseRepository<BaseAccount>>();
+builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
-
 
 var app = builder.Build();
 app.UseCors("AllowBlazor");
