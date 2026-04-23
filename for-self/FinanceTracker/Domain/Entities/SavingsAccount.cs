@@ -27,7 +27,7 @@ namespace Domain.Entities
         {
             EnsureSameCurrency(amount);
             this.Balance += amount;
-            var transaction =Transaction.Create(amount, type, category, description, createdAt);
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
             return transaction;
         }

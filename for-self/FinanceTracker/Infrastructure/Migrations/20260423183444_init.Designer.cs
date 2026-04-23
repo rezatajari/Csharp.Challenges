@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20260423173456_init")]
+    [Migration("20260423183444_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -80,16 +80,16 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
                     b.ToTable("Transactions");
-
-                    b.HasDiscriminator<int>("Type").HasValue(2);
                 });
 
             modelBuilder.Entity("Domain.Entities.CreditCardAccount", b =>

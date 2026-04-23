@@ -77,16 +77,16 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
                     b.ToTable("Transactions");
-
-                    b.HasDiscriminator<int>("Type").HasValue(2);
                 });
 
             modelBuilder.Entity("Domain.Entities.CreditCardAccount", b =>

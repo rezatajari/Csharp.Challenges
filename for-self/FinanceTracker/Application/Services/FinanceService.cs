@@ -110,7 +110,7 @@ namespace Application.Services
                 account.Withdraw(txDto.amount,txDto.transactionType, txDto.category,
                     txDto.description, DateTime.UtcNow);
             }
-            else if (txDto.transactionType==TransactionType.Expense) 
+            else if (txDto.transactionType==TransactionType.Income) 
             {
                 account.Deposit(txDto.amount,txDto.transactionType, txDto.category,
                     txDto.description, DateTime.UtcNow);

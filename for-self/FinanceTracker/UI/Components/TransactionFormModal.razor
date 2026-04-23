@@ -51,8 +51,8 @@
                     <div class="mb-3">
                         <label class="form-label">Transaction Type</label>
                         <select class="form-select" @onchange="OnTransactionTypeChanged">
-                            <option value="@TransactionType.Expense">Expense</option>
                             <option value="@TransactionType.Income">Income</option>
+                            <option value="@TransactionType.Expense">Expense</option>
                             <option value="@TransactionType.Transfer">Transfer</option>
                         </select>
                     </div>
@@ -94,12 +94,19 @@
     private string? statusMessage;
     private string statusClass = "";
 
-    public void Show() => IsVisible = true;
+    public void Show()
+    {
+        IsVisible = true;
+        StateHasChanged();
+    }
     public void Hide() => IsVisible = false;
 
     private async Task SaveTransaction()
     {
         addTxModel.AccountId = Id;
+        if (string.IsNullOrWhiteSpace(addTxModel.CategoryName))
+            addTxModel.CategoryName = "No category name";
+
         var result = await _accService.AddTransaction(addTxModel);
         if (result.IsSuccess)
         {
@@ -143,7 +150,7 @@
         public int TargetAccountId { get; set; }
         public decimal Amount { get; set; }
         public Currency Currency { get; set; } = Currency.USD;
-        public string CategoryName { get; set; } = "No Category Name";
+        public string? CategoryName { get; set; }
         public string? CategoryDescription { get; set; }
         public TransactionType Type { get; set; }
         public string? TransactionDescription { get; set; }

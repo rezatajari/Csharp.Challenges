@@ -43,10 +43,9 @@ namespace Infrastructure.Data
                 .HasForeignKey(t => t.AccountId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasDiscriminator<TransactionType>("Type")
-                .HasValue<Transaction>(TransactionType.Income)
-                .HasValue<Transaction>(TransactionType.Expense)
-                .HasValue<Transaction>(TransactionType.Transfer);
+                entity.Property(t => t.Type)
+                      .HasColumnName("Type")
+                      .HasConversion<string>();
             });
         }
     }
