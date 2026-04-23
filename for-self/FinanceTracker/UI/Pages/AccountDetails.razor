@@ -44,7 +44,7 @@ else
     [Parameter]
     public int Id { get; set; }
     private AccountDto? account;
-    private List<TransactionDto> transactions = new();
+    private List<TransactionDto>? transactions = new();
     private TransactionFormModal transactionModal=default!;  // Component
     private List<AccountDto> otherAccounts = new();
     private string? ErrorMessage;

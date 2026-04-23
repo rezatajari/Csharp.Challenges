@@ -177,11 +177,6 @@ namespace Infrastructure.Migrations
                                 .HasColumnType("nvarchar(max)")
                                 .HasColumnName("CategoryName");
 
-                            b1.Property<string>("Type")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("CategoryType");
-
                             b1.HasKey("TransactionId");
 
                             b1.ToTable("Transactions");
