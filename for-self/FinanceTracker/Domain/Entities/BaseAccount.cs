@@ -42,7 +42,7 @@ namespace Domain.Entities
         public abstract Transaction Withdraw(Money amount, Category category,
             string? description, DateTime createdAt);
 
-        public abstract Transaction TransferTo(int from, int to, Money amount);
+        public abstract Transaction TransferTo(int fromAccountId, int toAccountId, Money amount,DateTime transferDate,string? description);
     }
 
     public enum AccountType

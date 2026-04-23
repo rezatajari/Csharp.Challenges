@@ -116,7 +116,12 @@ namespace Application.Services
             }
             else
             {
-                account.
+                var toAccount = await _financeRepo.GetByIdAsync(IncomeTxDto.targetAccountId);
+                if (account.Id == toAccount.Id)
+                    return Result<bool>.Failure("Cannot transfer to the same account.");
+                DateTime now= DateTime.UtcNow;
+                Transaction sourceTx = account.Withdraw(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now);
+                Transaction destTx = toAccount.Deposit(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now);
             }
 
             var result = await _financeRepo.SaveChangesAsync() > 0;
