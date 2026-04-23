@@ -111,7 +111,7 @@ namespace Application.Services
 
         public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id)
         {
-            var account = await _financeRepo.GetByIdAsync(Id);
+            var account = await _financeRepo.GetAccountWithTransactionsAsync(Id);
             if (account == null || account.Transactions.Count()==0)
                 return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
 
