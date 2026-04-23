@@ -9,11 +9,11 @@ namespace Application.Services
     public class FinanceService : IFinanceService
     {
 
-        private readonly IBaseRepository<BaseAccount> _accountRepo;
+        private readonly IFinanceRepository _financeRepo;
 
-        public FinanceService(IBaseRepository<BaseAccount> accountRepo)
+        public FinanceService(IFinanceRepository financeRepo)
         {
-            _accountRepo = accountRepo;
+            _financeRepo = financeRepo;
         }
 
         public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto)
@@ -32,8 +32,8 @@ namespace Application.Services
             if (newAccount == null)
                 return Result<bool>.Failure("The type of account is not exist");
 
-            await _accountRepo.AddAsync(newAccount);
-            var success = await _accountRepo.SaveChangesAsync() > 0;
+            await _financeRepo.AddAsync(newAccount);
+            var success = await _financeRepo.SaveChangesAsync() > 0;
 
             return (success)
                 ? Result<bool>.Success(true)
@@ -42,14 +42,14 @@ namespace Application.Services
 
         public async Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto)
         {
-            var account = await _accountRepo.GetByIdAsync(IncomeTxDto.accountId);
+            var account = await _financeRepo.GetByIdAsync(IncomeTxDto.accountId);
             if (account == null)
                 return Result<bool>.Failure("Account not found.");
 
             account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
                 IncomeTxDto.description, DateTime.UtcNow);
 
-            return (await _accountRepo.SaveChangesAsync() > 0)
+            return (await _financeRepo.SaveChangesAsync() > 0)
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure("Failed to record income.");
         }
@@ -66,7 +66,7 @@ namespace Application.Services
 
         public async Task<Result<List<AccountDto>>?> GetAccounts()
         {
-            var accounts = await _accountRepo.GetAllAsync();
+            var accounts = await _financeRepo.GetAllAsync();
 
             var accountDtos = accounts.Select(acc => acc switch
             {
@@ -91,7 +91,7 @@ namespace Application.Services
 
         public async Task<Result<AccountDto>> GetAccount(int Id)
         {
-            var accountResult = await _accountRepo.GetByIdAsync(Id);
+            var accountResult = await _financeRepo.GetByIdAsync(Id);
             if (accountResult == null)
                 return Result<AccountDto>.Failure("Your account is not exist");
 
@@ -111,7 +111,7 @@ namespace Application.Services
 
         public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id)
         {
-            var account = await _accountRepo.GetByIdAsync(Id);
+            var account = await _financeRepo.GetByIdAsync(Id);
             if (account == null || account.Transactions.Count()==0)
                 return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
 
