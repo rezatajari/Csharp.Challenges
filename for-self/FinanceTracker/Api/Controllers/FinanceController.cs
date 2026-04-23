@@ -60,6 +60,5 @@ namespace Api.Controllers
                 ? Ok(ApiResult<bool>.Success(result.Value))
                 : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
         }
-
     }
 }

@@ -61,9 +61,10 @@ else
 
                     <div class="mb-3">
                         <label class="form-label">Category Type</label>
-                        <select class="form-select" @bind="formModel.CategoryType">
+                        <select class="form-select"  @onchange="OnCategoryTypeChanged">
                             <option value="@TransactionType.Expense">Expense</option>
                             <option value="@TransactionType.Income">Income</option>
+                            <option value="@TransactionType.Transfer">Transfer</option>
                         </select>
                     </div>
 
@@ -131,6 +132,31 @@ else
     private TransactionFrom formModel = new();
     private string? statusMessage;
     private string statusClass = "";
+    private List<AccountDto> otherAccounts = new();
+
+    private async Task LoadOtherAccounts()
+    {
+        var result = await _accService.GetAllAccounts();
+        if (result.IsSuccess)
+        {
+            otherAccounts = result.Value.Where(a => a.Id != Id).ToList();
+
+            StateHasChanged();
+        }
+
+    }
+
+    private async Task OnCategoryTypeChanged(ChangeEventArgs e)
+    {
+        if (Enum.TryParse<TransactionType>(e.Value?.ToString(),out var type))
+        {
+            formModel.CategoryType = type;
+            if (type == TransactionType.Transfer)
+            {
+                await LoadOtherAccounts();
+            }
+        }
+    }
 
     private void OpenModal() => isModalOpen = true;
     private void CloseModal() => isModalOpen = false;
