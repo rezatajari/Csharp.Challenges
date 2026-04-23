@@ -2,6 +2,7 @@
 using Domain.Shared;
 using Domain.ValueObjects;
 using System.Net.Http.Json;
+using static UI.Components.TransactionFormModal;
 using static UI.Pages.AccountDetails;
 
 namespace UI.Services
@@ -41,7 +42,7 @@ namespace UI.Services
             return response ?? ApiResult<List<TransactionDto>>.Failure("There is no any transactions");
         }
 
-        public async Task<ApiResult<bool>> AddTransaction(TransactionFrom formModel)
+        public async Task<ApiResult<bool>> AddTransaction(AddTransactionFrom addTxModel)
         {
             var category = Category.Create(formModel.CategoryName, formModel.CategoryDescription);
             var amount=Money.Create(formModel.Amount,formModel.Currency);

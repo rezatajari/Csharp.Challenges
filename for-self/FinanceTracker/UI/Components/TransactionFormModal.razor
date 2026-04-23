@@ -69,23 +69,31 @@
     private bool IsVisible{ get; set; }
     private AddTransactionFrom addTxModel = new();
     private List<AccountDto> otherAccounts = new();
+    private List<TransactionDto> transactions = new();
+    public string? statusMessage;
+    public string statusClass = "";
 
     public void Show() => IsVisible = true;
     public void Hide() => IsVisible = false;
 
-    private async Task HandleSave()
+    private async Task SaveTransaction()
     {
-        // 1. Logic: Call your service to save
-        // await FinanceService.Deposit(AccountId, amount, description...);
+        var result = await _accService.AddTransaction(addTxModel);
 
-        Hide();
+        if (result.IsSuccess)
+        {
+            statusMessage = "Transaction added successfully!";
+            statusClass = "alert-success";
 
-        await OnSave.InvokeAsync();
-
-        addTxModel.Amount = 0;
-        addTxModel.TransactionDescription= "";
+            Hide();
+        }
+        else
+        {
+            statusMessage = $"Error: {result.ErrorMessage}";
+            statusClass = "alert-danger";
+            Hide();
+        }
     }
-
 
     private async Task OnTransactionTypeChanged(ChangeEventArgs e)
     {
