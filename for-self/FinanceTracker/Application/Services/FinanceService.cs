@@ -94,36 +94,38 @@ namespace Application.Services
         public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id)
         {
             var account = await _financeRepo.GetAccountWithTransactionsAsync(Id);
-            if (account == null || account.Transactions.Count()==0)
+            if (account == null || account.Transactions.Count() == 0)
                 return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
 
-            var tx = account.Transactions.Select(tx => 
+            var tx = account.Transactions.Select(tx =>
             new TransactionDto(tx.Amount, tx.Category, tx.Description,
                 tx.Type, tx.CreatedAt)).ToList();
 
             return Result<List<TransactionDto>>.Success(tx);
         }
 
-        public Task<Result<bool>> AddTransaction(InputTxDto IncomeTxDto)
-        {
-        }
-        private async Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto)
+        public async Task<Result<bool>> AddTransaction(InputTxDto IncomeTxDto)
         {
             var account = await _financeRepo.GetByIdAsync(IncomeTxDto.accountId);
             if (account == null)
-                return Result<bool>.Failure("Account not found.");
+                return Result<bool>.Failure("Your account is not exist");
 
-            account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
-                IncomeTxDto.description, DateTime.UtcNow);
+            if (IncomeTxDto.transactionType == TransactionType.Expense)
+            {
+                account.Withdraw(IncomeTxDto.amount, IncomeTxDto.category,
+                    IncomeTxDto.description, DateTime.UtcNow);
+            }
+            else
+            {
+                account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
+                    IncomeTxDto.description, DateTime.UtcNow);
+            }
 
-            return (await _financeRepo.SaveChangesAsync() > 0)
+            var result = await _financeRepo.SaveChangesAsync() > 0;
+
+            return (result)
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure("Failed to record income.");
-        }
-
-        private async Task<Result<bool>> ExpenseTransaction(InputTxDto ExpenseTxDto)
-        {
-            throw new NotImplementedException();
         }
     }
 }

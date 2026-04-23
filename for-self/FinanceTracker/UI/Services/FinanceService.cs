@@ -45,7 +45,7 @@ namespace UI.Services
         {
             var category = Category.Create(formModel.CategoryName, formModel.CategoryDescription, formModel.CategoryType);
             var amount=Money.Create(formModel.Amount,formModel.Currency);
-            var inputTxDto = new InputTxDto(formModel.AccountId, amount, category, formModel.TransactionDescription);
+            var inputTxDto = new InputTxDto(formModel.AccountId, amount, category,category.Type, formModel.TransactionDescription);
 
             var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
             var content = await response.Content.ReadFromJsonAsync<ApiResult<bool>>();

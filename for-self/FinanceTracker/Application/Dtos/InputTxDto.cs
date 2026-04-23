@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Entities;
+using Domain.ValueObjects;
 
 namespace Application.Dtos
 {
@@ -6,5 +7,6 @@ namespace Application.Dtos
        int accountId,
        Money amount,
        Category category,
+       TransactionType transactionType,
        string? description);
 }
