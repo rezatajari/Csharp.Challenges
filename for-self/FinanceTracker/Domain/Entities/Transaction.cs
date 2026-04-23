@@ -32,23 +32,6 @@ namespace Domain.Entities
         }
 
         protected Transaction() { }
-
-        public static Transaction Create(Money amount, TransactionType type, Category category,
-            BaseAccount account, string? description, DateTime createdAt, BaseAccount? toAccount = null)
-        {
-            if (category.Type != type)
-                throw new InvalidOperationException("Category/Type mismatch");
-
-            return type switch
-            {
-                TransactionType.Income => new IncomeTransaction(amount, category, account, description, createdAt),
-                TransactionType.Expense => new ExpenseTransaction(amount, category, account, description, createdAt),
-                TransactionType.Transfer => (toAccount == null)
-                ? throw new ArgumentException("Transfer requires a destination account.")
-                : new TransferTransaction(amount, category, account, toAccount!, description, createdAt),
-                _ => throw new ArgumentOutOfRangeException(nameof(type))
-            };
-        }
     }
 
 
@@ -58,6 +41,9 @@ namespace Domain.Entities
             BaseAccount account, string? description, DateTime createdAt)
             : base(amount,TransactionType.Income, category, account, description, createdAt) { }
         protected IncomeTransaction():base() { }
+        public static Transaction Create(Money amount, TransactionType type, Category category,
+    BaseAccount account, string? description, DateTime createdAt)
+    => new IncomeTransaction(amount, category, account, description, createdAt);
     }
 
     public class ExpenseTransaction : Transaction
@@ -66,6 +52,9 @@ namespace Domain.Entities
             BaseAccount account, string? description, DateTime createdAt)
             : base(amount,TransactionType.Expense, category, account, description, createdAt) { }
         protected ExpenseTransaction() : base() { }
+        public static Transaction Create(Money amount, TransactionType type, Category category,
+         BaseAccount account, string? description, DateTime createdAt)
+         => new ExpenseTransaction(amount, category, account,  description, createdAt);
     }
 
     public class TransferTransaction : Transaction
@@ -81,6 +70,10 @@ namespace Domain.Entities
             this.ToAccount = toAccount;
         }
         protected TransferTransaction() : base() { }
+
+        public static Transaction Create(Money amount, TransactionType type, Category category,
+           BaseAccount account, string? description, DateTime createdAt, BaseAccount toAccount)
+           =>  new TransferTransaction(amount, category, account, toAccount, description, createdAt);
     }
 
     public enum TransactionType

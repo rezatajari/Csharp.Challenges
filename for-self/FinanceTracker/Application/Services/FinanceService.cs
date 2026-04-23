@@ -120,8 +120,8 @@ namespace Application.Services
                 if (account.Id == toAccount.Id)
                     return Result<bool>.Failure("Cannot transfer to the same account.");
                 DateTime now= DateTime.UtcNow;
-                Transaction sourceTx = account.Withdraw(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now);
-                Transaction destTx = toAccount.Deposit(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now);
+
+                account.TransferTo(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now, toAccount);
             }
 
             var result = await _financeRepo.SaveChangesAsync() > 0;

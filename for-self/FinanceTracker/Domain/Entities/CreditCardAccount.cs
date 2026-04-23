@@ -26,7 +26,7 @@ namespace Domain.Entities
 
             this.Balance += amount;
 
-            var tx = Transaction.Create(amount, TransactionType.Income,
+            var tx = IncomeTransaction.Create(amount, TransactionType.Income,
                 Category.Create("Charge", null, TransactionType.Income), this, "Credit Payment", createdAt);
 
             StoreTransaction(tx);
@@ -45,7 +45,7 @@ namespace Domain.Entities
 
             this.Balance -= amount;
 
-            var tx = Transaction.Create(amount, TransactionType.Expense,
+            var tx = ExpenseTransaction.Create(amount, TransactionType.Expense,
                 Category.Create("Charge", null, TransactionType.Expense), this, "Credit Purchase", createdAt);
 
             StoreTransaction(tx);
@@ -53,5 +53,30 @@ namespace Domain.Entities
             return tx;
         }
 
+        public override Transaction TransferTo(Money amount, Category category,
+           string? description, DateTime createdAt, BaseAccount toAccount)
+        {
+            EnsureSameCurrency(amount);
+
+            if (Balance < amount)
+                throw new InsufficientFundsException("Insufficient balance for transfer.");
+
+            var transaction = TransferTransaction.Create(
+                amount,
+                TransactionType.Transfer,
+                category,
+                this,
+                description,
+                createdAt,
+                toAccount
+            );
+
+            this.Balance -= amount;
+            toAccount.Deposit(amount, category, description, createdAt);
+
+            StoreTransaction(transaction);
+
+            return transaction;
+        }
     }
 }
