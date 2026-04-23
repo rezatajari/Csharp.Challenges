@@ -40,24 +40,6 @@ namespace Application.Services
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public async Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto)
-        {
-            var account = await _financeRepo.GetByIdAsync(IncomeTxDto.accountId);
-            if (account == null)
-                return Result<bool>.Failure("Account not found.");
-
-            account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
-                IncomeTxDto.description, DateTime.UtcNow);
-
-            return (await _financeRepo.SaveChangesAsync() > 0)
-                ? Result<bool>.Success(true)
-                : Result<bool>.Failure("Failed to record income.");
-        }
-
-        public async Task<Result<bool>> ExpenseTransaction(InputTxDto ExpenseTxDto)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<Result<bool>> TransferFunds(int fromId, int toId, Money amount)
         {
@@ -120,6 +102,28 @@ namespace Application.Services
                 tx.Type, tx.CreatedAt)).ToList();
 
             return Result<List<TransactionDto>>.Success(tx);
+        }
+
+        public Task<Result<bool>> AddTransaction(InputTxDto IncomeTxDto)
+        {
+        }
+        private async Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto)
+        {
+            var account = await _financeRepo.GetByIdAsync(IncomeTxDto.accountId);
+            if (account == null)
+                return Result<bool>.Failure("Account not found.");
+
+            account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
+                IncomeTxDto.description, DateTime.UtcNow);
+
+            return (await _financeRepo.SaveChangesAsync() > 0)
+                ? Result<bool>.Success(true)
+                : Result<bool>.Failure("Failed to record income.");
+        }
+
+        private async Task<Result<bool>> ExpenseTransaction(InputTxDto ExpenseTxDto)
+        {
+            throw new NotImplementedException();
         }
     }
 }
