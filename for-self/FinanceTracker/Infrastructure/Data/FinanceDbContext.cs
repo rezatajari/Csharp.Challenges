@@ -12,9 +12,6 @@ namespace Infrastructure.Data
         public DbSet<SavingsAccount> SavingsAccount { get; set; }
         public DbSet<CreditCardAccount> CreditCardAccounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<IncomeTransaction> IncomeTransactions { get; set; }
-        public DbSet<ExpenseTransaction> ExpenseTransactions { get; set; }
-        public DbSet<TransferTransaction> TransferTransactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,17 +45,9 @@ namespace Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasDiscriminator<TransactionType>("Type")
-                .HasValue<IncomeTransaction>(TransactionType.Income)
-                .HasValue<ExpenseTransaction>(TransactionType.Expense)
-                .HasValue<TransferTransaction>(TransactionType.Transfer);
-            });
-
-            modelBuilder.Entity<TransferTransaction>(entity =>
-            {
-                entity.HasOne(t => t.ToAccount)
-                      .WithMany()
-                      .HasForeignKey(t => t.ToAccountId)
-                      .OnDelete(DeleteBehavior.Restrict);
+                .HasValue<Transaction>(TransactionType.Income)
+                .HasValue<Transaction>(TransactionType.Expense)
+                .HasValue<Transaction>(TransactionType.Transfer);
             });
         }
     }

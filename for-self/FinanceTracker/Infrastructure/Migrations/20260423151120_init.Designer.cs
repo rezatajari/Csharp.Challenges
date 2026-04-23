@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20260419120804_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260423151120_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,9 +89,7 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("Transactions");
 
-                    b.HasDiscriminator<int>("Type");
-
-                    b.UseTphMappingStrategy();
+                    b.HasDiscriminator<int>("Type").HasValue(2);
                 });
 
             modelBuilder.Entity("Domain.Entities.CreditCardAccount", b =>
@@ -106,32 +104,6 @@ namespace Infrastructure.Migrations
                     b.HasBaseType("Domain.Entities.BaseAccount");
 
                     b.HasDiscriminator().HasValue("SavingsAccount");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ExpenseTransaction", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Transaction");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("Domain.Entities.IncomeTransaction", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Transaction");
-
-                    b.HasDiscriminator().HasValue(0);
-                });
-
-            modelBuilder.Entity("Domain.Entities.TransferTransaction", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Transaction");
-
-                    b.Property<int>("ToAccountId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ToAccountId");
-
-                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>
@@ -257,17 +229,6 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("CreditLimit")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.TransferTransaction", b =>
-                {
-                    b.HasOne("Domain.Entities.BaseAccount", "ToAccount")
-                        .WithMany()
-                        .HasForeignKey("ToAccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ToAccount");
                 });
 
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>

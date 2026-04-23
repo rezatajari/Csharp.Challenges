@@ -99,35 +99,31 @@ namespace Application.Services
             return Result<List<TransactionDto>>.Success(tx);
         }
 
-        public async Task<Result<bool>> AddTransaction(InputTxDto IncomeTxDto)
+        public async Task<Result<bool>> AddTransaction(InputTxDto txDto)
         {
-            var account = await _financeRepo.GetByIdAsync(IncomeTxDto.accountId);
+            var account = await _financeRepo.GetByIdAsync(txDto.accountId);
             if (account == null)
                 return Result<bool>.Failure("Your account is not exist");
 
-            if (IncomeTxDto.transactionType == TransactionType.Expense)
+            if (txDto.transactionType == TransactionType.Expense)
             {
-                account.Withdraw(IncomeTxDto.amount, IncomeTxDto.category,
-                    IncomeTxDto.description, DateTime.UtcNow);
+                account.Withdraw(txDto.amount,txDto.transactionType, txDto.category,
+                    txDto.description, DateTime.UtcNow);
             }
-            else if (IncomeTxDto.transactionType==TransactionType.Expense) 
+            else if (txDto.transactionType==TransactionType.Expense) 
             {
-                account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
-                    IncomeTxDto.description, DateTime.UtcNow);
+                account.Deposit(txDto.amount,txDto.transactionType, txDto.category,
+                    txDto.description, DateTime.UtcNow);
             }
             else
             {
-                var toAccount = await _financeRepo.GetByIdAsync(IncomeTxDto.targetAccountId);
+                var toAccount = await _financeRepo.GetByIdAsync(txDto.targetAccountId);
                 if (account.Id == toAccount.Id)
                     return Result<bool>.Failure("Cannot transfer to the same account.");
                 DateTime now= DateTime.UtcNow;
 
-                account.TransferTo(IncomeTxDto.amount, IncomeTxDto.category, IncomeTxDto.description, now, toAccount);
-
-               var transferTransaction= TransferTransaction.Create(IncomeTxDto.amount, TransactionType.Transfer, IncomeTxDto.category, account, IncomeTxDto.description, now, toAccount);
-
-                account.StoreTransaction(transferTransaction);
-                toAccount.StoreTransaction(transferTransaction);
+                account.TransferTo(txDto.amount, txDto.transactionType, txDto.category, 
+                    txDto.description, now, toAccount);
             }
 
             var result = await _financeRepo.SaveChangesAsync() > 0;

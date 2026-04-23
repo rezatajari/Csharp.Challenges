@@ -19,63 +19,36 @@ namespace Domain.Entities
             return new CreditCardAccount(name, initialBalance, limit,type);
         }
 
-        public override Transaction Deposit(Money amount, Category category,
-            string? description, DateTime createdAt)
+        public override Transaction Deposit(Money amount, TransactionType type, Category category,
+          string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
-
             this.Balance += amount;
-
-            var tx = IncomeTransaction.Create(amount, TransactionType.Income,
-                Category.Create("Charge", null, TransactionType.Income), this, "Credit Payment", createdAt);
-
-            StoreTransaction(tx);
-
-            return tx;
-        }
-
-        public override Transaction Withdraw(Money amount, Category category,
-            string? description, DateTime createdAt)
-        {
-            EnsureSameCurrency(amount);
-
-            if (this.Balance.Amount - amount.Amount < -this.CreditLimit.Amount)
-                throw new CreditLimitExceedException("Transaction denied: Credit limit exceeded!",
-                    amount.Amount, this.CreditLimit.Amount);
-
-            this.Balance -= amount;
-
-            var tx = ExpenseTransaction.Create(amount, TransactionType.Expense,
-                Category.Create("Charge", null, TransactionType.Expense), this, "Credit Purchase", createdAt);
-
-            StoreTransaction(tx);
-
-            return tx;
-        }
-
-        public override Transaction TransferTo(Money amount, Category category,
-           string? description, DateTime createdAt, BaseAccount toAccount)
-        {
-            EnsureSameCurrency(amount);
-
-            if (Balance < amount)
-                throw new InsufficientFundsException("Insufficient balance for transfer.");
-
-            var transaction = TransferTransaction.Create(
-                amount,
-                TransactionType.Transfer,
-                category,
-                this,
-                description,
-                createdAt,
-                toAccount
-            );
-
-            this.Balance -= amount;
-            toAccount.Deposit(amount, category, description, createdAt);
-
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
+            return transaction;
+        }
 
+        public override Transaction Withdraw(Money amount, TransactionType type, Category category, string? description, DateTime createdAt)
+        {
+            EnsureSameCurrency(amount);
+            EnsureAvailableFunds(amount);
+
+            this.Balance -= amount;
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
+            StoreTransaction(transaction);
+            return transaction;
+        }
+
+        public override Transaction TransferTo(Money amount, TransactionType type, Category category,
+            string? description, DateTime createdAt, BaseAccount toAccount)
+        {
+            EnsureSameCurrency(amount);
+            EnsureAvailableFunds(amount);
+            this.Balance -= amount;
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
+            StoreTransaction(transaction);
+            toAccount.Deposit(amount, type, category, description, createdAt);
             return transaction;
         }
     }
