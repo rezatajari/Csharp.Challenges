@@ -76,17 +76,7 @@ else
         isLoading = false;
     }
 
-    private async Task LoadOtherAccounts()
-    {
-        var result = await _accService.GetAllAccounts();
-        if (result.IsSuccess)
-        {
-            otherAccounts = result.Value.Where(a => a.Id != Id).ToList();
-
-            StateHasChanged();
-        }
-
-    }
+   
 
 
     private async Task SaveTransaction()

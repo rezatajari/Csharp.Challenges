@@ -1,5 +1,8 @@
-﻿@using Domain.Entities
+﻿@using Application.Dtos
+@using Domain.Entities
 @using Domain.ValueObjects
+@using UI.Services
+@inject FinanceService _accService
 
 @if (IsVisible)
 {
@@ -14,8 +17,8 @@
                     <div class="mb-3">
                         <lablel class="form-label">Amount & Currency</lablel>
                         <div class="input-group">
-                            <input type="number" class="form-control" @bind="formModel.Amount" step="0.01" />
-                            <select class="form-select" style="max-width:100px;" @bind="formModel.Currency">
+                            <input type="number" class="form-control" @bind="addTxModel.Amount" step="0.01" />
+                            <select class="form-select" style="max-width:100px;" @bind="addTxModel.Currency">
                                 @foreach (var curr in Enum.GetValues<Currency>())
                                 {
                                     <option valur="@curr">@curr</option>
@@ -25,22 +28,22 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Category Name</label>
-                        <input type="text" class="form-control" @bind="formModel.CategoryName" placeholder="e.g. Shopping" />
+                        <input type="text" class="form-control" @bind="addTxModel.CategoryName" placeholder="e.g. Shopping" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Category Details</label>
-                        <input type="text" class="form-control" @bind="formModel.CategoryDescription" placeholder="Optional notes" />
+                        <input type="text" class="form-control" @bind="addTxModel.CategoryDescription" placeholder="Optional notes" />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Transaction Details</label>
-                        <textarea class="form-control" @bind="formModel.TransactionDescription"></textarea>
+                        <textarea class="form-control" @bind="addTxModel.TransactionDescription"></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Transaction Type</label>
-                        <select class="form-select" @onchange="OnCategoryTypeChanged">
+                        <select class="form-select" @onchange="OnTransactionTypeChanged">
                             <option value="@TransactionType.Expense">Expense</option>
                             <option value="@TransactionType.Income">Income</option>
                             <option value="@TransactionType.Transfer">Transfer</option>
@@ -59,10 +62,13 @@
 
 
 @code{
-    private bool IsVisible{ get; set; }
+    [Parameter]
+    public int Id { get; set; }
     [Parameter] 
     public EventCallback OnSave { get; set; }
-    private TransactionFrom formModel = new();
+    private bool IsVisible{ get; set; }
+    private AddTransactionFrom addTxModel = new();
+    private List<AccountDto> otherAccounts = new();
 
     public void Show() => IsVisible = true;
     public void Hide() => IsVisible = false;
@@ -72,23 +78,20 @@
         // 1. Logic: Call your service to save
         // await FinanceService.Deposit(AccountId, amount, description...);
 
-        // 2. Hide: Close the modal
         Hide();
 
-        // 3. Signal: Tell the parent "I'm done, refresh your list!"
         await OnSave.InvokeAsync();
 
-        // Reset fields for next time
-        amount = 0;
-        description = "";
+        addTxModel.Amount = 0;
+        addTxModel.TransactionDescription= "";
     }
 
 
-    private async Task OnCategoryTypeChanged(ChangeEventArgs e)
+    private async Task OnTransactionTypeChanged(ChangeEventArgs e)
     {
         if (Enum.TryParse<TransactionType>(e.Value?.ToString(), out var type))
         {
-            formModel.CategoryType = type;
+            addTxModel.Type = type;
             if (type == TransactionType.Transfer)
             {
                 await LoadOtherAccounts();
@@ -96,16 +99,24 @@
         }
     }
 
-
-    public class TransactionFrom
+    private async Task LoadOtherAccounts()
     {
-        public int AccountId { get; set; }
+        var result = await _accService.GetAllAccounts();
+        if (result.IsSuccess)
+        {
+            otherAccounts = result.Value.Where(a => a.Id != Id).ToList();
+            StateHasChanged();
+        }
+    }
+
+    public class AddTransactionFrom
+    {
         public int TargetAccountId { get; set; }
         public decimal Amount { get; set; }
         public Currency Currency { get; set; } = Currency.USD;
-        public string CategoryName { get; set; }
+        public string CategoryName { get; set; } = "No Category Name";
         public string? CategoryDescription { get; set; }
-        public TransactionType CategoryType { get; set; }
+        public TransactionType Type { get; set; }
         public string? TransactionDescription { get; set; }
     }
 }
