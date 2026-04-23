@@ -35,7 +35,6 @@ namespace Infrastructure.Data
                 entity.OwnsOne(t => t.Category, category =>
                 {
                     category.Property(c => c.Name).HasColumnName("CategoryName");
-                    category.Property(c => c.Type).HasColumnName("CategoryType").HasConversion<string>();
                     category.Property(c => c.Description).HasColumnName("CategoryDescription");
                 });
 
