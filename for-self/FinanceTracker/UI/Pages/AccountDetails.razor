@@ -31,7 +31,7 @@ else
 <h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
 
 <button class="btn btn-primary mb-3" @onclick="()=>transactionModal.Show()">Add Transaction</button>
-<TransactionTable Transaction="transactions"/>
+<TransactionTable Transactions="transactions" />
 <TransactionFormModal @ref="transactionModal" Id="Id" OnSave="HandleSaveFinished" />
 @if (!string.IsNullOrEmpty(pageMessage))
 {

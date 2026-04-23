@@ -38,8 +38,14 @@ namespace UI.Services
 
         public async Task<ApiResult<List<TransactionDto>>> GetTransactionsByAccountId(int Id) 
         {
-            var response = await _client.GetFromJsonAsync<ApiResult<List<TransactionDto>>>($"api/finance/transaction/{Id}");
-            return response ?? ApiResult<List<TransactionDto>>.Failure("There is no any transactions");
+            var response = await _client.GetAsync($"api/finance/transaction/{Id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                return ApiResult<List<TransactionDto>>.Failure($"Server said 400: {errorContent}");
+            }
+            var result = await response.Content.ReadFromJsonAsync<ApiResult<List<TransactionDto>>>();
+            return result ?? ApiResult<List<TransactionDto>>.Failure("Empty response from server");
         }
 
         public async Task<ApiResult<bool>> AddTransaction(AddTransactionFrom addTxModel)
