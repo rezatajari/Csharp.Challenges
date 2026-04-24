@@ -3,18 +3,18 @@ using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
 using Domain.ValueObjects;
-using System.Transactions;
+using Microsoft.Win32.SafeHandles;
 
 namespace Application.Services
 {
     public class FinanceService : IFinanceService
     {
 
-        private readonly IBaseRepository<BaseAccount> _accountRepo;
+        private readonly IFinanceRepository _financeRepo;
 
-        public FinanceService(IBaseRepository<BaseAccount> accountRepo)
+        public FinanceService(IFinanceRepository financeRepo)
         {
-            _accountRepo = accountRepo;
+            _financeRepo = financeRepo;
         }
 
         public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto)
@@ -33,41 +33,17 @@ namespace Application.Services
             if (newAccount == null)
                 return Result<bool>.Failure("The type of account is not exist");
 
-            await _accountRepo.AddAsync(newAccount);
-            var success = await _accountRepo.SaveChangesAsync() > 0;
+            await _financeRepo.AddAsync(newAccount);
+            var success = await _financeRepo.SaveChangesAsync() > 0;
 
             return (success)
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public async Task<Result<bool>> IncomeTransaction(InputTxDto IncomeTxDto)
-        {
-            var account = await _accountRepo.GetByIdAsync(IncomeTxDto.accountId);
-            if (account == null)
-                return Result<bool>.Failure("Account not found.");
-
-            account.Deposit(IncomeTxDto.amount, IncomeTxDto.category,
-                IncomeTxDto.description, DateTime.UtcNow);
-
-            return (await _accountRepo.SaveChangesAsync() > 0)
-                ? Result<bool>.Success(true)
-                : Result<bool>.Failure("Failed to record income.");
-        }
-
-        public async Task<Result<bool>> ExpenseTransaction(InputTxDto ExpenseTxDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Result<bool>> TransferFunds(int fromId, int toId, Money amount)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Result<List<AccountDto>>?> GetAccounts()
         {
-            var accounts = await _accountRepo.GetAllAsync();
+            var accounts = await _financeRepo.GetAllAsync();
 
             var accountDtos = accounts.Select(acc => acc switch
             {
@@ -92,7 +68,7 @@ namespace Application.Services
 
         public async Task<Result<AccountDto>> GetAccount(int Id)
         {
-            var accountResult = await _accountRepo.GetByIdAsync(Id);
+            var accountResult = await _financeRepo.GetByIdAsync(Id);
             if (accountResult == null)
                 return Result<AccountDto>.Failure("Your account is not exist");
 
@@ -112,15 +88,49 @@ namespace Application.Services
 
         public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id)
         {
-            var account = await _accountRepo.GetByIdAsync(Id);
-            if (account == null || account.Transactions == null)
+            var account = await _financeRepo.GetAccountWithTransactionsAsync(Id);
+            if (account == null || account.Transactions.Count() == 0)
                 return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
 
-            var tx = account.Transactions.Select(tx => 
+            var tx = account.Transactions.Select(tx =>
             new TransactionDto(tx.Amount, tx.Category, tx.Description,
                 tx.Type, tx.CreatedAt)).ToList();
 
             return Result<List<TransactionDto>>.Success(tx);
+        }
+
+        public async Task<Result<bool>> AddTransaction(InputTxDto txDto)
+        {
+            var account = await _financeRepo.GetByIdAsync(txDto.accountId);
+            if (account == null)
+                return Result<bool>.Failure("Your account is not exist");
+
+            if (txDto.transactionType == TransactionType.Expense)
+            {
+                account.Withdraw(txDto.amount,txDto.transactionType, txDto.category,
+                    txDto.description, DateTime.UtcNow);
+            }
+            else if (txDto.transactionType==TransactionType.Income) 
+            {
+                account.Deposit(txDto.amount,txDto.transactionType, txDto.category,
+                    txDto.description, DateTime.UtcNow);
+            }
+            else
+            {
+                var toAccount = await _financeRepo.GetByIdAsync(txDto.targetAccountId);
+                if (account.Id == toAccount.Id)
+                    return Result<bool>.Failure("Cannot transfer to the same account.");
+                DateTime now= DateTime.UtcNow;
+
+                account.TransferTo(txDto.amount, txDto.transactionType, txDto.category, 
+                    txDto.description, now, toAccount);
+            }
+
+            var result = await _financeRepo.SaveChangesAsync() > 0;
+
+            return (result)
+                ? Result<bool>.Success(true)
+                : Result<bool>.Failure("Failed to record income.");
         }
     }
 }

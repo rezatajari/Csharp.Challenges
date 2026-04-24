@@ -2,13 +2,14 @@
 using Domain.Shared;
 using Domain.ValueObjects;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
     public class SavingsAccount : BaseAccount
     {
-        protected SavingsAccount():base() {}
-        private SavingsAccount(string name, Money initialBalance, AccountType type) 
+        protected SavingsAccount() : base() { }
+        private SavingsAccount(string name, Money initialBalance, AccountType type)
             : base(name, initialBalance, type)
         {
             if (initialBalance.Amount < 0)
@@ -21,35 +22,36 @@ namespace Domain.Entities
             return new SavingsAccount(name, balance, type);
         }
 
-        public override Transaction Withdraw(Money amount, Category category, string? description, DateTime createdAt)
+        public override Transaction Deposit(Money amount,TransactionType type, Category category,
+          string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
-
-            if (Balance < amount)
-            {
-                throw new InsufficientFundsException("Insufficient balance for this transaction.");
-            }
-
-            var transaction = Transaction.Create(amount, TransactionType.Expense,
-                category, this, description, createdAt);
-
-            this.Balance -= amount;
+            this.Balance += amount;
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
-
             return transaction;
         }
 
-        public override Transaction Deposit(Money amount, Category category,
-            string? description, DateTime createdAt)
+        public override Transaction Withdraw(Money amount, TransactionType type,Category category, string? description, DateTime createdAt)
         {
             EnsureSameCurrency(amount);
+            EnsureAvailableFunds(amount);
 
-            var transaction = Transaction.Create(amount, TransactionType.Income,
-                category, this, description, createdAt);
-
-            this.Balance += amount;
+            this.Balance -= amount;
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
+            return transaction;
+        }
 
+        public override Transaction TransferTo(Money amount,TransactionType type,  Category category, 
+            string? description, DateTime createdAt, BaseAccount toAccount)
+        {
+            EnsureSameCurrency(amount);
+            EnsureAvailableFunds(amount);
+            this.Balance -= amount;
+            var transaction = Transaction.Create(amount, type, category, description, createdAt);
+            StoreTransaction(transaction);
+            toAccount.Deposit(amount, type, category, description, createdAt);
             return transaction;
         }
 
@@ -81,21 +83,6 @@ namespace Domain.Entities
             }
 
             return incomeAmount - expenseAmount;
-        }
-
-        public TransferResult TransferTo(SavingsAccount destination, Money amount, DateTime transferDate,
-              string? description = "Founds Transfer")
-        {
-            if (this.Id == destination.Id)
-                throw new InvalidOperationException("Cannot transfer to the same account.");
-
-            EnsureSameCurrency(destination.Balance);
-
-            var transferCategory = Category.Create("Transfer", "Internal Transfer", TransactionType.Expense);
-            Transaction sourceTx = this.Withdraw(amount, transferCategory, description, transferDate);
-            Transaction destTx = destination.Deposit(amount, transferCategory, description, transferDate);
-
-            return new TransferResult(sourceTx, destTx);
         }
 
         public List<Transaction> GetTransactionsByCategory(Category category)

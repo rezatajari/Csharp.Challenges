@@ -1,4 +1,6 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Exceptions;
+using Domain.ValueObjects;
+using System.Security.Cryptography;
 
 namespace Domain.Entities
 {
@@ -36,10 +38,18 @@ namespace Domain.Entities
                     "Currency mismatch between account balance and transaction amount.");
             }
         }
-        public abstract Transaction Deposit(Money amount, Category category,
+        protected void EnsureAvailableFunds(Money amount)
+        {
+            if (Balance < amount)
+                throw new InsufficientFundsException("Insufficient balance for this transaction.");
+        }
+        public abstract Transaction Deposit(Money amount, TransactionType type, Category category,
             string? description, DateTime createdAt);
-        public abstract Transaction Withdraw(Money amount, Category category,
+        public abstract Transaction Withdraw(Money amount, TransactionType type, Category category,
             string? description, DateTime createdAt);
+
+        public abstract Transaction TransferTo(Money amount, TransactionType type, Category category,
+            string? description, DateTime createdAt, BaseAccount toAccount);
     }
 
     public enum AccountType

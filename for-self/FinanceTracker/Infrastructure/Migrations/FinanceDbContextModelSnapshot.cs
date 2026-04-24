@@ -77,18 +77,16 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
                     b.ToTable("Transactions");
-
-                    b.HasDiscriminator<int>("Type");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Entities.CreditCardAccount", b =>
@@ -103,32 +101,6 @@ namespace Infrastructure.Migrations
                     b.HasBaseType("Domain.Entities.BaseAccount");
 
                     b.HasDiscriminator().HasValue("SavingsAccount");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ExpenseTransaction", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Transaction");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("Domain.Entities.IncomeTransaction", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Transaction");
-
-                    b.HasDiscriminator().HasValue(0);
-                });
-
-            modelBuilder.Entity("Domain.Entities.TransferTransaction", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Transaction");
-
-                    b.Property<int>("ToAccountId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ToAccountId");
-
-                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>
@@ -205,11 +177,6 @@ namespace Infrastructure.Migrations
                                 .HasColumnType("nvarchar(max)")
                                 .HasColumnName("CategoryName");
 
-                            b1.Property<string>("Type")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("CategoryType");
-
                             b1.HasKey("TransactionId");
 
                             b1.ToTable("Transactions");
@@ -254,17 +221,6 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("CreditLimit")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.TransferTransaction", b =>
-                {
-                    b.HasOne("Domain.Entities.BaseAccount", "ToAccount")
-                        .WithMany()
-                        .HasForeignKey("ToAccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ToAccount");
                 });
 
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>

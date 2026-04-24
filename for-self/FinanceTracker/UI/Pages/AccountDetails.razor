@@ -2,6 +2,7 @@
 @using Application.Dtos
 @using Domain.Entities
 @using Domain.ValueObjects
+@using UI.Components
 @using UI.Services
 @inject FinanceService _accService
 
@@ -23,127 +24,60 @@ else
     <div class="card shadow-sm p-4">
         <h4>@account.Name</h4>
         <p>Type: @account.Type</p>
-        <p>Balance: @account.Balance.Amount.ToString("C")</p>
-    </div>
-}
-
-@if (isModalOpen)
-{
-    <div class="modal fade show" style="display:block; background-color: rgba(0,0,0,0.5);" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">New Transaction</h5>
-                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <lablel class="form-label">Amount & Currency</lablel>
-                        <div class="input-group">
-                            <input type="number" class="form-control" @bind="formModel.Amount" step="0.01"/>
-                            <select class="form-select" style="max-width:100px;" @bind="formModel.Currency">
-                                @foreach(var curr in Enum.GetValues<Currency>())
-                                {
-                                    <option valur="@curr">@curr</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Category Name</label>
-                        <input type="text" class="form-control" @bind="formModel.CategoryName" placeholder="e.g. Shopping" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Category Details</label>
-                        <input type="text" class="form-control" @bind="formModel.CategoryDescription" placeholder="Optional notes" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Category Type</label>
-                        <select class="form-select" @bind="formModel.CategoryType">
-                            <option value="@TransactionType.Expense">Expense</option>
-                            <option value="@TransactionType.Income">Income</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Transaction Details</label>
-                        <textarea class="form-control" @bind="formModel.TransactionDescription"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
-                    <button class="btn btn-primary" @onclick="SaveTransaction">Save</button>
-                </div>
-            </div>
-        </div>
+        <p class="fw-semibold">Balance: @account.Balance.Amount.ToString("C")</p>
     </div>
 }
 
 <h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
-@if (!string.IsNullOrEmpty(statusMessage))
+
+<button class="btn btn-primary mb-3" @onclick="()=>transactionModal.Show()">Add Transaction</button>
+<TransactionTable Transactions="transactions" />
+<TransactionFormModal @ref="transactionModal" Id="Id" OnSave="HandleSaveFinished" />
+@if (!string.IsNullOrEmpty(pageMessage))
 {
-    <div class="alert @statusClass alert-dismissible fade show" role="alert">
-        @statusMessage
-        <button type="button" class="btn-close" @onclick="() => statusMessage = null"></button>
-    </div>
+    <div class="alert alert-success">@pageMessage</div>
 }
-<button class="btn btn-primary mb-3" @onclick="OpenModal">Add Transaction</button>
-<table class="table table-hover border">
-    <thead class="table-light">
-        <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Description</th>
-            <th scope="col">Category</th>
-            <th scope="col">Type</th>
-            <th scope="col" class="text-end">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tx in transactions)
-        {
-            <tr class="align-middle">
-                <td class="text-muted">@tx.CreatedAt.ToShortDateString()</td>
-                <td>@tx.Description</td>
-                <td>@tx.Category.Name</td>
-                <td>
-                    <span class="badge @(tx.Type == TransactionType.Income ? "bg-success" : "bg-danger")">
-                        @tx.Type
-                    </span>
-                </td>
-                <td class="text-end fw-semibold">
-                    @tx.Amount.Amount @tx.Amount.Currency
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+
 
 @code {
     [Parameter]
     public int Id { get; set; }
-    private string? ErrorMessage;
     private AccountDto? account;
+    private List<TransactionDto>? transactions = new();
+    private TransactionFormModal transactionModal=default!;  // Component
+    private List<AccountDto> otherAccounts = new();
+    private string? ErrorMessage;
     private bool isLoading = true;
-    private List<TransactionDto> transactions = new();
-    private bool isModalOpen = false;
-    private TransactionFrom formModel = new();
-    private string? statusMessage;
-    private string statusClass = "";
+    private string? pageMessage;
 
-    private void OpenModal() => isModalOpen = true;
-    private void CloseModal() => isModalOpen = false;
+    private async Task HandleSaveFinished(string message)
+    {
+        pageMessage = message; 
+        await RefreshData(); 
+    }
+
+    private async Task RefreshData()
+    {
+        var accountResult = await _accService.GetAccount(Id);
+        if (accountResult.IsSuccess)
+        {
+            account = accountResult.Value; 
+
+            var txResult = await _accService.GetTransactionsByAccountId(Id);
+            if (txResult.IsSuccess)
+                transactions = txResult.Value;
+        }
+        StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        formModel.AccountId = Id;
         var accountResult = await _accService.GetAccount(Id);
         if (accountResult.IsSuccess)
         {
             account = accountResult.Value;
             var txResult = await _accService.GetTransactionsByAccountId(Id);
-
             if (txResult.IsSuccess)
                 transactions = txResult.Value;
         }
@@ -153,41 +87,5 @@ else
         }
 
         isLoading = false;
-    }
-
-    private async Task SaveTransaction()
-    {
-        var result = await _accService.AddTransaction(formModel);
-
-        if (result.IsSuccess)
-        {
-            statusMessage = "Transaction added successfully!";
-            statusClass = "alert-success";
-
-            CloseModal();
-
-            var txResult = await _accService.GetTransactionsByAccountId(Id);
-            if (txResult.IsSuccess)
-            {
-                transactions = txResult.Value;
-            }
-        }
-        else
-        {
-            statusMessage = $"Error: {result.ErrorMessage}";
-            statusClass = "alert-danger";
-            CloseModal();
-        }
-    }
-
-    public class TransactionFrom
-    {
-        public int AccountId { get; set; } 
-        public decimal Amount { get; set; }
-        public Currency Currency { get; set; } = Currency.USD;
-        public string CategoryName { get; set; } 
-        public string? CategoryDescription { get; set; } 
-        public TransactionType CategoryType { get; set; } 
-        public string? TransactionDescription { get; set; }
     }
 }

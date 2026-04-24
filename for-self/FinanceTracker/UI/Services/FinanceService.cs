@@ -2,6 +2,7 @@
 using Domain.Shared;
 using Domain.ValueObjects;
 using System.Net.Http.Json;
+using static UI.Components.TransactionFormModal;
 using static UI.Pages.AccountDetails;
 
 namespace UI.Services
@@ -37,15 +38,21 @@ namespace UI.Services
 
         public async Task<ApiResult<List<TransactionDto>>> GetTransactionsByAccountId(int Id) 
         {
-            var response = await _client.GetFromJsonAsync<ApiResult<List<TransactionDto>>>($"api/finance/transaction/{Id}");
-            return response ?? ApiResult<List<TransactionDto>>.Failure("There is no any transactions");
+            var response = await _client.GetAsync($"api/finance/transaction/{Id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                return ApiResult<List<TransactionDto>>.Failure($"Server said 400: {errorContent}");
+            }
+            var result = await response.Content.ReadFromJsonAsync<ApiResult<List<TransactionDto>>>();
+            return result ?? ApiResult<List<TransactionDto>>.Failure("Empty response from server");
         }
 
-        public async Task<ApiResult<bool>> AddTransaction(TransactionFrom formModel)
+        public async Task<ApiResult<bool>> AddTransaction(AddTransactionFrom addTxModel)
         {
-            var category = Category.Create(formModel.CategoryName, formModel.CategoryDescription, formModel.CategoryType);
-            var amount=Money.Create(formModel.Amount,formModel.Currency);
-            var inputTxDto = new InputTxDto(formModel.AccountId, amount, category, formModel.TransactionDescription);
+            var category = Category.Create(addTxModel.CategoryName, addTxModel.CategoryDescription);
+            var amount=Money.Create(addTxModel.Amount, addTxModel.Currency);
+            var inputTxDto = new InputTxDto(addTxModel.AccountId, addTxModel.TargetAccountId, amount, category, addTxModel.Type, addTxModel.TransactionDescription);
 
             var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
             var content = await response.Content.ReadFromJsonAsync<ApiResult<bool>>();
