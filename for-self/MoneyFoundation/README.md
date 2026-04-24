@@ -135,6 +135,3 @@ By completing these 3 challenges, you have successfully covered:
 2. Encapsulation: Private fields, Read-only properties, and Data Hiding.
 3. Collections & LINQ: Managing lists and searching data.
 4. Exceptions: Guarding against invalid states.
- 
-- **مجموعه‌ها و LINQ:** مدیریت و جستجوی داده  
-- **استثناها:** جلوگیری از وضعیت‌های نامعتبر  
