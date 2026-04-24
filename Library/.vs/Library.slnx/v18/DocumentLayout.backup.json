@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "D:\\Repo\\Library\\Library\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\abstractions\\imemberrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\entities\\member.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\services\\returningservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\abstractions\\ibookrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\entities\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5C8CBAE-DE02-7B4C-706D-5B7BB03EEA4F}|..\\Domain\\Domain.csproj|d:\\repo\\library\\domain\\services\\borrowingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,28 +27,53 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "IMemberRepository.cs",
+              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Abstractions\\IMemberRepository.cs",
+              "RelativeDocumentMoniker": "..\\Domain\\Abstractions\\IMemberRepository.cs",
+              "ToolTip": "D:\\Repo\\Library\\Domain\\Abstractions\\IMemberRepository.cs",
+              "RelativeToolTip": "..\\Domain\\Abstractions\\IMemberRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T12:20:30.59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Member.cs",
               "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Entities\\Member.cs",
               "RelativeDocumentMoniker": "..\\Domain\\Entities\\Member.cs",
               "ToolTip": "D:\\Repo\\Library\\Domain\\Entities\\Member.cs",
               "RelativeToolTip": "..\\Domain\\Entities\\Member.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAArwCoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAowC8AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-13T09:42:32.649Z",
-              "IsPinned": true,
+              "WhenOpened": "2026-02-19T12:15:23.416Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Book.cs",
               "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Entities\\Book.cs",
               "RelativeDocumentMoniker": "..\\Domain\\Entities\\Book.cs",
               "ToolTip": "D:\\Repo\\Library\\Domain\\Entities\\Book.cs",
               "RelativeToolTip": "..\\Domain\\Entities\\Book.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAASwDsAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-13T12:28:23.587Z",
+              "WhenOpened": "2026-02-19T12:05:02.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IBookRepository.cs",
+              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Abstractions\\IBookRepository.cs",
+              "RelativeDocumentMoniker": "..\\Domain\\Abstractions\\IBookRepository.cs",
+              "ToolTip": "D:\\Repo\\Library\\Domain\\Abstractions\\IBookRepository.cs",
+              "RelativeToolTip": "..\\Domain\\Abstractions\\IBookRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T11:28:49.057Z",
               "EditorCaption": ""
             },
             {
@@ -66,38 +91,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ReturningService.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Services\\ReturningService.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\Services\\ReturningService.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\Services\\ReturningService.cs",
-              "RelativeToolTip": "..\\Domain\\Services\\ReturningService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-13T12:27:28.874Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BorrowingService.cs",
-              "DocumentMoniker": "D:\\Repo\\Library\\Domain\\Services\\BorrowingService.cs",
-              "RelativeDocumentMoniker": "..\\Domain\\Services\\BorrowingService.cs",
-              "ToolTip": "D:\\Repo\\Library\\Domain\\Services\\BorrowingService.cs",
-              "RelativeToolTip": "..\\Domain\\Services\\BorrowingService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-13T08:28:13.546Z",
-              "EditorCaption": ""
             }
           ]
         },
