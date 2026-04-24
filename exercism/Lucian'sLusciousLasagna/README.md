@@ -82,4 +82,4 @@ or experiment with different preparation times per layer.
 
 ---
 
-**Good luck, Chef Developer! **
+Good luck, Chef Developer! 
