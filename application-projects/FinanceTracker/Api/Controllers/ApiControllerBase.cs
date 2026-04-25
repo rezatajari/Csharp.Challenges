@@ -7,7 +7,7 @@ namespace Api.Controllers
     [ApiController]
     public class ApiControllerBase : ControllerBase
     {
-        protected ActionResult HandleResult<T>(Result<T> result,int statusCode)
+        protected ActionResult HandleResult<T>(Result<T> result,int statusCode=400)
         {
             if (result.IsSuccess) return Ok(result.Value);
 
