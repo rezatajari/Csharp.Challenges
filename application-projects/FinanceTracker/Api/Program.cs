@@ -27,10 +27,12 @@ builder.Services.AddDbContext<FinanceDbContext>(options =>
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 
+builder.Services.AddProblemDetails();
 var app = builder.Build();
+
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
-
+app.UseStatusCodePages();
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
