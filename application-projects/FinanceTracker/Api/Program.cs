@@ -1,7 +1,11 @@
 ﻿using Api;
+using Application.Dtos;
 using Application.Interfaces;
 using Application.Services;
+using Application.Validators;
 using Domain.Entities;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +48,8 @@ builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddProblemDetails();
 var app = builder.Build();
 
