@@ -8,7 +8,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FinanceController : ControllerBase
+    public class FinanceController : ApiControllerBase
     {
         private readonly IFinanceService _financeService;
         public FinanceController(IFinanceService financeService)
@@ -20,45 +20,35 @@ namespace Api.Controllers
         public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
         {
             var result = await _financeService.OpenAccount(createAccModel);
-            return (result.IsSuccess)
-                ? Ok(result.Value)
-                : BadRequest();
+            return HandleResult(result);
         }
 
         [HttpGet("accounts")]
         public async Task<IActionResult> GetAllAccounts()
         {
             var result = await _financeService.GetAccounts();
-            return (result.IsSuccess)
-                 ? Ok(result.Value)
-                 : Problem(detail: result.ErrorMessage,statusCode: StatusCodes.Status400BadRequest,title: "Bad Request");
+            return HandleResult(result);
         }
 
         [HttpGet("account/{id}")]
         public async Task<IActionResult> GetAccount(int id)
         {
             var result = await _financeService.GetAccount(id);
-            return (result.IsSuccess)
-                ? Ok(ApiResult<AccountDto>.Success(result.Value))
-                : BadRequest(ApiResult<AccountDto>.Failure(result.ErrorMessage));
+            return HandleResult(result);
         }
 
         [HttpGet("transaction/{id}")]
         public async Task<IActionResult> GetTransaction(int id)
         {
             var result = await _financeService.GetTransactionById(id);
-            return (result.IsSuccess)
-                ? Ok(ApiResult<List<TransactionDto>>.Success(result.Value))
-                : BadRequest(ApiResult<List<TransactionDto>>.Failure(result.ErrorMessage));
+            return HandleResult(result);
         }
 
         [HttpPost("transaction/add")]
         public async Task<IActionResult> AddTransaction(InputTxDto inputTxDto)
         {
-            var result= await _financeService.AddTransaction(inputTxDto);   
-            return (result.IsSuccess)
-                ? Ok(ApiResult<bool>.Success(result.Value))
-                : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
+            var result = await _financeService.AddTransaction(inputTxDto);
+            return HandleResult(result);
         }
     }
 }
