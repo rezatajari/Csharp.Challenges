@@ -40,7 +40,7 @@ namespace Api.Controllers
         [HttpGet("transaction/{id}")]
         public async Task<IActionResult> GetTransaction(int id, CancellationToken ct)
         {
-            var result = await _financeService.GetTransactionById(id,ct);
+            var result = await _financeService.GetAccountTransactions(id,ct);
             return HandleResult(result);
         }
 

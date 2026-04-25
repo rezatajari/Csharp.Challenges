@@ -10,6 +10,6 @@ namespace Application.Interfaces
         Task<Result<bool>> AddTransaction(InputTxDto txDto, CancellationToken ct);
         Task<Result<List<AccountDto>>?> GetAccounts(CancellationToken ct);
         Task<Result<AccountDto>> GetAccount(int Id, CancellationToken ct);
-        Task<Result<List<TransactionDto>>> GetTransactionById(int Id, CancellationToken ct);
+        Task<Result<List<TransactionDto>>> GetAccountTransactions(int Id, CancellationToken ct);
     }
 }
