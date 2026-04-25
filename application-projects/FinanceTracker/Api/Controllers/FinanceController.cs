@@ -21,8 +21,8 @@ namespace Api.Controllers
         {
             var result = await _financeService.OpenAccount(createAccModel);
             return (result.IsSuccess)
-                ? Ok(ApiResult<bool>.Success(result.Value))
-                : BadRequest(ApiResult<bool>.Failure(result.ErrorMessage));
+                ? Ok(result.Value)
+                : BadRequest();
         }
 
         [HttpGet("accounts")]
@@ -30,8 +30,8 @@ namespace Api.Controllers
         {
             var result = await _financeService.GetAccounts();
             return (result.IsSuccess)
-                 ? Ok(ApiResult<List<AccountDto>?>.Success(result.Value))
-                 : BadRequest(ApiResult<List<AccountDto>>.Failure(result.ErrorMessage));
+                 ? Ok(result.Value)
+                 : Problem(detail: result.ErrorMessage,statusCode: StatusCodes.Status400BadRequest,title: "Bad Request");
         }
 
         [HttpGet("account/{id}")]
