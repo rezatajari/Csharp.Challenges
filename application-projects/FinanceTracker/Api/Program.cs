@@ -5,6 +5,9 @@ using Domain.Entities;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +25,19 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<FinanceDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.MSSqlServer(
+    connectionString: connectionString,
+    sinkOptions: new MSSqlServerSinkOptions
+    {
+        TableName = "Logs",
+        AutoCreateSqlTable = true
+    })
+    .CreateLogger();
 
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
