@@ -8,7 +8,11 @@ namespace Api
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            logger.LogError(exception, "Unhandled error: {Message}", exception.Message);
+            logger.LogError(exception,
+                "Unhandled error occurred on {Path} for TraceId {TraceId}. Message: {Message}",
+             httpContext.Request.Path,
+             httpContext.TraceIdentifier,
+             exception.Message);
 
             var details = new ProblemDetails
             {

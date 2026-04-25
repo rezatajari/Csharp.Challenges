@@ -2,23 +2,16 @@
 using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
-using Domain.ValueObjects;
-using Microsoft.Win32.SafeHandles;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services
 {
-    public class FinanceService : IFinanceService
+    public class FinanceService(IFinanceRepository financeRepo, ILogger<FinanceService> logger) : IFinanceService
     {
-
-        private readonly IFinanceRepository _financeRepo;
-
-        public FinanceService(IFinanceRepository financeRepo)
-        {
-            _financeRepo = financeRepo;
-        }
-
         public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto, CancellationToken ct)
         {
+            logger.LogInformation("Attempting to open a new account of type {AccountType} with name {AccountName}", createAccDto.Type, createAccDto.Name);
+
             BaseAccount? newAccount = null;
 
             if (createAccDto.Type == AccountType.Savings)
@@ -31,106 +24,178 @@ namespace Application.Services
             }
 
             if (newAccount == null)
+            {
+                logger.LogWarning("Account opening failed: Unsupported account type {AccountType}", createAccDto.Type);
                 return Result<bool>.Failure("The type of account is not exist");
+            }
 
-            await _financeRepo.AddAsync(newAccount,ct);
-            var success = await _financeRepo.SaveChangesAsync(ct) > 0;
+            await financeRepo.AddAsync(newAccount, ct);
+            var success = await financeRepo.SaveChangesAsync(ct) > 0;
 
-            return (success)
-                ? Result<bool>.Success(true)
-                : Result<bool>.Failure("Failed to open account.");
+            if (!success)
+            {
+                logger.LogError("Database failure: Could not save new account {AccountName} to the database", createAccDto.Name);
+                return Result<bool>.Failure("Failed to open account.");
+            }
+
+            logger.LogInformation("Successfully opened new {AccountType} account for {AccountName}", createAccDto.Type, createAccDto.Name);
+
+            return Result<bool>.Success(true);
         }
 
         public async Task<Result<List<AccountDto>>?> GetAccounts(CancellationToken ct)
         {
-            var accounts = await _financeRepo.GetAllAsync(ct);
+            logger.LogInformation("Retrieving all accounts from the database");
 
-            var accountDtos = accounts.Select(acc => acc switch
+            var accounts = await financeRepo.GetAllAsync(ct);
+
+            try
             {
-                SavingsAccount s => new AccountDto(
-                    s.Id,
-                    s.Name,
-                    s.Balance,
-                    AccountType.Savings),
+                var accountDtos = accounts.Select(acc => acc switch
+                {
+                    SavingsAccount s => new AccountDto(
+                        s.Id,
+                        s.Name,
+                        s.Balance,
+                        AccountType.Savings),
 
-                CreditCardAccount c => new AccountDto(
-                    c.Id,
-                    c.Name,
-                    c.Balance,
-                    AccountType.CreditCard,
-                    c.CreditLimit),
+                    CreditCardAccount c => new AccountDto(
+                        c.Id,
+                        c.Name,
+                        c.Balance,
+                        AccountType.CreditCard,
+                        c.CreditLimit),
 
-                _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
-            }).ToList();
+                    _ => throw new NotSupportedException($"Unknown account type: {acc.GetType()}")
+                }).ToList();
 
-            return Result<List<AccountDto>>.Success(accountDtos);
+                logger.LogInformation("Successfully retrieved and mapped {Count} accounts", accountDtos.Count);
+
+                return Result<List<AccountDto>>.Success(accountDtos);
+            }
+            catch (NotSupportedException ex)
+            {
+                logger.LogError(ex, "Mapping failure: One or more accounts in the database have an unsupported type");
+                throw;
+            }
         }
 
         public async Task<Result<AccountDto>> GetAccount(int Id, CancellationToken ct)
         {
-            var accountResult = await _financeRepo.GetByIdAsync(Id,ct);
+            logger.LogInformation("Fetching account details for AccountId: {AccountId}", Id);
+
+            var accountResult = await financeRepo.GetByIdAsync(Id, ct);
+
             if (accountResult == null)
-                return Result<AccountDto>.Failure("Your account is not exist");
-
-            var account = accountResult switch
             {
-                SavingsAccount s => new AccountDto(
-                    Id, s.Name, s.Balance, AccountType.Savings),
+                logger.LogWarning("Account lookup failed: AccountId {AccountId} does not exist", Id);
+                return Result<AccountDto>.Failure("Your account is not exist");
+            }
 
-                CreditCardAccount c => new AccountDto(
-                    Id, c.Name, c.Balance, AccountType.CreditCard, c.CreditLimit),
+            try
+            {
+                var account = accountResult switch
+                {
+                    SavingsAccount s => new AccountDto(Id, s.Name, s.Balance, AccountType.Savings),
+                    CreditCardAccount c => new AccountDto(Id, c.Name, c.Balance, AccountType.CreditCard, c.CreditLimit),
+                    _ => throw new NotSupportedException($"Unknown account type: {accountResult.GetType()}")
+                };
 
-                _ => throw new NotSupportedException($"Unknown account type: {accountResult.GetType()}")
-            };
-
-            return Result<AccountDto>.Success(account);
+                logger.LogInformation("Successfully retrieved account details for AccountId: {AccountId}", Id);
+                return Result<AccountDto>.Success(account);
+            }
+            catch (NotSupportedException ex)
+            {
+                logger.LogError(ex, "Mapping error for AccountId {AccountId}: Unsupported type encountered", Id);
+                throw;
+            }
         }
 
-        public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id, CancellationToken ct)
+        public async Task<Result<List<TransactionDto>>> GetAccountTransactions(int Id, CancellationToken ct)
         {
-            var account = await _financeRepo.GetAccountWithTransactionsAsync(Id,ct);
-            if (account == null || account.Transactions.Count() == 0)
-                return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
+            logger.LogInformation("Retrieving transactions for AccountId: {AccountId}", Id);
+
+            var account = await financeRepo.GetAccountWithTransactionsAsync(Id, ct);
+
+            if (account == null)
+            {
+                logger.LogWarning("Transaction lookup failed: AccountId {AccountId} does not exist", Id);
+                return Result<List<TransactionDto>>.Failure("Account is not exist");
+            }
+
+            if (!account.Transactions.Any())
+            {
+                logger.LogInformation("No transactions found for AccountId: {AccountId}", Id);
+                return Result<List<TransactionDto>>.Failure("You don't have any transaction");
+            }
 
             var tx = account.Transactions.Select(tx =>
-            new TransactionDto(tx.Amount, tx.Category, tx.Description,
-                tx.Type, tx.CreatedAt)).ToList();
+                new TransactionDto(tx.Amount, tx.Category, tx.Description,
+                    tx.Type, tx.CreatedAt)).ToList();
+
+            logger.LogInformation("Successfully mapped {Count} transactions for AccountId: {AccountId}", tx.Count, Id);
 
             return Result<List<TransactionDto>>.Success(tx);
         }
 
         public async Task<Result<bool>> AddTransaction(InputTxDto txDto, CancellationToken ct)
         {
-            var account = await _financeRepo.GetByIdAsync(txDto.accountId,ct);
+            logger.LogInformation("Processing {TransactionType} for AccountId: {AccountId}. Amount: {Amount}",
+                txDto.transactionType, txDto.accountId, txDto.amount);
+
+            var account = await financeRepo.GetByIdAsync(txDto.accountId, ct);
             if (account == null)
+            {
+                logger.LogWarning("Transaction failed: Source AccountId {AccountId} does not exist", txDto.accountId);
                 return Result<bool>.Failure("Your account is not exist");
+            }
 
             if (txDto.transactionType == TransactionType.Expense)
             {
-                account.Withdraw(txDto.amount,txDto.transactionType, txDto.category,
+                account.Withdraw(txDto.amount, txDto.transactionType, txDto.category,
                     txDto.description, DateTime.UtcNow);
             }
-            else if (txDto.transactionType==TransactionType.Income) 
+            else if (txDto.transactionType == TransactionType.Income)
             {
-                account.Deposit(txDto.amount,txDto.transactionType, txDto.category,
+                account.Deposit(txDto.amount, txDto.transactionType, txDto.category,
                     txDto.description, DateTime.UtcNow);
             }
             else
             {
-                var toAccount = await _financeRepo.GetByIdAsync(txDto.targetAccountId,ct);
-                if (account.Id == toAccount.Id)
-                    return Result<bool>.Failure("Cannot transfer to the same account.");
-                DateTime now= DateTime.UtcNow;
+                var toAccount = await financeRepo.GetByIdAsync(txDto.targetAccountId, ct);
 
-                account.TransferTo(txDto.amount, txDto.transactionType, txDto.category, 
+                if (toAccount == null)
+                {
+                    logger.LogWarning("Transfer failed: Target AccountId {TargetAccountId} does not exist", txDto.targetAccountId);
+                    return Result<bool>.Failure("Target account does not exist.");
+                }
+
+                if (account.Id == toAccount.Id)
+                {
+                    logger.LogWarning("Transfer rejected: Source and Target AccountId are the same ({AccountId})", account.Id);
+                    return Result<bool>.Failure("Cannot transfer to the same account.");
+                }
+
+                DateTime now = DateTime.UtcNow;
+                account.TransferTo(txDto.amount, txDto.transactionType, txDto.category,
                     txDto.description, now, toAccount);
+
+                logger.LogInformation("Transfer initialized from {SourceId} to {TargetId}", account.Id, toAccount.Id);
             }
 
-            var result = await _financeRepo.SaveChangesAsync(ct) > 0;
+            var result = await financeRepo.SaveChangesAsync(ct) > 0;
 
-            return (result)
-                ? Result<bool>.Success(true)
-                : Result<bool>.Failure("Failed to record income.");
+            if (!result)
+            {
+                logger.LogError("Database failure: Failed to persist {TransactionType} for AccountId {AccountId}",
+                    txDto.transactionType, txDto.accountId);
+                return Result<bool>.Failure("Failed to record transaction.");
+            }
+
+            logger.LogInformation("Successfully completed {TransactionType} for AccountId: {AccountId}",
+                txDto.transactionType, txDto.accountId);
+
+            return Result<bool>.Success(true);
         }
     }
 }
