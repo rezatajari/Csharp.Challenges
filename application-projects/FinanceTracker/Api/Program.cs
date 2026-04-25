@@ -39,6 +39,7 @@ Log.Logger = new LoggerConfiguration()
     })
     .CreateLogger();
 
+builder.Host.UseSerilog();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 
