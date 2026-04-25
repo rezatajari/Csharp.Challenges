@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Api;
+using Application.Interfaces;
 using Application.Services;
 using Domain.Entities;
 using Infrastructure.Data;
@@ -27,9 +28,11 @@ builder.Services.AddDbContext<FinanceDbContext>(options =>
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
