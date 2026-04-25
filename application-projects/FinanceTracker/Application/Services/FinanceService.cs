@@ -17,7 +17,7 @@ namespace Application.Services
             _financeRepo = financeRepo;
         }
 
-        public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto)
+        public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto, CancellationToken ct)
         {
             BaseAccount? newAccount = null;
 
@@ -33,17 +33,17 @@ namespace Application.Services
             if (newAccount == null)
                 return Result<bool>.Failure("The type of account is not exist");
 
-            await _financeRepo.AddAsync(newAccount);
-            var success = await _financeRepo.SaveChangesAsync() > 0;
+            await _financeRepo.AddAsync(newAccount,ct);
+            var success = await _financeRepo.SaveChangesAsync(ct) > 0;
 
             return (success)
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure("Failed to open account.");
         }
 
-        public async Task<Result<List<AccountDto>>?> GetAccounts()
+        public async Task<Result<List<AccountDto>>?> GetAccounts(CancellationToken ct)
         {
-            var accounts = await _financeRepo.GetAllAsync();
+            var accounts = await _financeRepo.GetAllAsync(ct);
 
             var accountDtos = accounts.Select(acc => acc switch
             {
@@ -66,9 +66,9 @@ namespace Application.Services
             return Result<List<AccountDto>>.Success(accountDtos);
         }
 
-        public async Task<Result<AccountDto>> GetAccount(int Id)
+        public async Task<Result<AccountDto>> GetAccount(int Id, CancellationToken ct)
         {
-            var accountResult = await _financeRepo.GetByIdAsync(Id);
+            var accountResult = await _financeRepo.GetByIdAsync(Id,ct);
             if (accountResult == null)
                 return Result<AccountDto>.Failure("Your account is not exist");
 
@@ -86,9 +86,9 @@ namespace Application.Services
             return Result<AccountDto>.Success(account);
         }
 
-        public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id)
+        public async Task<Result<List<TransactionDto>>> GetTransactionById(int Id, CancellationToken ct)
         {
-            var account = await _financeRepo.GetAccountWithTransactionsAsync(Id);
+            var account = await _financeRepo.GetAccountWithTransactionsAsync(Id,ct);
             if (account == null || account.Transactions.Count() == 0)
                 return Result<List<TransactionDto>>.Failure("Account is not exist or you have don't have any transaction");
 
@@ -99,9 +99,9 @@ namespace Application.Services
             return Result<List<TransactionDto>>.Success(tx);
         }
 
-        public async Task<Result<bool>> AddTransaction(InputTxDto txDto)
+        public async Task<Result<bool>> AddTransaction(InputTxDto txDto, CancellationToken ct)
         {
-            var account = await _financeRepo.GetByIdAsync(txDto.accountId);
+            var account = await _financeRepo.GetByIdAsync(txDto.accountId,ct);
             if (account == null)
                 return Result<bool>.Failure("Your account is not exist");
 
@@ -117,7 +117,7 @@ namespace Application.Services
             }
             else
             {
-                var toAccount = await _financeRepo.GetByIdAsync(txDto.targetAccountId);
+                var toAccount = await _financeRepo.GetByIdAsync(txDto.targetAccountId,ct);
                 if (account.Id == toAccount.Id)
                     return Result<bool>.Failure("Cannot transfer to the same account.");
                 DateTime now= DateTime.UtcNow;
@@ -126,7 +126,7 @@ namespace Application.Services
                     txDto.description, now, toAccount);
             }
 
-            var result = await _financeRepo.SaveChangesAsync() > 0;
+            var result = await _financeRepo.SaveChangesAsync(ct) > 0;
 
             return (result)
                 ? Result<bool>.Success(true)

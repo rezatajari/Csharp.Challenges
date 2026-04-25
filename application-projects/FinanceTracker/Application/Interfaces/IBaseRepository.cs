@@ -4,11 +4,11 @@ namespace Application.Interfaces
 {
     public interface IBaseRepository<T> where T:BaseEntity
     {
-        Task<T?> GetByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task AddAsync(T entity);
+        Task<T?> GetByIdAsync(int id, CancellationToken ct);
+        Task<IEnumerable<T>> GetAllAsync(CancellationToken ct);
+        Task AddAsync(T entity, CancellationToken ct);
         void Update(T entity);
-        void Delete(T entity);
-        Task<int> SaveChangesAsync();
+        void Delete(T entity, CancellationToken ct);
+        Task<int> SaveChangesAsync(CancellationToken ct);
     }
 }

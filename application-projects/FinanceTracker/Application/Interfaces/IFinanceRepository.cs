@@ -7,6 +7,6 @@ namespace Application.Interfaces
 {
     public interface IFinanceRepository:IBaseRepository<BaseAccount>
     {
-        Task<BaseAccount?> GetAccountWithTransactionsAsync(int id);
+        Task<BaseAccount?> GetAccountWithTransactionsAsync(int id, CancellationToken ct);
     }
 }

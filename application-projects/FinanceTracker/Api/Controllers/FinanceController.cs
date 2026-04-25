@@ -17,37 +17,37 @@ namespace Api.Controllers
         }
 
         [HttpPost("create-account")]
-        public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel)
+        public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel,CancellationToken ct)
         {
-            var result = await _financeService.OpenAccount(createAccModel);
+            var result = await _financeService.OpenAccount(createAccModel,ct);
             return HandleResult(result);
         }
 
         [HttpGet("accounts")]
-        public async Task<IActionResult> GetAllAccounts()
+        public async Task<IActionResult> GetAllAccounts(CancellationToken ct)
         {
-            var result = await _financeService.GetAccounts();
+            var result = await _financeService.GetAccounts(ct);
             return HandleResult(result);
         }
 
         [HttpGet("account/{id}")]
-        public async Task<IActionResult> GetAccount(int id)
+        public async Task<IActionResult> GetAccount(int id, CancellationToken ct)
         {
-            var result = await _financeService.GetAccount(id);
+            var result = await _financeService.GetAccount(id,ct);
             return HandleResult(result);
         }
 
         [HttpGet("transaction/{id}")]
-        public async Task<IActionResult> GetTransaction(int id)
+        public async Task<IActionResult> GetTransaction(int id, CancellationToken ct)
         {
-            var result = await _financeService.GetTransactionById(id);
+            var result = await _financeService.GetTransactionById(id,ct);
             return HandleResult(result);
         }
 
         [HttpPost("transaction/add")]
-        public async Task<IActionResult> AddTransaction(InputTxDto inputTxDto)
+        public async Task<IActionResult> AddTransaction(InputTxDto inputTxDto, CancellationToken ct)
         {
-            var result = await _financeService.AddTransaction(inputTxDto);
+            var result = await _financeService.AddTransaction(inputTxDto,ct);
             return HandleResult(result);
         }
     }
