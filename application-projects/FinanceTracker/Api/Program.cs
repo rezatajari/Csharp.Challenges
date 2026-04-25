@@ -48,7 +48,7 @@ builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountRequestValidator>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddProblemDetails();
 var app = builder.Build();

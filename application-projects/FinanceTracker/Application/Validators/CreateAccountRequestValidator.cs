@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validators
 {
-    public class CreateAccountDtoValidator : AbstractValidator<CreateAccountRequest>
+    public class CreateAccountRequestValidator : AbstractValidator<CreateAccountRequest>
     {
-        public CreateAccountDtoValidator()
+        public CreateAccountRequestValidator()
         {
             RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Account name is required.")
