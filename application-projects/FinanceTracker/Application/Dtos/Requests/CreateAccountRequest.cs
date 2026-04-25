@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
 using Domain.ValueObjects;
 
-namespace Application.Dtos
+namespace Application.Dtos.Requests
 {
-    public record CreateAccountDto(
+    public record CreateAccountRequest(
         string Name,
         Money Balance, 
         AccountType Type,

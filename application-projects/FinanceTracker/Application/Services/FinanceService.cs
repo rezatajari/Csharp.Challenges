@@ -1,14 +1,15 @@
 ﻿using Domain.Entities;
-using Application.Dtos;
 using Application.Interfaces;
 using Domain.Shared;
 using Microsoft.Extensions.Logging;
+using Application.Dtos.Reponses;
+using Application.Dtos.Requests;
 
 namespace Application.Services
 {
     public class FinanceService(IFinanceRepository financeRepo, ILogger<FinanceService> logger) : IFinanceService
     {
-        public async Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto, CancellationToken ct)
+        public async Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto, CancellationToken ct)
         {
             logger.LogInformation("Attempting to open a new account of type {AccountType} with name {AccountName}", createAccDto.Type, createAccDto.Name);
 
@@ -43,7 +44,7 @@ namespace Application.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<List<AccountDto>>?> GetAccounts(CancellationToken ct)
+        public async Task<Result<List<AccountResponse>>?> GetAccounts(CancellationToken ct)
         {
             logger.LogInformation("Retrieving all accounts from the database");
 
@@ -53,13 +54,13 @@ namespace Application.Services
             {
                 var accountDtos = accounts.Select(acc => acc switch
                 {
-                    SavingsAccount s => new AccountDto(
+                    SavingsAccount s => new AccountResponse(
                         s.Id,
                         s.Name,
                         s.Balance,
                         AccountType.Savings),
 
-                    CreditCardAccount c => new AccountDto(
+                    CreditCardAccount c => new AccountResponse(
                         c.Id,
                         c.Name,
                         c.Balance,
@@ -71,7 +72,7 @@ namespace Application.Services
 
                 logger.LogInformation("Successfully retrieved and mapped {Count} accounts", accountDtos.Count);
 
-                return Result<List<AccountDto>>.Success(accountDtos);
+                return Result<List<AccountResponse>>.Success(accountDtos);
             }
             catch (NotSupportedException ex)
             {
@@ -80,7 +81,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<Result<AccountDto>> GetAccount(int Id, CancellationToken ct)
+        public async Task<Result<AccountResponse>> GetAccount(int Id, CancellationToken ct)
         {
             logger.LogInformation("Fetching account details for AccountId: {AccountId}", Id);
 
@@ -89,20 +90,20 @@ namespace Application.Services
             if (accountResult == null)
             {
                 logger.LogWarning("Account lookup failed: AccountId {AccountId} does not exist", Id);
-                return Result<AccountDto>.Failure("Your account is not exist");
+                return Result<AccountResponse>.Failure("Your account is not exist");
             }
 
             try
             {
                 var account = accountResult switch
                 {
-                    SavingsAccount s => new AccountDto(Id, s.Name, s.Balance, AccountType.Savings),
-                    CreditCardAccount c => new AccountDto(Id, c.Name, c.Balance, AccountType.CreditCard, c.CreditLimit),
+                    SavingsAccount s => new AccountResponse(Id, s.Name, s.Balance, AccountType.Savings),
+                    CreditCardAccount c => new AccountResponse(Id, c.Name, c.Balance, AccountType.CreditCard, c.CreditLimit),
                     _ => throw new NotSupportedException($"Unknown account type: {accountResult.GetType()}")
                 };
 
                 logger.LogInformation("Successfully retrieved account details for AccountId: {AccountId}", Id);
-                return Result<AccountDto>.Success(account);
+                return Result<AccountResponse>.Success(account);
             }
             catch (NotSupportedException ex)
             {
@@ -111,7 +112,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<Result<List<TransactionDto>>> GetAccountTransactions(int Id, CancellationToken ct)
+        public async Task<Result<List<TransactionResponse>>> GetAccountTransactions(int Id, CancellationToken ct)
         {
             logger.LogInformation("Retrieving transactions for AccountId: {AccountId}", Id);
 
@@ -120,25 +121,25 @@ namespace Application.Services
             if (account == null)
             {
                 logger.LogWarning("Transaction lookup failed: AccountId {AccountId} does not exist", Id);
-                return Result<List<TransactionDto>>.Failure("Account is not exist");
+                return Result<List<TransactionResponse>>.Failure("Account is not exist");
             }
 
             if (!account.Transactions.Any())
             {
                 logger.LogInformation("No transactions found for AccountId: {AccountId}", Id);
-                return Result<List<TransactionDto>>.Failure("You don't have any transaction");
+                return Result<List<TransactionResponse>>.Failure("You don't have any transaction");
             }
 
             var tx = account.Transactions.Select(tx =>
-                new TransactionDto(tx.Amount, tx.Category, tx.Description,
+                new TransactionResponse(tx.Amount, tx.Category, tx.Description,
                     tx.Type, tx.CreatedAt)).ToList();
 
             logger.LogInformation("Successfully mapped {Count} transactions for AccountId: {AccountId}", tx.Count, Id);
 
-            return Result<List<TransactionDto>>.Success(tx);
+            return Result<List<TransactionResponse>>.Success(tx);
         }
 
-        public async Task<Result<bool>> AddTransaction(InputTxDto txDto, CancellationToken ct)
+        public async Task<Result<bool>> AddTransaction(InputTxRequest txDto, CancellationToken ct)
         {
             logger.LogInformation("Processing {TransactionType} for AccountId: {AccountId}. Amount: {Amount}",
                 txDto.transactionType, txDto.accountId, txDto.amount);

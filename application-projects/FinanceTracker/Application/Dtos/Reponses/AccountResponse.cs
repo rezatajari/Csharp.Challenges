@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Dtos
+namespace Application.Dtos.Reponses
 {
-    public record AccountDto(
+    public record AccountResponse(
         int Id,
         string Name,
         Money Balance,

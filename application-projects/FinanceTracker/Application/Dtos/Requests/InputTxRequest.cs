@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
 using Domain.ValueObjects;
 
-namespace Application.Dtos
+namespace Application.Dtos.Requests
 {
-   public record class InputTxDto(
+   public record class InputTxRequest(
        int accountId,
        int targetAccountId,
        Money amount,

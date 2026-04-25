@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Requests;
 using Domain.Entities;
 using FluentValidation;
 using System;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Application.Validators
 {
-    public class InputTxDtoValidator : AbstractValidator<InputTxDto>
+    public class InputTxDtoValidator : AbstractValidator<InputTxRequest>
     {
         public InputTxDtoValidator()
         {

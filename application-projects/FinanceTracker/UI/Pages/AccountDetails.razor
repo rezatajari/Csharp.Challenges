@@ -1,5 +1,6 @@
 ﻿@page "/account-details/{Id:int}"
 @using Application.Dtos
+@using Application.Dtos.Reponses
 @using Domain.Entities
 @using Domain.ValueObjects
 @using UI.Components
@@ -43,10 +44,10 @@ else
 @code {
     [Parameter]
     public int Id { get; set; }
-    private AccountDto? account;
-    private List<TransactionDto>? transactions = new();
+    private AccountResponse? account;
+    private List<TransactionResponse>? transactions = new();
     private TransactionFormModal transactionModal=default!;  // Component
-    private List<AccountDto> otherAccounts = new();
+    private List<AccountResponse> otherAccounts = new();
     private string? ErrorMessage;
     private bool isLoading = true;
     private string? pageMessage;

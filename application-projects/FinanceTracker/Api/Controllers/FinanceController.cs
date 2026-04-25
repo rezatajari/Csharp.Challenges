@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Requests;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace Api.Controllers
     public class FinanceController(IFinanceService financeService, ILogger<FinanceController> logger) : ApiControllerBase
     {
         [HttpPost("create-account")]
-        public async Task<IActionResult> CreateAccount(CreateAccountDto createAccModel, CancellationToken ct)
+        public async Task<IActionResult> CreateAccount(CreateAccountRequest createAccModel, CancellationToken ct)
         {
             logger.LogInformation("Received request to create account: {AccountName}", createAccModel.Name);
             var result = await financeService.OpenAccount(createAccModel, ct);
@@ -41,7 +41,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("transaction/add")]
-        public async Task<IActionResult> AddTransaction(InputTxDto inputTxDto, CancellationToken ct)
+        public async Task<IActionResult> AddTransaction(InputTxRequest inputTxDto, CancellationToken ct)
         {
             logger.LogInformation("Received request to add {TransactionType} for AccountId: {AccountId}",
                 inputTxDto.transactionType, inputTxDto.accountId);

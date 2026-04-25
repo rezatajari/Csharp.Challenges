@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Reponses;
+using Application.Dtos.Requests;
 using Domain.Shared;
 using Domain.ValueObjects;
 
@@ -6,10 +7,10 @@ namespace Application.Interfaces
 {
     public interface IFinanceService
     {
-        Task<Result<bool>> OpenAccount(CreateAccountDto createAccDto, CancellationToken ct);
-        Task<Result<bool>> AddTransaction(InputTxDto txDto, CancellationToken ct);
-        Task<Result<List<AccountDto>>?> GetAccounts(CancellationToken ct);
-        Task<Result<AccountDto>> GetAccount(int Id, CancellationToken ct);
-        Task<Result<List<TransactionDto>>> GetAccountTransactions(int Id, CancellationToken ct);
+        Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto, CancellationToken ct);
+        Task<Result<bool>> AddTransaction(InputTxRequest txDto, CancellationToken ct);
+        Task<Result<List<AccountResponse>>?> GetAccounts(CancellationToken ct);
+        Task<Result<AccountResponse>> GetAccount(int Id, CancellationToken ct);
+        Task<Result<List<TransactionResponse>>> GetAccountTransactions(int Id, CancellationToken ct);
     }
 }

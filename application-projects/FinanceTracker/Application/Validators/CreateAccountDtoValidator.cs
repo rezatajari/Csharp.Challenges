@@ -1,10 +1,10 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Requests;
 using Domain.Entities;
 using FluentValidation;
 
 namespace Application.Validators
 {
-    public class CreateAccountDtoValidator : AbstractValidator<CreateAccountDto>
+    public class CreateAccountDtoValidator : AbstractValidator<CreateAccountRequest>
     {
         public CreateAccountDtoValidator()
         {

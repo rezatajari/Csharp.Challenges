@@ -1,5 +1,6 @@
 ﻿@page "/accounts"
 @using Application.Dtos
+@using Application.Dtos.Reponses
 @using Domain.Entities
 @using Domain.ValueObjects
 @using UI.Services
@@ -80,7 +81,7 @@
 </div>
 
 @code {
-    private List<AccountDto>? accountlist;
+    private List<AccountResponse>? accountlist;
 
     [SupplyParameterFromQuery]
     public string? message { get; set; }
@@ -94,7 +95,7 @@
         }
         else
         {
-            accountlist = new List<AccountDto>();
+            accountlist = new List<AccountResponse>();
         }
     }
 
