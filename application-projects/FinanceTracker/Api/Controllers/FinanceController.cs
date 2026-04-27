@@ -16,7 +16,7 @@ namespace Api.Controllers
             var result = await financeService.OpenAccount(createAccModel, ct);
             return HandleResult(result);
         }
-        [Authorize]
+
         [HttpGet("accounts")]
         public async Task<IActionResult> GetAllAccounts(CancellationToken ct)
         {

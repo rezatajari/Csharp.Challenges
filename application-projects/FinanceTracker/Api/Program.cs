@@ -77,12 +77,12 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountRequestValidat
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddProblemDetails();
 var app = builder.Build();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
-app.UseRouting();
 app.MapControllers();
 app.Run();
