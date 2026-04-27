@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Requests;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -31,7 +32,7 @@ namespace Api.Controllers
             var result = await financeService.GetAccount(id, ct);
             return HandleResult(result);
         }
-
+        
         [HttpGet("transaction/{id}")]
         public async Task<IActionResult> GetTransaction(int id, CancellationToken ct)
         {
