@@ -12,12 +12,21 @@ namespace Infrastructure.Data
         public DbSet<SavingsAccount> SavingsAccount { get; set; }
         public DbSet<CreditCardAccount> CreditCardAccounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
+
             modelBuilder.Entity<BaseAccount>(entity =>
             {
                 entity.HasKey(a => a.Id);
+
+                entity.HasOne(a => a.User)
+                .WithMany(u => u.BaseAccounts)
+                .HasForeignKey(a => a.UserId)
+                .IsRequired();
+                
                 entity.MapMoney(a=>a.Balance, "Balance");
             });
 
