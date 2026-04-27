@@ -1,6 +1,5 @@
 ﻿using Application.Dtos.Requests;
 using Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -10,7 +9,7 @@ namespace Api.Controllers
     public class AuthController(IAuthService authService) : ApiControllerBase
     {
         [HttpPost("register")]
-        public async Task<IActionResult> Register(CreateUserRequest request)
+        public async Task<IActionResult> Register(RegisterUserRequest request)
         {
 
         }
