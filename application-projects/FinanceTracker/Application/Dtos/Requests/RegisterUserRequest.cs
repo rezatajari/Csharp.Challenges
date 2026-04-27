@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.Dtos.Requests
 {
-    public record CreateUserRequest(
+    public record RegisterUserRequest(
         string Username,
         string Email,
         string Password,

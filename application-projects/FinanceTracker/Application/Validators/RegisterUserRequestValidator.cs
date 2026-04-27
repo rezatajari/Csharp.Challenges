@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Validators
 {
-    public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
+    public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
     {
-        public CreateUserRequestValidator()
+        public RegisterUserRequestValidator()
         {
             RuleFor(x => x.Username)
                 .NotEmpty().WithMessage("Username is required")

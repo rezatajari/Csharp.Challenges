@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Repositories
+namespace Application.Services
 {
     public class AuthService
     {
