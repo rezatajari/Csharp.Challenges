@@ -17,11 +17,11 @@ namespace Application.Services
 
             if (createAccDto.Type == AccountType.Savings)
             {
-                newAccount = SavingsAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.Type);
+                newAccount = SavingsAccount.Create(createAccDto.UserId, createAccDto.Name, createAccDto.Balance, createAccDto.Type);
             }
             else if (createAccDto.Type == AccountType.CreditCard)
             {
-                newAccount = CreditCardAccount.Create(createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit, createAccDto.Type);
+                newAccount = CreditCardAccount.Create(createAccDto.UserId, createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit, createAccDto.Type);
             }
 
             if (newAccount == null)

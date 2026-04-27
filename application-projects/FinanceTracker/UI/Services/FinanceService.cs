@@ -1,7 +1,6 @@
-﻿using Application.Dtos;
-using Application.Dtos.Reponses;
+﻿using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
-using Domain.Shared;
+using Application.Shared;
 using Domain.ValueObjects;
 using System.Net.Http.Json;
 using static UI.Components.TransactionFormModal;
@@ -17,12 +16,12 @@ namespace UI.Services
             _client = client;
         }
 
-        public async Task<ApiResult<bool>> CreateAccount(CreateAccountRequest dto)
+        public async Task<bool> CreateAccount(CreateAccountRequest dto)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", dto);
 
             return await response.Content.ReadFromJsonAsync<ApiResult<bool>>()
-                ?? ApiResult<bool>.Failure("Error connect to server");
+                ?? Result<bool>.Failure("Error connect to server");
         }
 
         public async Task<ApiResult<List<AccountResponse>>> GetAllAccounts()

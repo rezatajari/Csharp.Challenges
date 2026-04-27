@@ -1,8 +1,5 @@
-﻿using Domain.Exceptions;
-using Domain.Shared;
-using Domain.ValueObjects;
+﻿using Domain.ValueObjects;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {

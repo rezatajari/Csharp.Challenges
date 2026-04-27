@@ -1,18 +1,18 @@
 ﻿using Api;
-using Application.Dtos;
 using Application.Interfaces;
 using Application.Services;
 using Application.Shared;
 using Application.Validators;
-using Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
-using System.Diagnostics;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +44,26 @@ Log.Logger = new LoggerConfiguration()
     })
     .CreateLogger();
 
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience= jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddScoped<IJwtProvider>();
@@ -56,12 +76,12 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountRequestValidat
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddProblemDetails();
 var app = builder.Build();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
 app.UseRouting();
-app.UseAuthorization();
 app.MapControllers();
 app.Run();
