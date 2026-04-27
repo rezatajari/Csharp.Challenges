@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20260423183444_init")]
+    [Migration("20260427093825_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -51,7 +51,12 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BaseAccounts");
 
@@ -92,6 +97,37 @@ namespace Infrastructure.Migrations
                     b.ToTable("Transactions");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Domain.Entities.CreditCardAccount", b =>
                 {
                     b.HasBaseType("Domain.Entities.BaseAccount");
@@ -108,6 +144,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>
                 {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("BaseAccounts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Domain.ValueObjects.Money", "Balance", b1 =>
                         {
                             b1.Property<int>("BaseAccountId")
@@ -133,6 +175,8 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Balance")
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
@@ -229,6 +273,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("BaseAccounts");
                 });
 #pragma warning restore 612, 618
         }

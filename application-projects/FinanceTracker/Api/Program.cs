@@ -5,6 +5,7 @@ using Application.Shared;
 using Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Authentication;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,7 +67,7 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddScoped<IJwtProvider>();
+builder.Services.AddScoped<IJwtProvider,JwtProvider>();
 builder.Host.UseSerilog();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();

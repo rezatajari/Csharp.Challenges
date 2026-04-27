@@ -90,16 +90,16 @@ namespace Domain.Entities
                 .Where(tx => tx.Category == category && tx.Type == TransactionType.Expense)
                 .Sum(a => a.Amount.Amount);
 
-        public List<CategorySummary> GetSpendingSummoryByCategory()
-         => Transactions
-                    .Where(tx => tx.Type == TransactionType.Expense)
-                    .GroupBy(tx => tx.Category.Name)
-                    .Select(group => new CategorySummary(
-                        group.Key,   // The Name
-                        group.Sum(t => t.Amount.Amount),  // The Sum
-                        group.Count() // The Count
-                        ))
-                    .ToList();
+        //public List<CategorySummary> GetSpendingSummoryByCategory()
+        // => Transactions
+        //            .Where(tx => tx.Type == TransactionType.Expense)
+        //            .GroupBy(tx => tx.Category.Name)
+        //            .Select(group => new CategorySummary(
+        //                group.Key,   // The Name
+        //                group.Sum(t => t.Amount.Amount),  // The Sum
+        //                group.Count() // The Count
+        //                ))
+        //            .ToList();
 
         public Transaction this[int index]
         {
