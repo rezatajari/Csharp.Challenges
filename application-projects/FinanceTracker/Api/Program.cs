@@ -1,5 +1,6 @@
 ﻿using Api;
 using Application.Interfaces;
+using Application.Interfaces.IRepositories;
 using Application.Services;
 using Application.Shared;
 using Application.Validators;
@@ -72,6 +73,7 @@ builder.Host.UseSerilog();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountRequestValidator>();

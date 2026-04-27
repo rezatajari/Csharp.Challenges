@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.IRepositories
 {
     public interface IBaseRepository<T> where T:BaseEntity
     {

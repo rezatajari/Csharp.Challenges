@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
 using Application.Shared;
+using Application.Interfaces.IRepositories;
 
 namespace Application.Services
 {
