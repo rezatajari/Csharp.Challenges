@@ -4,6 +4,7 @@ using Application.Interfaces.IRepositories;
 using Application.Shared;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace Application.Services
 {
@@ -11,7 +12,16 @@ namespace Application.Services
     {
         public async Task<Result<string>> Logn(LoginUserRequest request,CancellationToken ct)
         {
-            var user=await authRepo.GetByIdAsync(request.id)
+            var user=await authRepo.GetByEmailAsync(request.Email,ct);
+            if (user == null)
+                return Result<string>.Failure("The user is not exist");
+
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+            if (!isPasswordValid)
+                return Result<string>.Failure("Invalid credentials");
+
+            string token=jwtProvider.Generate(user);
+            return Result<string>.Success(token);
         }
 
         public async Task<Result<bool>> Register(RegisterUserRequest request,CancellationToken ct)
