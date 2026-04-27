@@ -4,5 +4,9 @@ using System.Text;
 
 namespace Application.Dtos.Requests
 {
-    record class CreateUserRequest(string Username,string Email);
+    public record CreateUserRequest(
+        string Username,
+        string Email,
+        string Password,
+        string ConfirmPassword);
 }
