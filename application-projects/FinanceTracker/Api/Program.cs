@@ -47,7 +47,7 @@ Log.Logger = new LoggerConfiguration()
     })
     .CreateLogger();
 
-var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+var jwtSettings = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -68,7 +68,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection(JwtSettings.SectionName));
 builder.Services.AddScoped<IJwtProvider,JwtProvider>();
 builder.Host.UseSerilog();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
