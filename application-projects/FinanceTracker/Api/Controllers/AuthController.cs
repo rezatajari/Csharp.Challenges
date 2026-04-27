@@ -14,5 +14,12 @@ namespace Api.Controllers
             var result= await authService.Register(request,ct);
             return HandleResult(result);
         }
+
+        [HttpGet("login")]
+        public async Task<IActionResult> Login(LoginUserRequest request,CancellationToken ct)
+        {
+            var result = await authService.Logn(request, ct);
+            return HandleResult(result);
+        }
     }
 }

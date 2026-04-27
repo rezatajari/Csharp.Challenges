@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Domain.Entities
 {
-    public class User:BaseEntity
+    public class User : BaseEntity
     {
         public string Username { get; private set; }
-        public string Email{ get; private set; }
+        public string Email { get; private set; }
         public string PasswordHash { get; private set; }
         public ICollection<BaseAccount> BaseAccounts { get; private set; } = new List<BaseAccount>();
 
@@ -23,4 +23,5 @@ namespace Domain.Entities
         public static User Create(string username, string email, string passwordHash)
             => new User(username, email, passwordHash);
 
+    }
 }
