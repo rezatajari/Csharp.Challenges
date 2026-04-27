@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services
 {
-    public class AuthService(IBaseRepository<User> authRepo,ILogger<AuthService> logger, IJwtProvider jwtProvider) : IAuthService
+    public class AuthService(IAuthRepository authRepo, ILogger<AuthService> logger, IJwtProvider jwtProvider) : IAuthService
     {
-        public Task<Result<string>> Logn(LoginUserRequest request,CancellationToken ct)
+        public async Task<Result<string>> Logn(LoginUserRequest request,CancellationToken ct)
         {
-
+            var user=await authRepo.GetByIdAsync(request.id)
         }
 
         public async Task<Result<bool>> Register(RegisterUserRequest request,CancellationToken ct)
