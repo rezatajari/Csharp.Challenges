@@ -2,6 +2,7 @@
 using Application.Dtos;
 using Application.Interfaces;
 using Application.Services;
+using Application.Shared;
 using Application.Validators;
 using Domain.Entities;
 using FluentValidation;
@@ -43,6 +44,9 @@ Log.Logger = new LoggerConfiguration()
     })
     .CreateLogger();
 
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.AddScoped<IJwtProvider>();
 builder.Host.UseSerilog();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
