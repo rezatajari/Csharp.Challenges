@@ -1,4 +1,4 @@
-﻿using Domain.Shared;
+﻿using Application.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

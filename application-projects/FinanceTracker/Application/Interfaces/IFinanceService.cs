@@ -1,6 +1,6 @@
 ﻿using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
-using Domain.Shared;
+using Application.Shared;
 using Domain.ValueObjects;
 
 namespace Application.Interfaces
