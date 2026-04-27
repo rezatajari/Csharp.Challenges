@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Requests;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -14,7 +15,7 @@ namespace Api.Controllers
             var result= await authService.Register(request,ct);
             return HandleResult(result);
         }
-
+        
         [HttpGet("login")]
         public async Task<IActionResult> Login(LoginUserRequest request,CancellationToken ct)
         {

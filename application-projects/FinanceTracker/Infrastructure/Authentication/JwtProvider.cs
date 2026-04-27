@@ -22,7 +22,7 @@ namespace Infrastructure.Authentication
                 new ("Username",user.Username)
             };
 
-            var key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
