@@ -9,17 +9,17 @@ namespace Domain.Entities
     public class SavingsAccount : BaseAccount
     {
         protected SavingsAccount() : base() { }
-        private SavingsAccount(string name, Money initialBalance, AccountType type)
-            : base(name, initialBalance, type)
+        private SavingsAccount(int userId,string name, Money initialBalance, AccountType type)
+            : base(userId,name, initialBalance, type)
         {
             if (initialBalance.Amount < 0)
             {
                 throw new ArgumentException("Balance cannot be negative.", nameof(initialBalance));
             }
         }
-        public static SavingsAccount Create(string name, Money balance, AccountType type)
+        public static SavingsAccount Create(int userId,string name, Money balance, AccountType type)
         {
-            return new SavingsAccount(name, balance, type);
+            return new SavingsAccount(userId,name, balance, type);
         }
 
         public override Transaction Deposit(Money amount,TransactionType type, Category category,

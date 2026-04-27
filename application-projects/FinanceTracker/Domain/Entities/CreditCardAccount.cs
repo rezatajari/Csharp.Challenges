@@ -6,17 +6,17 @@ namespace Domain.Entities
     public class CreditCardAccount : BaseAccount
     {
         protected CreditCardAccount() : base() { }
-        private CreditCardAccount(string name, Money initialBalance, Money limit,AccountType type)
-            : base(name, initialBalance, type)
+        private CreditCardAccount(int userId,string name, Money initialBalance, Money limit,AccountType type)
+            : base(userId,name, initialBalance, type)
         {
             CreditLimit = limit;
         }
         public Money CreditLimit { get; private set; }
 
-        public static CreditCardAccount Create(string name, Money initialBalance, Money limit,AccountType type)
+        public static CreditCardAccount Create(int userId,string name, Money initialBalance, Money limit,AccountType type)
         {
             if (limit.Amount < 0) throw new ArgumentException("Limit must be positive.");
-            return new CreditCardAccount(name, initialBalance, limit,type);
+            return new CreditCardAccount(userId,name, initialBalance, limit,type);
         }
 
         public override Transaction Deposit(Money amount, TransactionType type, Category category,

@@ -11,14 +11,18 @@ namespace Domain.Entities
         // For database (ef core) mapping
         private ICollection<Transaction> _transactions = new List<Transaction>();
         public string Name { get; protected set; }
+        public int UserId { get;private set; }
+        public User User { get;private set; } = default!;
         public Money Balance { get; protected set; }
         public AccountType Type { get; protected set; }
 
         // For expose
         public IEnumerable<Transaction> Transactions => _transactions;
 
-        protected BaseAccount(string name, Money initialBalance, AccountType type)
+        protected BaseAccount(int userId,string name, Money initialBalance, AccountType type)
         {
+            if (userId <= 0) throw new ArgumentException("Invalid User ID");
+
             ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
             Name = name;
             Balance = initialBalance;
