@@ -7,9 +7,6 @@ namespace Application.Validators
     {
         public LoginUserRequestValidator()
         {
-            RuleFor(x => x.Username)
-             .MaximumLength(100).WithMessage("Username should not grather than 100.");
-
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .EmailAddress().WithMessage("A valid email is required.");

@@ -22,5 +22,5 @@ namespace Domain.Entities
 
         public static User Create(string username, string email, string passwordHash)
             => new User(username, email, passwordHash);
-    }
+
 }

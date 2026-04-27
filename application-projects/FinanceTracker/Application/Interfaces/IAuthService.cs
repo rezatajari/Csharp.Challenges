@@ -7,7 +7,7 @@ namespace Application.Interfaces
 {
     public interface IAuthService
     {
-        Task<Result<bool>> Register(RegisterUserRequest request);
-        Task<Result<string>> Logn(LoginUserRequest request);
+        Task<Result<bool>> Register(RegisterUserRequest request,CancellationToken ct);
+        Task<Result<string>> Logn(LoginUserRequest request, CancellationToken ct);
     }
 }

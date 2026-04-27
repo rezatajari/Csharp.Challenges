@@ -9,9 +9,10 @@ namespace Api.Controllers
     public class AuthController(IAuthService authService) : ApiControllerBase
     {
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserRequest request)
+        public async Task<IActionResult> Register(RegisterUserRequest request,CancellationToken ct)
         {
-
+            var result= await authService.Register(request,ct);
+            return HandleResult(result);
         }
     }
 }

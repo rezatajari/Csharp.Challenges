@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Application.Dtos.Requests
 {
-    public record LoginUserRequest(string Username,string Email,string Password);
+    public record LoginUserRequest(string Email,string Password);
 }
