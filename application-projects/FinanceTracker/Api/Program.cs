@@ -10,7 +10,6 @@ using Infrastructure.Authentication;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -69,6 +68,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddHealthChecks().AddSqlServer(connectionString!);
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection(JwtSettings.SectionName));
 builder.Services.AddScoped<IJwtProvider,JwtProvider>();
@@ -91,5 +91,6 @@ app.UseExceptionHandler();
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 app.UseStatusCodePages();
+app.MapHealthChecks("/health");
 app.MapControllers();
 app.Run();

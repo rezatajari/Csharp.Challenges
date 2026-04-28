@@ -1,0 +1,9 @@
+services:
+  finance-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - JwtSettings__Key=${JWT_KEY}
+      - ConnectionStrings__DefaultConnection=${DB_PASSWORD}
