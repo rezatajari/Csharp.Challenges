@@ -1,9 +1,10 @@
 services:
   finance-api:
     build: .
+    container_name: finance-api-container
     ports:
-      - "8080:8080"
+      - "5090:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - JwtSettings__Key=${JWT_KEY}
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${DB_PASSWORD}
+      - JwtSettings__Key=${JWT_KEY}
