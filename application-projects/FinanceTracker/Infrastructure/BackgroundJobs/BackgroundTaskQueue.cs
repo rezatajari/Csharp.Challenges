@@ -10,7 +10,7 @@ namespace Infrastructure.BackgroundJobs
         ValueTask QueueBackgroundWorkItemAsync(string workItem);
         ValueTask<string> DequeueAsync(CancellationToken cancellationToken);
     }
-    public class BackgroundTaskQueue: IBackgroundTaskQueue
+    public class BackgroundTaskQueue : IBackgroundTaskQueue
     {
         private readonly Channel<string> _queue;
         public BackgroundTaskQueue()
@@ -19,16 +19,16 @@ namespace Infrastructure.BackgroundJobs
             {
                 FullMode = BoundedChannelFullMode.Wait
             };
-            _queue= Channel.CreateBounded<string>(option);
+            _queue = Channel.CreateBounded<string>(option);
         }
-        public ValueTask<string> DequeueAsync(CancellationToken cancellationToken)
+        public async ValueTask<string> DequeueAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _queue.Reader.ReadAsync(cancellationToken);
         }
 
-        public ValueTask QueueBackgroundWorkItemAsync(string workItem)
+        public async ValueTask QueueBackgroundWorkItemAsync(string workItem)
         {
-            throw new NotImplementedException();
+            await _queue.Writer.WriteAsync(workItem);
         }
     }
 }
