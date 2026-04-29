@@ -21,7 +21,7 @@ namespace Infrastructure.BackgroundJobs
                     logger.LogInformation("Next check in 10 seconds...");
                 }
 
-                await Task.Delay(10000, stoppingToken);
+                await Task.Delay(1000000, stoppingToken);
             }
         }
     }

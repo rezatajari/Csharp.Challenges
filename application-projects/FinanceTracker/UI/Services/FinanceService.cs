@@ -1,10 +1,8 @@
 ﻿using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
-using Application.Shared;
 using Domain.ValueObjects;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
-using static UI.Components.TransactionFormModal;
-using static UI.Pages.AccountDetails;
 
 namespace UI.Services
 {
@@ -20,14 +18,16 @@ namespace UI.Services
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", dto);
 
-            return await response.Content.ReadFromJsonAsync<ApiResult<bool>>()
-                ?? Result<bool>.Failure("Error connect to server");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<bool>();
+
+            var error = await response.Content.ReadFromJsonAsync<ProblemDetails>();
         }
 
-        public async Task<ApiResult<List<AccountResponse>>> GetAllAccounts()
+        public async Task<List<AccountResponse>> GetAllAccounts()
         {
             var response = await _client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
-            return response ?? ApiResult<List<AccountResponse>>.Failure("Empty response from server");
+            return response ?? 
         }
 
 
