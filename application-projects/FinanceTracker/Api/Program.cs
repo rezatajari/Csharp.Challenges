@@ -80,6 +80,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IBackgroundTaskQueue,BackgroundTaskQueue>();
 builder.Services.AddHostedService<MonthlyReportWorker>();
+builder.Services.AddHostedService<QueuedWorker>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountRequestValidator>();
