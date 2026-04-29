@@ -7,6 +7,7 @@ using Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Authentication;
+using Infrastructure.BackgroundJobs;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -77,7 +78,7 @@ builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddHostedService<MonthlyReportWorker>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountRequestValidator>();
