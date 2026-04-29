@@ -1,12 +1,13 @@
 ﻿using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
+using Application.Shared;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
 
 namespace UI.Services
 {
-    public class FinanceService
+    public class FinanceService:BaseService
     {
         private readonly HttpClient _client;
         public FinanceService(HttpClient client)
@@ -14,20 +15,24 @@ namespace UI.Services
             _client = client;
         }
 
-        public async Task<bool> CreateAccount(CreateAccountRequest dto)
+        public async Task<Result<bool>> CreateAccount(CreateAccountRequest dto)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", dto);
 
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<bool>();
+                return await response.Content.ReadFromJsonAsync<Result<bool>>();
 
-            var error = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+            string error = await GetErrorResponse(response);
+            return Result<bool>.Failure(error);
+
         }
+
+        
 
         public async Task<List<AccountResponse>> GetAllAccounts()
         {
             var response = await _client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
-            return response ?? 
+            return response ??
         }
 
 
@@ -37,7 +42,7 @@ namespace UI.Services
             return response ?? ApiResult<AccountResponse>.Failure("Empty response from server");
         }
 
-        public async Task<ApiResult<List<TransactionResponse>>> GetTransactionsByAccountId(int Id) 
+        public async Task<ApiResult<List<TransactionResponse>>> GetTransactionsByAccountId(int Id)
         {
             var response = await _client.GetAsync($"api/finance/transaction/{Id}");
             if (!response.IsSuccessStatusCode)
@@ -52,7 +57,7 @@ namespace UI.Services
         public async Task<ApiResult<bool>> AddTransaction(AddTransactionFrom addTxModel)
         {
             var category = Category.Create(addTxModel.CategoryName, addTxModel.CategoryDescription);
-            var amount=Money.Create(addTxModel.Amount, addTxModel.Currency);
+            var amount = Money.Create(addTxModel.Amount, addTxModel.Currency);
             var inputTxDto = new InputTxRequest(addTxModel.AccountId, addTxModel.TargetAccountId, amount, category, addTxModel.Type, addTxModel.TransactionDescription);
 
             var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
