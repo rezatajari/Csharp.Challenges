@@ -9,16 +9,19 @@ namespace Infrastructure.BackgroundJobs
     {
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            while (!stoppingToken.IsCancellationRequested)
             {
-                while (!stoppingToken.IsCancellationRequested)
+                using (IServiceScope scope = _serviceScopeFactory.CreateScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<FinanceDbContext>();
+                    var count = dbContext.Transactions.Count();
 
-                    var count=dbContext.Transactions.Count();
-                    logger.LogInformation("Midnight Janitor: Cheking for reports to generate at: {time}", DateTimeOffset.Now);
-                    await Task.Delay(1000, stoppingToken);
+                    logger.LogInformation("--- Background Check ---");
+                    logger.LogInformation("Database count is: {count}", count);
+                    logger.LogInformation("Next check in 10 seconds...");
                 }
+
+                await Task.Delay(10000, stoppingToken);
             }
         }
     }
