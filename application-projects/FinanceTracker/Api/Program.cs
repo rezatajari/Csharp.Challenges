@@ -78,6 +78,7 @@ builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IFinanceService, FinanceService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IBackgroundTaskQueue,BackgroundTaskQueue>();
 builder.Services.AddHostedService<MonthlyReportWorker>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
