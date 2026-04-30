@@ -2,6 +2,7 @@
 @using Application.Dtos.Reponses
 @using Domain.Entities
 @using Domain.ValueObjects
+@using UI.Models
 @using UI.Services
 @inject FinanceService _accService
 
@@ -137,7 +138,7 @@
 
     private async Task LoadOtherAccounts()
     {
-        var result = await _accService.GetAllAccounts();
+        var result = await _accService.GetAllAccouintsAsync();
         if (result.IsSuccess)
         {
             otherAccounts = result.Value.Where(a => a.Id != Id).ToList();

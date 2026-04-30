@@ -1,5 +1,5 @@
 ﻿@page "/create-account"
-@using Application.Dtos
+@using Application.Dtos.Requests
 @using Domain.Entities
 @using Domain.ValueObjects
 @inject NavigationManager Navigation
@@ -82,7 +82,7 @@
         isSubmitting = true;
         errorMessage = null; 
 
-        var dto = new CreateAccountDto(
+        var dto = new CreateAccountRequest(
             formModel.Name,
             Money.Create(formModel.Amount, Currency.USD),
             formModel.Type,
@@ -107,6 +107,7 @@
 
     private class FormModel
     {
+        public int UserId{ get; set;}
         public string Name { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public AccountType Type { get; set; } = AccountType.Savings;
