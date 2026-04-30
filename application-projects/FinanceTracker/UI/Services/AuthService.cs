@@ -1,6 +1,10 @@
-﻿namespace UI.Services
+﻿
+using UI.Services.Interfacies;
+
+namespace UI.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
+
     }
 }
