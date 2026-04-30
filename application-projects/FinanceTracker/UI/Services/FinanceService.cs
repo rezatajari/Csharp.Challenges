@@ -8,12 +8,12 @@ using UI.Services.Interfacies;
 
 namespace UI.Services
 {
-    public class FinanceService(HttpClient client):BaseService,IFinanceService
+    public class FinanceService: BaseService,IFinanceService
     {
-
+        public FinanceService(HttpClient client):base(client){}
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
-            var response = await client.PostAsJsonAsync("api/finance/create-account", request);
+            var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
             var f = await response.Content.ReadFromJsonAsync<Result<bool>>();
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<bool>>()
@@ -25,7 +25,7 @@ namespace UI.Services
 
         public async Task<Result<List<AccountResponse>>> GetAllAccouintsAsync()
         {
-            var response = await client.GetAsync("api/finance/accounts");
+            var response = await _client.GetAsync("api/finance/accounts");
 
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<List<AccountResponse>>>()
@@ -37,7 +37,7 @@ namespace UI.Services
 
         public async Task<Result<AccountResponse>> GetAccountByIdAsync(int Id)
         {
-            var response = await client.GetAsync($"api/finance/account/{Id}");
+            var response = await _client.GetAsync($"api/finance/account/{Id}");
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<AccountResponse>>()
                     ?? Result<AccountResponse>.Failure("Unkow error");
@@ -48,7 +48,7 @@ namespace UI.Services
 
         public async Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id)
         {
-            var response = await client.GetAsync($"api/finance/transaction/{Id}");
+            var response = await _client.GetAsync($"api/finance/transaction/{Id}");
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<List<TransactionResponse>>>()
                     ?? Result<List<TransactionResponse>>.Success([]);
@@ -63,7 +63,7 @@ namespace UI.Services
             var amount = Money.Create(request.Amount, request.Currency);
             var inputTxDto = new InputTxRequest(request.AccountId, request.TargetAccountId, amount, category, request.Type, request.TransactionDescription);
 
-            var response = await client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
+            var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
             var content = await response.Content.ReadFromJsonAsync<Result<bool>>();
 
             return content ?? Result<bool>.Failure("Cannot save your transaction");
