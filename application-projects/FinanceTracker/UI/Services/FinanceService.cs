@@ -49,13 +49,12 @@ namespace UI.Services
         public async Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id)
         {
             var response = await client.GetAsync($"api/finance/transaction/{Id}");
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                return ApiResult<List<TransactionResponse>>.Failure($"Server said 400: {errorContent}");
-            }
-            var result = await response.Content.ReadFromJsonAsync<ApiResult<List<TransactionResponse>>>();
-            return result ?? ApiResult<List<TransactionResponse>>.Failure("Empty response from server");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<Result<List<TransactionResponse>>>()
+                    ?? Result<List<TransactionResponse>>.Success([]);
+
+            string error=await GetErrorResponse(response);
+            return Result<List<TransactionResponse>>.Failure(error);
         }
 
         public async Task<Result<bool>> AddTransaction(InputTxRequest request)
