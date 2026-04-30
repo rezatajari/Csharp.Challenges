@@ -14,7 +14,6 @@ namespace UI.Services
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
-            var f = await response.Content.ReadFromJsonAsync<Result<bool>>();
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<bool>>()
                     ?? Result<bool>.Failure("Unknow error");
