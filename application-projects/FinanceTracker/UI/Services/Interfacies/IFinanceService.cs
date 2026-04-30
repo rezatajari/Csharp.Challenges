@@ -10,7 +10,6 @@ namespace UI.Services.Interfacies
         Task<Result<List<AccountResponse>>> GetAllAccouintsAsync();
         Task <Result<AccountResponse>> GetAccountByIdAsync(int Id);
         Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id);
-        Task<Result<bool>> AddTransaction();
-
+        Task<Result<bool>> AddTransaction(InputTxRequest request);
     }
 }

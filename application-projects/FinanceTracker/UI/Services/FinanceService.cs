@@ -2,17 +2,17 @@
 using Application.Dtos.Requests;
 using Application.Shared;
 using Domain.ValueObjects;
-using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
+using UI.Services.Interfacies;
 
 namespace UI.Services
 {
-    public class FinanceService(HttpClient client):BaseService
+    public class FinanceService(HttpClient client):BaseService,IFinanceService
     {
 
-        public async Task<Result<bool>> CreateAccount(CreateAccountRequest dto)
+        public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
-            var response = await client.PostAsJsonAsync("api/finance/create-account", dto);
+            var response = await client.PostAsJsonAsync("api/finance/create-account", request);
 
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<bool>>();
@@ -21,20 +21,20 @@ namespace UI.Services
             return Result<bool>.Failure(error);
         }
 
-        public async Task<List<AccountResponse>> GetAllAccounts()
+        public async Task<Result<List<AccountResponse>>> GetAllAccouintsAsync()
         {
             var response = await client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
             return response ??
         }
 
 
-        public async Task<ApiResult<AccountResponse>> GetAccount(int Id)
+        public async Task<Result<AccountResponse>> GetAccountByIdAsync(int Id)
         {
             var response = await client.GetFromJsonAsync<ApiResult<AccountResponse>>($"api/finance/account/{Id}");
             return response ?? ApiResult<AccountResponse>.Failure("Empty response from server");
         }
 
-        public async Task<ApiResult<List<TransactionResponse>>> GetTransactionsByAccountId(int Id)
+        public async Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id)
         {
             var response = await client.GetAsync($"api/finance/transaction/{Id}");
             if (!response.IsSuccessStatusCode)
@@ -46,7 +46,7 @@ namespace UI.Services
             return result ?? ApiResult<List<TransactionResponse>>.Failure("Empty response from server");
         }
 
-        public async Task<ApiResult<bool>> AddTransaction(AddTransactionFrom addTxModel)
+        public async Task<Result<bool>> AddTransaction(InputTxRequest request)
         {
             var category = Category.Create(addTxModel.CategoryName, addTxModel.CategoryDescription);
             var amount = Money.Create(addTxModel.Amount, addTxModel.Currency);
@@ -57,5 +57,6 @@ namespace UI.Services
 
             return content ?? ApiResult<bool>.Failure("Cannot save your transaction");
         }
+
     }
 }
