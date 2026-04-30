@@ -2,6 +2,7 @@
 using Application.Dtos.Requests;
 using Application.Shared;
 using Domain.ValueObjects;
+using Microsoft.AspNetCore.Mvc.Internal;
 using System.Net.Http.Json;
 using UI.Services.Interfacies;
 
@@ -36,8 +37,13 @@ namespace UI.Services
 
         public async Task<Result<AccountResponse>> GetAccountByIdAsync(int Id)
         {
-            var response = await client.GetFromJsonAsync<ApiResult<AccountResponse>>($"api/finance/account/{Id}");
-            return response ?? ApiResult<AccountResponse>.Failure("Empty response from server");
+            var response = await client.GetAsync($"api/finance/account/{Id}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<Result<AccountResponse>>()
+                    ?? Result<AccountResponse>.Failure("Unkow error");
+            
+            string error=await GetErrorResponse(response);
+            return Result<AccountResponse>.Failure(error);
         }
 
         public async Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id)
