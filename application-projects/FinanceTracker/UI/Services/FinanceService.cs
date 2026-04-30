@@ -7,13 +7,8 @@ using System.Net.Http.Json;
 
 namespace UI.Services
 {
-    public class FinanceService:BaseService
+    public class FinanceService(HttpClient client):BaseService
     {
-        private readonly HttpClient _client;
-        public FinanceService(HttpClient client)
-        {
-            _client = client;
-        }
 
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest dto)
         {
@@ -26,8 +21,6 @@ namespace UI.Services
             return Result<bool>.Failure(error);
 
         }
-
-        
 
         public async Task<List<AccountResponse>> GetAllAccounts()
         {
