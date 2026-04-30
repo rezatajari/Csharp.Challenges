@@ -27,7 +27,6 @@ namespace UI.Services
             return response ??
         }
 
-
         public async Task<Result<AccountResponse>> GetAccountByIdAsync(int Id)
         {
             var response = await client.GetFromJsonAsync<ApiResult<AccountResponse>>($"api/finance/account/{Id}");
