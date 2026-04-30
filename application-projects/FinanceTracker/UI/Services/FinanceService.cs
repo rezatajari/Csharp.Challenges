@@ -23,6 +23,15 @@ namespace UI.Services
 
         public async Task<Result<List<AccountResponse>>> GetAllAccouintsAsync()
         {
+            var response = await client.GetAsync("api/finance/accounts");
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<Result<List<AccountResponse>>>()
+                       ?? Result<List<AccountResponse>>.Success([]);
+
+            return await response.Content.ReadFromJsonAsync<Result<List<AccountResponse>>>()
+                    ?? 
+
             var response = await client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
             return response ??
         }
