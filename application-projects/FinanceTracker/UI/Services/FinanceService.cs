@@ -13,10 +13,11 @@ namespace UI.Services
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
             var response = await client.PostAsJsonAsync("api/finance/create-account", request);
-
+            var f = await response.Content.ReadFromJsonAsync<Result<bool>>();
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<Result<bool>>();
-
+                return await response.Content.ReadFromJsonAsync<Result<bool>>()
+                    ?? Result<bool>.Failure("Unknow error");
+                   
             string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
         }
@@ -29,11 +30,8 @@ namespace UI.Services
                 return await response.Content.ReadFromJsonAsync<Result<List<AccountResponse>>>()
                        ?? Result<List<AccountResponse>>.Success([]);
 
-            return await response.Content.ReadFromJsonAsync<Result<List<AccountResponse>>>()
-                    ?? 
-
-            var response = await client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
-            return response ??
+            string error= await GetErrorResponse(response);
+            return Result<List<AccountResponse>>.Failure(error);
         }
 
         public async Task<Result<AccountResponse>> GetAccountByIdAsync(int Id)
