@@ -19,7 +19,6 @@ namespace UI.Services
 
             string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
-
         }
 
         public async Task<List<AccountResponse>> GetAllAccounts()
