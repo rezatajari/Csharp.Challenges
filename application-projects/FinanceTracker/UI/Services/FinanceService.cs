@@ -57,9 +57,9 @@ namespace UI.Services
             return Result<List<TransactionResponse>>.Failure(error);
         }
 
-        public async Task<Result<bool>> AddTransaction(InputTxRequest request)
+        public async Task<Result<bool>> AddTransaction(AddTransactionFrom request)
         {
-            var category = Category.Create(addTxModel.CategoryName, addTxModel.CategoryDescription);
+            var category = Category.Create();
             var amount = Money.Create(addTxModel.Amount, addTxModel.Currency);
             var inputTxDto = new InputTxRequest(addTxModel.AccountId, addTxModel.TargetAccountId, amount, category, addTxModel.Type, addTxModel.TransactionDescription);
 
