@@ -12,7 +12,7 @@ namespace UI.Services
 
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest dto)
         {
-            var response = await _client.PostAsJsonAsync("api/finance/create-account", dto);
+            var response = await client.PostAsJsonAsync("api/finance/create-account", dto);
 
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<bool>>();
@@ -24,20 +24,20 @@ namespace UI.Services
 
         public async Task<List<AccountResponse>> GetAllAccounts()
         {
-            var response = await _client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
+            var response = await client.GetFromJsonAsync<ApiResult<List<AccountResponse>>>("api/finance/accounts");
             return response ??
         }
 
 
         public async Task<ApiResult<AccountResponse>> GetAccount(int Id)
         {
-            var response = await _client.GetFromJsonAsync<ApiResult<AccountResponse>>($"api/finance/account/{Id}");
+            var response = await client.GetFromJsonAsync<ApiResult<AccountResponse>>($"api/finance/account/{Id}");
             return response ?? ApiResult<AccountResponse>.Failure("Empty response from server");
         }
 
         public async Task<ApiResult<List<TransactionResponse>>> GetTransactionsByAccountId(int Id)
         {
-            var response = await _client.GetAsync($"api/finance/transaction/{Id}");
+            var response = await client.GetAsync($"api/finance/transaction/{Id}");
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
@@ -53,7 +53,7 @@ namespace UI.Services
             var amount = Money.Create(addTxModel.Amount, addTxModel.Currency);
             var inputTxDto = new InputTxRequest(addTxModel.AccountId, addTxModel.TargetAccountId, amount, category, addTxModel.Type, addTxModel.TransactionDescription);
 
-            var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
+            var response = await client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
             var content = await response.Content.ReadFromJsonAsync<ApiResult<bool>>();
 
             return content ?? ApiResult<bool>.Failure("Cannot save your transaction");
