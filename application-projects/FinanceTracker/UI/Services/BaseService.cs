@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;
 
 namespace UI.Services
@@ -7,8 +7,8 @@ namespace UI.Services
     {
         protected async Task<string> GetErrorResponse(HttpResponseMessage response)
         {
-            ProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-            return problemDetails?.Detail ?? "Unknow error";
+            CustomProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<CustomProblemDetails>();
+            return problemDetails?.detail ?? "Unknow error";
         }
     }
 }

@@ -2,7 +2,6 @@
 using Application.Dtos.Requests;
 using Application.Shared;
 using Domain.ValueObjects;
-using Microsoft.AspNetCore.Mvc.Internal;
 using System.Net.Http.Json;
 using UI.Services.Interfacies;
 
@@ -57,17 +56,17 @@ namespace UI.Services
             return Result<List<TransactionResponse>>.Failure(error);
         }
 
-        public async Task<Result<bool>> AddTransaction(AddTransactionFrom request)
-        {
-            var category = Category.Create();
-            var amount = Money.Create(addTxModel.Amount, addTxModel.Currency);
-            var inputTxDto = new InputTxRequest(addTxModel.AccountId, addTxModel.TargetAccountId, amount, category, addTxModel.Type, addTxModel.TransactionDescription);
+        //public async Task<Result<bool>> AddTransaction(AddTransactionFrom request)
+        //{
+        //    var category = Category.Create();
+        //    var amount = Money.Create(addTxModel.Amount, addTxModel.Currency);
+        //    var inputTxDto = new InputTxRequest(addTxModel.AccountId, addTxModel.TargetAccountId, amount, category, addTxModel.Type, addTxModel.TransactionDescription);
 
-            var response = await client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
-            var content = await response.Content.ReadFromJsonAsync<ApiResult<bool>>();
+        //    var response = await client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
+        //    var content = await response.Content.ReadFromJsonAsync<ApiResult<bool>>();
 
-            return content ?? ApiResult<bool>.Failure("Cannot save your transaction");
-        }
+        //    return content ?? ApiResult<bool>.Failure("Cannot save your transaction");
+        //}
 
     }
 }

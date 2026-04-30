@@ -10,7 +10,6 @@ namespace Api.Controllers
         protected ActionResult HandleResult<T>(Result<T> result,int statusCode=400)
         {
             if (result.IsSuccess) return Ok(result.Value);
-
             return Problem(
                 detail: result.ErrorMessage,
                 statusCode: statusCode,
