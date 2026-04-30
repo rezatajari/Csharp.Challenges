@@ -3,7 +3,7 @@ using Domain.ValueObjects;
 
 namespace Application.Dtos.Requests
 {
-   public record class InputTxRequest(
+   public record InputTxRequest(
        int accountId,
        int targetAccountId,
        Money amount,

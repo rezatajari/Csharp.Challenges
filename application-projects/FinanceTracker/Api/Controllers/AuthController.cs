@@ -15,7 +15,7 @@ namespace Api.Controllers
             return HandleResult(result);
         }
         
-        [HttpGet("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest request,CancellationToken ct)
         {
             var result = await authService.Logn(request, ct);

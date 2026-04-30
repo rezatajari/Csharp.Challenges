@@ -6,9 +6,9 @@ using UI.Services.Interfacies;
 
 namespace UI.Services
 {
-    public class AuthService :BaseService, IAuthService
+    public class AuthService : BaseService, IAuthService
     {
-        public AuthService(HttpClient client):base(client) { }
+        public AuthService(HttpClient client) : base(client) { }
 
         public async Task<Result<bool>> Register(RegisterUserRequest request)
         {
@@ -17,12 +17,12 @@ namespace UI.Services
                 return await response.Content.ReadFromJsonAsync<Result<bool>>()
                     ?? Result<bool>.Failure("Unknow error");
 
-            string error=await GetErrorResponse(response);
+            string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
         }
-        public Task<Result<string>> Logn(LoginUserRequest request)
+        public async Task<Result<string>> Logn(LoginUserRequest request)
         {
-            throw new NotImplementedException();
+            var response = await _client.GetFromJsonAsync("api/auth/login", request);
         }
 
     }
