@@ -1,7 +1,7 @@
 ﻿using Application.Dtos.Requests;
 using FluentValidation;
 
-namespace Application.Validators
+namespace Application.Shared.Validators
 {
     public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
     {

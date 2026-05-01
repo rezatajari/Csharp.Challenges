@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Application.Interfaces.IRepositories;
 using Application.Services;
 using Application.Shared;
-using Application.Validators;
+using Application.Shared.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Authentication;

@@ -3,11 +3,12 @@ using Domain.ValueObjects;
 
 namespace Application.Dtos.Requests
 {
-    public record CreateAccountRequest(
-        int UserId,
-        string Name,
-        Money Balance, 
-        AccountType Type,
-        Money CreditLimit
-        );
+    public class CreateAccountRequest
+    {
+        public int UserId { get; set; }
+        public string Name { get; set; }
+        public Money Balance { get; set; }
+        public AccountType Type { get; set; }
+        public Money CreditLimit { get; set; }
+    }
 }

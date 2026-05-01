@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Validators
+namespace Application.Shared.Validators
 {
     public class InputTxDtoValidator : AbstractValidator<InputTxRequest>
     {
