@@ -16,7 +16,9 @@ builder.Services.AddHttpClient<IFinanceService, FinanceService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
 }).AddHttpMessageHandler<JwtAuthorizationHandler>();
-    
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+});
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
 await builder.Build().RunAsync();
