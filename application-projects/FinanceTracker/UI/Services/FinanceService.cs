@@ -74,9 +74,13 @@ namespace UI.Services
                 request.Type, request.TransactionDescription);
 
             var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
-            var content = await response.Content.ReadFromJsonAsync<Result<bool>>();
+            if (response.IsSuccessStatusCode)
+            {
+                bool isAddedTx= await response.Content.ReadFromJsonAsync<bool>();
+                return Result<bool>.Success(isAddedTx); 
+            }
 
-            return content ?? Result<bool>.Failure("Cannot save your transaction");
+            return Result<bool>.Failure("Cannot save your transaction");
         }
 
     }
