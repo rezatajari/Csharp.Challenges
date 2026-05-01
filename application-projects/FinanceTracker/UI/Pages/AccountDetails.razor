@@ -60,12 +60,12 @@ else
 
     private async Task RefreshData()
     {
-        var accountResult = await _accService.GetAccount(Id);
+        var accountResult = await _accService.GetAccountByIdAsync(Id);
         if (accountResult.IsSuccess)
         {
             account = accountResult.Value; 
 
-            var txResult = await _accService.GetTransactionsByAccountId(Id);
+            var txResult = await _accService.GetTransactionsByAccountIdAsync(Id);
             if (txResult.IsSuccess)
                 transactions = txResult.Value;
         }
@@ -74,11 +74,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var accountResult = await _accService.GetAccount(Id);
+        var accountResult = await _accService.GetAccountByIdAsync(Id);
         if (accountResult.IsSuccess)
         {
             account = accountResult.Value;
-            var txResult = await _accService.GetTransactionsByAccountId(Id);
+            var txResult = await _accService.GetTransactionsByAccountIdAsync(Id);
             if (txResult.IsSuccess)
                 transactions = txResult.Value;
         }

@@ -34,7 +34,7 @@ namespace UI.Services
                     return Result<bool>.Failure("Null error");
 
                 string token = content.Value;
-                await _jsRuntime.InvokeVoidAsync("LocalStorage.setItem", "authToken", token);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
 
                 return Result<bool>.Success(true);
             }
@@ -42,6 +42,5 @@ namespace UI.Services
             string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
         }
-
     }
 }
