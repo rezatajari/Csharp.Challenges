@@ -2,7 +2,7 @@
 using Domain.Entities;
 using FluentValidation;
 
-namespace Application.Validators
+namespace Application.Shared.Validators
 {
     public class CreateAccountRequestValidator : AbstractValidator<CreateAccountRequest>
     {
