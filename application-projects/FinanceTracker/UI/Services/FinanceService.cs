@@ -30,8 +30,10 @@ namespace UI.Services
             var response = await _client.GetAsync("api/finance/accounts");
 
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<Result<List<AccountResponse>>>()
-                       ?? Result<List<AccountResponse>>.Success([]);
+            {
+                List<AccountResponse>? accounts=await response.Content.ReadFromJsonAsync<List<AccountResponse>>();
+                return Result<List<AccountResponse>>.Success(accounts ?? []);
+            }
 
             string error= await GetErrorResponse(response);
             return Result<List<AccountResponse>>.Failure(error);
