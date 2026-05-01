@@ -1,7 +1,12 @@
 ﻿using Application.Dtos.Requests;
 using Application.Interfaces;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Api.Controllers
 {
@@ -50,10 +55,16 @@ namespace Api.Controllers
             return HandleResult(result);
         }
 
+        [Authorize]
         [HttpGet("dashboard")]
         public async Task<IActionResult> Dashboard(CancellationToken ct)
         {
-            var result = await financeService.GetDashboard(ct);
+            var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized();
+
+            int.TryParse(userIdClaim, out int userId);
+            var result = await financeService.GetDashboard(userId, ct);
             return HandleResult(result);
         }
     }

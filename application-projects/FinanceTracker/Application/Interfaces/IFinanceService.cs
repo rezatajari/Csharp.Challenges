@@ -12,6 +12,6 @@ namespace Application.Interfaces
         Task<Result<List<AccountResponse>>?> GetAccounts(CancellationToken ct);
         Task<Result<AccountResponse>> GetAccount(int Id, CancellationToken ct);
         Task<Result<List<TransactionResponse>>> GetAccountTransactions(int Id, CancellationToken ct);
-        Task<Result<DashboardResponse>> GetDashboard(CancellationToken ct);
+        Task<Result<DashboardResponse>> GetDashboard(int userId, CancellationToken ct);
     }
 }

@@ -202,7 +202,7 @@ namespace Application.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<DashboardResponse>> GetDashboard(CancellationToken ct)
+        public async Task<Result<DashboardResponse>> GetDashboard(int userId, CancellationToken ct)
         {
             List<BaseAccount> accounts = await financeRepo.GetAllAsync(ct);
             if (accounts.Count<=0)
