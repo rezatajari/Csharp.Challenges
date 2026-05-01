@@ -16,8 +16,10 @@ namespace UI.Services
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<Result<bool>>()
-                    ?? Result<bool>.Failure("Unknow error");
+            {
+                bool isCreated = await response.Content.ReadFromJsonAsync<bool>();
+                return Result<bool>.Success(isCreated);
+            };
                    
             string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
