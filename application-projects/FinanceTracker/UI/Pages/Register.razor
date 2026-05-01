@@ -17,6 +17,7 @@
                 <div class="card-body">
                     <EditForm Model="@_model" OnValidSubmit="HandleRegister">
                         <FluentValidationValidator />
+
                         <div class="mb-3">
                             <label class="form-label">Username</label>
                             <InputText @bind-Value="_model.Username" class="form-control" />
@@ -66,6 +67,9 @@
 
 @code {
     private RegisterUserForm _model;
+    private string? _errorMessage;
+    private bool _isSubmitting;
+
     private async Task HandleRegister()
     {
         
