@@ -11,8 +11,8 @@ namespace UI.Services
 {
     public class FinanceService : BaseService, IFinanceService
     {
-        public FinanceService(HttpClient client,IJSRuntime jsRuntime,JwtAuthorizationHandler setToken) 
-            :base(client,jsRuntime, setToken) {}
+        public FinanceService(HttpClient client,IJSRuntime jsRuntime) 
+            :base(client,jsRuntime) {}
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
