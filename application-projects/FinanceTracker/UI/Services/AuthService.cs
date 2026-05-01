@@ -2,6 +2,7 @@
 using Application.Dtos.Requests;
 using Application.Shared;
 using System.Net.Http.Json;
+using UI.Models;
 using UI.Services.Interfacies;
 
 namespace UI.Services
@@ -10,7 +11,7 @@ namespace UI.Services
     {
         public AuthService(HttpClient client) : base(client) { }
 
-        public async Task<Result<bool>> Register(RegisterUserRequest request)
+        public async Task<Result<bool>> Register(RegisterUserForm request)
         {
             var response = await _client.PostAsJsonAsync("api/auth/register", request);
             if (response.IsSuccessStatusCode)

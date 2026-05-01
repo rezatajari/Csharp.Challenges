@@ -63,15 +63,26 @@
     </div>
 </div>
 
-
-
 @code {
-    private RegisterUserForm _model;
+    private RegisterUserForm _model = new();
     private string? _errorMessage;
     private bool _isSubmitting;
 
     private async Task HandleRegister()
     {
-        
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        var result = await AuthService.Register(_model);
+        if (result.IsSuccess)
+        {
+            NavManager.NavigateTo("/login");
+        }
+        else
+        {
+        _errorMessage = result.ErrorMessage;
+        }
+
+        _isSubmitting = false;
     }
 }
