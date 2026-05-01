@@ -204,7 +204,7 @@ namespace Application.Services
 
         public async Task<Result<DashboardResponse>> GetDashboard(int userId, CancellationToken ct)
         {
-            List<BaseAccount> accounts = await financeRepo.GetAllAsync(ct);
+            List<BaseAccount> accounts = await financeRepo.GetAccountsByIdAsync(userId,ct);
             if (accounts.Count<=0)
                 return Result<DashboardResponse>.Failure("Doesn't accounts exist");
 

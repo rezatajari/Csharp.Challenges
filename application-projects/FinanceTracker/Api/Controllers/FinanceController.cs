@@ -59,7 +59,7 @@ namespace Api.Controllers
         [HttpGet("dashboard")]
         public async Task<IActionResult> Dashboard(CancellationToken ct)
         {
-            var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim))
                 return Unauthorized();
 

@@ -17,8 +17,8 @@ namespace Infrastructure.Authentication
         {
             var claims = new Claim[]
             {
-                new (JwtRegisteredClaimNames.Sub,user.Id.ToString()),
-                new (JwtRegisteredClaimNames.Email,user.Email.ToString()),
+                new (ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new (ClaimTypes.Email,user.Email.ToString()),
                 new ("Username",user.Username)
             };
 
