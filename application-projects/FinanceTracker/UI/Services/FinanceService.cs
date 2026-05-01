@@ -2,6 +2,7 @@
 using Application.Dtos.Requests;
 using Application.Shared;
 using Domain.ValueObjects;
+using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using UI.Models;
 using UI.Services.Interfacies;
@@ -10,7 +11,7 @@ namespace UI.Services
 {
     public class FinanceService: BaseService,IFinanceService
     {
-        public FinanceService(HttpClient client):base(client){}
+        public FinanceService(HttpClient client,IJSRuntime jsRuntime) :base(client,jsRuntime) {}
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);

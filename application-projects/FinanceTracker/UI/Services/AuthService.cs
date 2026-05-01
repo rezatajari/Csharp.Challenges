@@ -10,7 +10,7 @@ namespace UI.Services
 {
     public class AuthService : BaseService, IAuthService
     {
-        public AuthService(HttpClient client) : base(client) { }
+        public AuthService(HttpClient client,IJSRuntime jsRuntime) : base(client, jsRuntime) { }
 
         public async Task<Result<bool>> Register(RegisterUserForm formModel)
         {
@@ -25,7 +25,6 @@ namespace UI.Services
         }
         public async Task<Result<bool>> Logn(LoginUserForm formModel)
         {
-
             var request = new LoginUserRequest(formModel.Email, formModel.Password);
             var response = await _client.PostAsJsonAsync("api/auth/login", request);
             if (response.IsSuccessStatusCode)

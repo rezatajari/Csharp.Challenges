@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System.Net.Http.Json;
 
 namespace UI.Services
@@ -7,7 +6,7 @@ namespace UI.Services
     public class BaseService
     {
         protected readonly HttpClient _client;
-        private readonly IJSRuntime _jsRuntime;
+        protected readonly IJSRuntime _jsRuntime;
         protected BaseService(HttpClient client,IJSRuntime jsRuntime)
         {
             _client = client;
