@@ -1,5 +1,41 @@
-﻿
+﻿@using UI.Services.Interfacies
+
 <h3>Register</h3>
+@inject IAuthService AuthService
+@inject NavigationManager NavManager
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create an Account</h4>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="@_model">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <InputText @bind-Value="_model.Username" class="form-control"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <InputText @bind-Value="_model.Email" class="form-contro"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <InputText @bind-Value="_model.Email" type="password" class="form-contro" />
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @code {
 
