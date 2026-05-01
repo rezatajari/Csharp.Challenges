@@ -1,0 +1,80 @@
+﻿@using UI.Models
+@using UI.Services.Interfacies
+@inject IAuthService AuthService
+@inject NavigationManager NavManager
+
+
+<h3>Login</h3>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Log In</h4>
+                </div>
+
+                <div class="card-body">
+                    <EditForm Model="@_model" OnValidSubmit="HandleLogin">
+                        <FluentValidationValidator/>
+
+                        <div class="mb-3">
+                            <label class="form-label" >Email</label>
+                            <InputText @bind-Value="_model.Email" class="form-control" />
+                            <ValidationMessage For="@(()=>_model.Email)" class="text-danger"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <InputText @bind-Value="_model.Password" type="password" class="form-control" />
+                            <ValidationMessage For="@(() => _model.Password)" class="text-danger" />
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+
+                        <button type="submit" class="btn btn-primary w-100" disabled="@_isLogin">
+                            @if (_isLogin)
+                            {
+                                <span class="spinner-border spinner-border-sm"></span>
+                            
+                                <span>Login...</span>
+                            }
+                            else
+                            {
+                                <span>Log In</span>
+                            }
+                        </button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private LoginUserForm _model=new();
+    private string? _errorMessage;
+    private bool _isLogin;
+
+    private async Task HandleLogin()
+    {
+        _isLogin = true;
+        _errorMessage = null;
+        var result = await AuthService.Logn(_model);
+        if (result.IsSuccess)
+        { 
+            NavManager.NavigateTo("/Accounts");
+        }
+        else
+        {
+            _errorMessage = result.ErrorMessage;
+        }
+
+        _isLogin = false;
+    }
+}
