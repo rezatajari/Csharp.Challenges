@@ -1,6 +1,5 @@
 ﻿@page "/register"
 @using Application.Dtos.Requests
-@using UI.Models
 @using UI.Services.Interfacies
 @inject IAuthService AuthService
 @inject NavigationManager NavManager
@@ -65,7 +64,7 @@
 </div>
 
 @code {
-    private RegisterUserForm _model = new();
+    private RegisterUserRequest _model = new();
     private string? _errorMessage;
     private bool _isSubmitting;
 

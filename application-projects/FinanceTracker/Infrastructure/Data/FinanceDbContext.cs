@@ -28,6 +28,9 @@ namespace Infrastructure.Data
                 .IsRequired();
                 
                 entity.MapMoney(a=>a.Balance, "Balance");
+                entity.HasDiscriminator<string>("AccountType")
+                    .HasValue<SavingsAccount>("Savings")
+                    .HasValue<CreditCardAccount>("CreditCard");
             });
 
             modelBuilder.Entity<CreditCardAccount>(entity =>

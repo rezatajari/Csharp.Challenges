@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20260427093825_init")]
+    [Migration("20260501125820_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -33,13 +33,13 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AccountType")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -60,7 +60,7 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("BaseAccounts");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseAccount");
+                    b.HasDiscriminator<string>("AccountType").HasValue("BaseAccount");
 
                     b.UseTphMappingStrategy();
                 });
@@ -132,14 +132,14 @@ namespace Infrastructure.Migrations
                 {
                     b.HasBaseType("Domain.Entities.BaseAccount");
 
-                    b.HasDiscriminator().HasValue("CreditCardAccount");
+                    b.HasDiscriminator().HasValue("CreditCard");
                 });
 
             modelBuilder.Entity("Domain.Entities.SavingsAccount", b =>
                 {
                     b.HasBaseType("Domain.Entities.BaseAccount");
 
-                    b.HasDiscriminator().HasValue("SavingsAccount");
+                    b.HasDiscriminator().HasValue("Savings");
                 });
 
             modelBuilder.Entity("Domain.Entities.BaseAccount", b =>

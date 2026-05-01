@@ -140,35 +140,35 @@ namespace Application.Services
             return Result<List<TransactionResponse>>.Success(tx);
         }
 
-        public async Task<Result<bool>> AddTransaction(InputTxRequest txDto, CancellationToken ct)
+        public async Task<Result<bool>> AddTransaction(AddTransaction txDto, CancellationToken ct)
         {
             logger.LogInformation("Processing {TransactionType} for AccountId: {AccountId}. Amount: {Amount}",
-                txDto.transactionType, txDto.accountId, txDto.amount);
+                txDto.TransactionType, txDto.AccountId, txDto.Amount);
 
-            var account = await financeRepo.GetByIdAsync(txDto.accountId, ct);
+            var account = await financeRepo.GetByIdAsync(txDto.AccountId, ct);
             if (account == null)
             {
-                logger.LogWarning("Transaction failed: Source AccountId {AccountId} does not exist", txDto.accountId);
+                logger.LogWarning("Transaction failed: Source AccountId {AccountId} does not exist", txDto.AccountId);
                 return Result<bool>.Failure("Your account is not exist");
             }
 
-            if (txDto.transactionType == TransactionType.Expense)
+            if (txDto.TransactionType == TransactionType.Expense)
             {
-                account.Withdraw(txDto.amount, txDto.transactionType, txDto.category,
-                    txDto.description, DateTime.UtcNow);
+                account.Withdraw(txDto.Amount, txDto.TransactionType, txDto.Category,
+                    txDto.Description, DateTime.UtcNow);
             }
-            else if (txDto.transactionType == TransactionType.Income)
+            else if (txDto.TransactionType == TransactionType.Income)
             {
-                account.Deposit(txDto.amount, txDto.transactionType, txDto.category,
-                    txDto.description, DateTime.UtcNow);
+                account.Deposit(txDto.Amount, txDto.TransactionType, txDto.Category,
+                    txDto.Description, DateTime.UtcNow);
             }
             else
             {
-                var toAccount = await financeRepo.GetByIdAsync(txDto.targetAccountId, ct);
+                var toAccount = await financeRepo.GetByIdAsync(txDto.TargetAccountId, ct);
 
                 if (toAccount == null)
                 {
-                    logger.LogWarning("Transfer failed: Target AccountId {TargetAccountId} does not exist", txDto.targetAccountId);
+                    logger.LogWarning("Transfer failed: Target AccountId {TargetAccountId} does not exist", txDto.TargetAccountId);
                     return Result<bool>.Failure("Target account does not exist.");
                 }
 
@@ -179,8 +179,8 @@ namespace Application.Services
                 }
 
                 DateTime now = DateTime.UtcNow;
-                account.TransferTo(txDto.amount, txDto.transactionType, txDto.category,
-                    txDto.description, now, toAccount);
+                account.TransferTo(txDto.Amount, txDto.TransactionType, txDto.Category,
+                    txDto.Description, now, toAccount);
 
                 logger.LogInformation("Transfer initialized from {SourceId} to {TargetId}", account.Id, toAccount.Id);
             }
@@ -190,12 +190,12 @@ namespace Application.Services
             if (!result)
             {
                 logger.LogError("Database failure: Failed to persist {TransactionType} for AccountId {AccountId}",
-                    txDto.transactionType, txDto.accountId);
+                    txDto.TransactionType, txDto.AccountId);
                 return Result<bool>.Failure("Failed to record transaction.");
             }
 
             logger.LogInformation("Successfully completed {TransactionType} for AccountId: {AccountId}",
-                txDto.transactionType, txDto.accountId);
+                txDto.TransactionType, txDto.AccountId);
 
             return Result<bool>.Success(true);
         }

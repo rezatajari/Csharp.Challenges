@@ -1,5 +1,5 @@
 ﻿@page "/login"
-@using UI.Models
+@using Application.Dtos.Requests
 @using UI.Services.Interfacies
 @inject IAuthService AuthService
 @inject NavigationManager NavManager
@@ -58,7 +58,7 @@
 
 
 @code {
-    private LoginUserForm _model=new();
+    private LoginUserRequest _model=new();
     private string? _errorMessage;
     private bool _isLogin;
 

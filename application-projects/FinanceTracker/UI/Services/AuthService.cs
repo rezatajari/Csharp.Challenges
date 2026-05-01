@@ -3,7 +3,6 @@ using Application.Dtos.Requests;
 using Application.Shared;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
-using UI.Models;
 using UI.Services.Interfacies;
 
 namespace UI.Services
@@ -12,28 +11,27 @@ namespace UI.Services
     {
         public AuthService(HttpClient client,IJSRuntime jsRuntime) : base(client, jsRuntime) { }
 
-        public async Task<Result<bool>> Register(RegisterUserForm formModel)
+        public async Task<Result<bool>> Register(RegisterUserRequest formModel)
         {
-            var request=new RegisterUserRequest(formModel.Username, formModel.Email,formModel.Password,formModel.ConfirmPassword);
-            var response = await _client.PostAsJsonAsync("api/auth/register", request);
+            var response = await _client.PostAsJsonAsync("api/auth/register", formModel);
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<Result<bool>>()
-                    ?? Result<bool>.Failure("Unknow error");
+            {
+                bool isRegister=await response.Content.ReadFromJsonAsync<bool>();
+                return Result<bool>.Success(isRegister);
+            }
 
             string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
         }
-        public async Task<Result<bool>> Logn(LoginUserForm formModel)
+        public async Task<Result<bool>> Logn(LoginUserRequest formModel)
         {
-            var request = new LoginUserRequest(formModel.Email, formModel.Password);
-            var response = await _client.PostAsJsonAsync("api/auth/login", request);
+            var response = await _client.PostAsJsonAsync("api/auth/login", formModel);
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadFromJsonAsync<Result<string>>();
-                if (content == null || content.Value == null)
-                    return Result<bool>.Failure("Null error");
+                string? token = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(token))
+                    return Result<bool>.Failure("Null token");
 
-                string token = content.Value;
                 await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
 
                 return Result<bool>.Success(true);
