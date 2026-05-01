@@ -1,1 +1,61 @@
 ﻿@page "/dashboard"
+@using Application.Dtos.Reponses
+@using UI.Services.Interfaces
+@inject IFinanceService FinanceService
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="container mt-4">
+    <h3 class="mb-4">Account Overview</h3>
+
+    @if (_response == null && string.IsNullOrEmpty(_errorMessage))
+    {
+        <div class="d-flex align-items-center">
+            <strong>Loading your accounts...</strong>
+            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @_errorMessage
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var account in _response!.accounts)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h6 class="text-muted mb-1">@account.AccountName</h6>
+                            <h4 class="fw-bold">
+                                @account.Balance.Amount.ToString("C") @account.Balance.Currency
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private DashboardResponse? _response;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await FinanceService.GetDashboardAsync();
+
+        if (result.IsSuccess)
+        {
+            _response = result.Value;
+        }
+        else
+        {
+            _errorMessage = result.ErrorMessage;
+        }
+    }
+}
