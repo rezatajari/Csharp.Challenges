@@ -43,8 +43,12 @@ namespace UI.Services
         {
             var response = await _client.GetAsync($"api/finance/account/{Id}");
             if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<Result<AccountResponse>>()
-                    ?? Result<AccountResponse>.Failure("Unkow error");
+            {
+                AccountResponse? account = await response.Content.ReadFromJsonAsync<AccountResponse>();
+                return account != null
+                    ? Result<AccountResponse>.Success(account)
+                    : Result<AccountResponse>.Failure("Response from server is empty.");
+            }
             
             string error=await GetErrorResponse(response);
             return Result<AccountResponse>.Failure(error);
