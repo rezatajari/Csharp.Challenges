@@ -1,4 +1,4 @@
-﻿@page "/create-account"
+﻿@* @page "/create-account"
 @using Application.Dtos.Requests
 @using Domain.Entities
 @using Domain.ValueObjects
@@ -74,24 +74,24 @@
 
 @code {
     private FormModel formModel = new();
-    private string? errorMessage; 
-    private bool isSubmitting;    
+    private string? errorMessage;
+    private bool isSubmitting;
 
     private async Task HandleSubmit()
     {
         isSubmitting = true;
-        errorMessage = null; 
+        errorMessage = null;
 
-        var dto = new CreateAccountRequest(
-            formModel.Name,
-            Money.Create(formModel.Amount, Currency.USD),
-            formModel.Type,
-            formModel.Type == AccountType.CreditCard
-                ? Money.Create(formModel.CreditLimitAmount, Currency.USD)
-                : Money.Default()
-        );
+        // var dto = new CreateAccountRequest(
+        //     formModel.Name,
+        //     Money.Create(formModel.Amount, Currency.USD),
+        //     formModel.Type,
+        //     formModel.Type == AccountType.CreditCard
+        //         ? Money.Create(formModel.CreditLimitAmount, Currency.USD)
+        //         : Money.Default()
+        // );
 
-        var result = await accService.CreateAccount(dto);
+        // var result = await accService.CreateAccount(dto);
 
         if (result.IsSuccess)
         {
@@ -107,11 +107,11 @@
 
     private class FormModel
     {
-        public int UserId{ get; set;}
+        public int UserId { get; set; }
         public string Name { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public AccountType Type { get; set; } = AccountType.Savings;
 
         public decimal CreditLimitAmount { get; set; }
     }
-}
+} *@
