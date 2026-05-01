@@ -9,10 +9,8 @@ using UI.Services.Interfaces;
 
 namespace UI.Services
 {
-    public class FinanceService : BaseService, IFinanceService
+    public class FinanceService(HttpClient client, IJSRuntime jsRuntime) : BaseService(client,jsRuntime), IFinanceService
     {
-        public FinanceService(HttpClient client,IJSRuntime jsRuntime) 
-            :base(client,jsRuntime) {}
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
@@ -85,7 +83,7 @@ namespace UI.Services
 
         public async Task<Result<DashboardResponse>> GetDashboardAsync()
         {
-            var response = await _client.GetAsync("api/dashboard");
+            var response = await _client.GetAsync("api/finance/dashboard");
             if (response.IsSuccessStatusCode)
             {
                 DashboardResponse? dashboard=await response.Content.ReadFromJsonAsync<DashboardResponse>();

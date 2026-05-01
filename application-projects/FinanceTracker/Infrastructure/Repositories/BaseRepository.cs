@@ -6,7 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Repositories
 {
-    public class BaseRepository<T>(FinanceDbContext context, ILogger<BaseRepository<T>> logger) : IBaseRepository<T> where T : BaseEntity
+    public class BaseRepository<T>(FinanceDbContext context, ILogger<BaseRepository<T>> logger) 
+        : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly DbSet<T> _dbSet = context.Set<T>();
 
@@ -23,7 +24,7 @@ namespace Infrastructure.Repositories
             _dbSet.Update(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken ct)
+        public async Task<List<T>> GetAllAsync(CancellationToken ct)
         {
             logger.LogInformation("Fetching all records for {EntityName}", typeof(T).Name);
             return await _dbSet.ToListAsync(ct);

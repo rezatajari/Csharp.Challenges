@@ -49,5 +49,12 @@ namespace Api.Controllers
             var result = await financeService.AddTransaction(inputTxDto, ct);
             return HandleResult(result);
         }
+
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> Dashboard(CancellationToken ct)
+        {
+            var result = await financeService.GetDashboard(ct);
+            return HandleResult(result);
+        }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Entities;
+using Domain.ValueObjects;
 
 namespace Application.Dtos.Reponses
 {
-    public record DashboardResponse(List<DashboardAccounts> accounts);
-    public record DashboardAccounts(string AccountName,Money Balance);
+    public record DashboardResponse(List<DashboardAccounts> Accounts);
+    public record DashboardAccounts(string AccountName,AccountType Type, Money Balance);
 }

@@ -1,14 +1,16 @@
-﻿using Domain.Entities;
-using Application.Interfaces;
-using Microsoft.Extensions.Logging;
-using Application.Dtos.Reponses;
+﻿using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
-using Application.Shared;
+using Application.Interfaces;
 using Application.Interfaces.IRepositories;
+using Application.Shared;
+using Domain.Entities;
+using Microsoft.Extensions.Logging;
+using System.Security.Principal;
 
 namespace Application.Services
 {
-    public class FinanceService(IFinanceRepository financeRepo, ILogger<FinanceService> logger) : IFinanceService
+    public class FinanceService(IFinanceRepository financeRepo, ILogger<FinanceService> logger)
+        : IFinanceService
     {
         public async Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto, CancellationToken ct)
         {
@@ -198,6 +200,18 @@ namespace Application.Services
                 txDto.TransactionType, txDto.AccountId);
 
             return Result<bool>.Success(true);
+        }
+
+        public async Task<Result<DashboardResponse>> GetDashboard(CancellationToken ct)
+        {
+            List<BaseAccount> accounts = await financeRepo.GetAllAsync(ct);
+            if (accounts.Count<=0)
+                return Result<DashboardResponse>.Failure("Doesn't accounts exist");
+
+            List<DashboardAccounts> dashboardAccounts = accounts.Select(acc => new DashboardAccounts(acc.Name, acc.Type, acc.Balance))
+                                                    .ToList();
+            DashboardResponse result = new DashboardResponse(dashboardAccounts);
+            return Result<DashboardResponse>.Success(result);
         }
     }
 }
