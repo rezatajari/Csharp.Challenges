@@ -9,7 +9,7 @@ using UI.Services.Interfacies;
 
 namespace UI.Services
 {
-    public class FinanceService: BaseService,IFinanceService
+    public class FinanceService : BaseService, IFinanceService
     {
         public FinanceService(HttpClient client,IJSRuntime jsRuntime) :base(client,jsRuntime) {}
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
@@ -82,5 +82,19 @@ namespace UI.Services
             return Result<bool>.Failure("Cannot save your transaction");
         }
 
+        public async Task<Result<DashboardResponse>> GetDashboardAsync()
+        {
+            var response = await _client.GetAsync("api/dashboard");
+            if (response.IsSuccessStatusCode)
+            {
+                DashboardResponse? dashboard=await response.Content.ReadFromJsonAsync<DashboardResponse>();
+                return dashboard != null
+                    ? Result<DashboardResponse>.Success(dashboard)
+                    : Result<DashboardResponse>.Failure("The server is not response.");
+            }
+
+            string error = await GetErrorResponse(response);
+            return Result<DashboardResponse>.Failure(error);
+        }
     }
 }
