@@ -6,7 +6,7 @@ namespace UI.Services.Interfacies
 {
     public interface IAuthService
     {
-        Task<Result<bool>> Register(RegisterUserForm request);
-        Task<Result<string>> Logn(LoginUserRequest request);
+        Task<Result<bool>> Register(RegisterUserForm formModel);
+        Task<Result<bool>> Logn(LoginUserRequest formModel);
     }
 }

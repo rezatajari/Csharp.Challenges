@@ -11,8 +11,9 @@ namespace UI.Services
     {
         public AuthService(HttpClient client) : base(client) { }
 
-        public async Task<Result<bool>> Register(RegisterUserForm request)
+        public async Task<Result<bool>> Register(RegisterUserForm formModel)
         {
+            var request=new RegisterUserRequest(formModel.Username, formModel.Email,formModel.Password,formModel.ConfirmPassword);
             var response = await _client.PostAsJsonAsync("api/auth/register", request);
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<Result<bool>>()
@@ -21,9 +22,16 @@ namespace UI.Services
             string error = await GetErrorResponse(response);
             return Result<bool>.Failure(error);
         }
-        public async Task<Result<string>> Logn(LoginUserRequest request)
+        public async Task<Result<bool>> Logn(LoginUserForm formModel)
         {
-            var response = await _client.GetFromJsonAsync("api/auth/login", request);
+
+            var request = new LoginUserRequest(formModel.Email, formModel.Password);
+            var response = await _client.PostAsJsonAsync("api/auth/login", request);
+            if (response.IsSuccessStatusCode)
+            {
+
+            }
+
         }
 
     }
