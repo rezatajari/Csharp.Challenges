@@ -7,6 +7,7 @@ namespace UI.Services.Interfacies
 {
     public interface IFinanceService
     {
+        Task<Result<DashboardResponse>> GetDashboardAsync();
         Task<Result<bool>> CreateAccount(CreateAccountRequest request);
         Task<Result<List<AccountResponse>>> GetAllAccouintsAsync();
         Task <Result<AccountResponse>> GetAccountByIdAsync(int Id);

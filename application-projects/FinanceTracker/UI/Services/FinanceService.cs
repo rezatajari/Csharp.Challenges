@@ -79,7 +79,6 @@ namespace UI.Services
                 bool isAddedTx= await response.Content.ReadFromJsonAsync<bool>();
                 return Result<bool>.Success(isAddedTx); 
             }
-
             return Result<bool>.Failure("Cannot save your transaction");
         }
 
