@@ -1,6 +1,7 @@
 ﻿
 using Application.Dtos.Requests;
 using Application.Shared;
+using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using UI.Models;
 using UI.Services.Interfacies;
@@ -29,7 +30,11 @@ namespace UI.Services
             var response = await _client.PostAsJsonAsync("api/auth/login", request);
             if (response.IsSuccessStatusCode)
             {
+                var content = await response.Content.ReadFromJsonAsync<Result<string>>();
+                if (content == null || content.Value == null)
+                    return Result<bool>.Failure("Null error");
 
+                string token = content.Value;
             }
 
         }
