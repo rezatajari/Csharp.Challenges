@@ -5,13 +5,14 @@ using Domain.ValueObjects;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using UI.Models;
-using UI.Services.Interfacies;
+using UI.Services.Interfaces;
 
 namespace UI.Services
 {
     public class FinanceService : BaseService, IFinanceService
     {
-        public FinanceService(HttpClient client,IJSRuntime jsRuntime) :base(client,jsRuntime) {}
+        public FinanceService(HttpClient client,IJSRuntime jsRuntime,JwtAuthorizationHandler setToken) 
+            :base(client,jsRuntime, setToken) {}
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);

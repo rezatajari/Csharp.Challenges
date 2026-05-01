@@ -3,7 +3,7 @@ using Application.Dtos.Requests;
 using Application.Shared;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
-using UI.Services.Interfacies;
+using UI.Services.Interfaces;
 
 namespace UI.Services
 {

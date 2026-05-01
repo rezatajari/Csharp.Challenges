@@ -1,7 +1,7 @@
 ﻿using Application.Dtos.Requests;
 using Application.Shared;
 
-namespace UI.Services.Interfacies
+namespace UI.Services.Interfaces
 {
     public interface IAuthService
     {

@@ -3,7 +3,7 @@ using Application.Dtos.Requests;
 using Application.Shared;
 using UI.Models;
 
-namespace UI.Services.Interfacies
+namespace UI.Services.Interfaces
 {
     public interface IFinanceService
     {
