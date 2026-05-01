@@ -1,4 +1,6 @@
-﻿@using UI.Services.Interfacies
+﻿@using Application.Dtos.Requests
+@using UI.Models
+@using UI.Services.Interfacies
 
 <h3>Register</h3>
 @inject IAuthService AuthService
@@ -13,21 +15,46 @@
                     <h4 class="mb-0">Create an Account</h4>
                 </div>
                 <div class="card-body">
-                    <EditForm Model="@_model">
+                    <EditForm Model="@_model" OnValidSubmit="HandleRegister">
+                        <FluentValidationValidator />
                         <div class="mb-3">
                             <label class="form-label">Username</label>
-                            <InputText @bind-Value="_model.Username" class="form-control"/>
+                            <InputText @bind-Value="_model.Username" class="form-control" />
+                            <ValidationMessage For="@(() => _model.Username)" class="text-danger" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <InputText @bind-Value="_model.Email" class="form-contro"/>
+                            <InputText @bind-Value="_model.Email" class="form-control"/>
+                            <ValidationMessage  For="@(()=>_model.Email)" class="text-danger"/>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <InputText @bind-Value="_model.Email" type="password" class="form-contro" />
+                            <InputText @bind-Value="_model.Password" type="password" class="form-control" />
+                            <ValidationMessage For="@(()=>_model.Password)" class="text-danger"/>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <InputText @bind-Value="_model.ConfirmPassword" type="password" class="form-control" />
+                            <ValidationMessage For="@(() => _model.ConfirmPassword)" class="text-danger" />
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+                       <button type="submit" class="btn btn-primary w-100" disabled="@_isSubmitting">
+                            @if (_isSubmitting)
+                            {
+                                <span class="spinner-border spinner-border-sm"></span><span>Registering...</span>
+                            }
+                            else
+                            {
+                                <span>Register</span>
+                            }
+                        </button>
                     </EditForm>
                 </div>
             </div>
@@ -38,5 +65,9 @@
 
 
 @code {
-
+    private RegisterUserForm _model;
+    private async Task HandleRegister()
+    {
+        
+    }
 }
