@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories
         public async Task<List<BaseAccount>> GetAccountsByIdAsync(int id, CancellationToken ct)
         {
             return await _dbSet
-                .Where(acc => acc.Id == id)
+                .Where(acc => acc.UserId == id)
                 .ToListAsync();
         }
 
