@@ -17,7 +17,12 @@
 
                 <EditForm Model="@_vm" OnValidSubmit="HandleValidSubmit">
                     <div class="modal-body">
-
+                        @if (!string.IsNullOrEmpty(_customError))
+                        {
+                            <div class="alert alert-danger p-2 mb-3" style="font-size: 0.9rem;">
+                                <i class="bi bi-exclamation-triangle-fill"></i> @_customError
+                            </div>
+                        }
                         <div class="mb-3">
                             <label class="form-label fw-bold">Account Name</label>
                             <InputText @bind-Value="_vm.Name" class="form-control" placeholder="e.g., Daily Expenses" />
