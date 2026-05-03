@@ -1,9 +1,10 @@
 ﻿@page "/login"
 @using Application.Dtos.Requests
+@using UI.Services
 @using UI.Services.Interfaces
 @inject IAuthService AuthService
 @inject NavigationManager NavManager
-
+@inject AuthenticationStateProvider AuthStateProvider
 
 <h3>Login</h3>
 
@@ -68,7 +69,9 @@
         _errorMessage = null;
         var result = await AuthService.Logn(_model);
         if (result.IsSuccess)
-        { 
+        {
+            var customStateProvider = (JwtAuthStateProvider)AuthStateProvider;
+            ((JwtAuthStateProvider)AuthStateProvider).NotifyUserLogin(result.Value.Token);
             NavManager.NavigateTo("/dashboard");
         }
         else
