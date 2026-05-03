@@ -1,5 +1,6 @@
 ﻿@page "/dashboard"
 @using Application.Dtos.Reponses
+@using Application.Dtos.Requests
 @using Microsoft.AspNetCore.Authorization
 @using UI.Components
 @using UI.Services.Interfaces
@@ -44,7 +45,9 @@
     }
 
     <button class="btn btn-success" @onclick="ShowModal">Add Account</button>
-    <CreateAccountModal IsVisible="_showModal" OnClose="CloseModal" />
+    <CreateAccountModal IsVisible="_showModal"
+                        OnClose="CloseModal"
+                        OnSave="HandleCreateAccount" />
 </div>
 
 @code {
@@ -68,4 +71,21 @@
 
     private void ShowModal() => _showModal = true;
     private void CloseModal() => _showModal = false;
+
+    private async Task HandleCreateAccount(CreateAccountRequest request)
+    {
+        _errorMessage = null;
+
+        var result = await FinanceService.CreateAccount(request);
+
+        if (result.IsSuccess)
+        {
+            _showModal = false; 
+            await OnInitializedAsync(); 
+        }
+        else
+        {
+            _errorMessage = result.ErrorMessage;
+        }
+    }
 }
