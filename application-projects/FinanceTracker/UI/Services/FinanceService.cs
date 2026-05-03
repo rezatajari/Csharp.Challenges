@@ -73,7 +73,7 @@ namespace UI.Services
             var inputTxDto = new AddTransaction(request.AccountId, request.TargetAccountId, amount, category,
                 request.Type, request.TransactionDescription);
 
-            var response = await _client.PostAsJsonAsync("api/finance/transaction/add", inputTxDto);
+            var response = await _client.PostAsJsonAsync("api/finance/transaction", inputTxDto);
             if (response.IsSuccessStatusCode)
             {
                 bool isAddedTx= await response.Content.ReadFromJsonAsync<bool>();

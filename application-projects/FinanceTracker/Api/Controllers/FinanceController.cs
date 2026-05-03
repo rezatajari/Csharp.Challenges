@@ -45,7 +45,7 @@ namespace Api.Controllers
             return HandleResult(result);
         }
 
-        [HttpPost("transaction/add")]
+        [HttpPost("transaction")]
         public async Task<IActionResult> AddTransaction(AddTransaction inputTxDto, CancellationToken ct)
         {
             logger.LogInformation("Received request to add {TransactionType} for AccountId: {AccountId}",
