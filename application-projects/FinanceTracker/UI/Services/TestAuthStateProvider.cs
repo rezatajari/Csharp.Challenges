@@ -21,9 +21,9 @@ namespace UI.Services
             return new AuthenticationState(user);
         }
 
-        private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        private IEnumerable<Claim> ParseClaimsFromJwt(string token)
         {
-            var payload = jwt.Split('.')[1];
+            var payload = token.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 
