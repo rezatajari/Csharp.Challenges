@@ -1,6 +1,7 @@
 ﻿
 using Application.Dtos.Requests;
 using Application.Shared;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
@@ -11,7 +12,7 @@ namespace UI.Services
     public class AuthService : BaseService, IAuthService
     {
         public AuthService(HttpClient client, AuthenticationStateProvider authStateProvide,
-            IJSRuntime jsRuntime) : base(client, jsRuntime) { }
+             ILocalStorageService localStorage) : base(client, localStorage) { }
 
         public async Task<Result<bool>> Register(RegisterUserRequest formModel)
         {
@@ -34,7 +35,7 @@ namespace UI.Services
                 if (string.IsNullOrEmpty(token))
                     return Result<bool>.Failure("Null token");
 
-                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
+                await _localStorage.SetItemAsync<string>("authToken", token);
 
                 return Result<bool>.Success(true);
             }
