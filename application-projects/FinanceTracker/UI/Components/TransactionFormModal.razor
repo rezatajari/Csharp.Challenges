@@ -4,7 +4,8 @@
 @using Domain.ValueObjects
 @using UI.Models
 @using UI.Services
-@inject FinanceService _accService
+@using UI.Services.Interfaces
+@inject IFinanceService FinanceService
 
 @if (IsVisible)
 {
@@ -109,7 +110,7 @@
         if (string.IsNullOrWhiteSpace(addTxModel.CategoryName))
             addTxModel.CategoryName = "No category name";
 
-        var result = await _accService.AddTransaction(addTxModel);
+        var result = await FinanceService.AddTransaction(addTxModel);
         if (result.IsSuccess)
         {
             statusMessage = "Transaction added successfully!";
@@ -138,7 +139,7 @@
 
     private async Task LoadOtherAccounts()
     {
-        var result = await _accService.GetAllAccouintsAsync();
+        var result = await FinanceService.GetAllAccouintsAsync();
         if (result.IsSuccess)
         {
             otherAccounts = result.Value.Where(a => a.Id != Id).ToList();

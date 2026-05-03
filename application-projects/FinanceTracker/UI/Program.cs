@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using UI;
 using UI.Services;
+using UI.Services.Authorization;
 using UI.Services.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

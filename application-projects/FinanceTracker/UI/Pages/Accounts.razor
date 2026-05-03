@@ -14,15 +14,6 @@
 
 <div class="container mt-5">
     <AddAccountAction OnAccountCreated="OnInitializedAsync" />
-    
-    @if (message == "created")
-    {
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <strong>Success!</strong> Your new account has been created successfully.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
 
     @if (accountlist == null)
     {
@@ -35,7 +26,7 @@
     {
         <div class="alert alert-info border-0 shadow-sm">
             <i class="bi bi-info-circle me-2"></i>
-            You haven't opened any accounts yet. Click "New Account" to start!
+            You haven't opened any accounts yet. Click "Add Account" to start!
         </div>
     }
     else
@@ -82,9 +73,6 @@
 
 @code {
     private List<AccountResponse>? accountlist;
-
-    [SupplyParameterFromQuery]
-    public string? message { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

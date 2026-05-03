@@ -2,7 +2,7 @@
 using Microsoft.JSInterop;
 using System.Runtime.InteropServices;
 
-namespace UI.Services
+namespace UI.Services.Authorization
 {
     public class JwtAuthorizationHandler(ILocalStorageService localStorage):DelegatingHandler
     {

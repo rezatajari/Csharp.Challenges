@@ -1,11 +1,9 @@
 ﻿@page "/account-details/{Id:int}"
-@using Application.Dtos
 @using Application.Dtos.Reponses
 @using Domain.Entities
 @using Domain.ValueObjects
 @using Microsoft.AspNetCore.Authorization
 @using UI.Components
-@using UI.Services
 @using UI.Services.Interfaces
 @inject IFinanceService FinanceService
 @attribute [Authorize]
@@ -37,10 +35,7 @@ else
 <button class="btn btn-primary mb-3" @onclick="()=>transactionModal.Show()">Add Transaction</button>
 <TransactionTable Transactions="transactions" />
 <TransactionFormModal @ref="transactionModal" Id="Id" OnSave="HandleSaveFinished" />
-@if (!string.IsNullOrEmpty(pageMessage))
-{
-    <div class="alert alert-success">@pageMessage</div>
-}
+
 
 
 
@@ -50,18 +45,11 @@ else
     private AccountResponse? account;
     private List<TransactionResponse>? transactions = new();
     private TransactionFormModal transactionModal=default!;  // Component
-    private List<AccountResponse> otherAccounts = new();
     private string? ErrorMessage;
     private bool isLoading = true;
     private string? pageMessage;
 
-    private async Task HandleSaveFinished(string message)
-    {
-        pageMessage = message; 
-        await RefreshData(); 
-    }
-
-    private async Task RefreshData()
+    private async Task HandleSaveFinished()
     {
         var accountResult = await FinanceService.GetAccountByIdAsync(Id);
         if (accountResult.IsSuccess)

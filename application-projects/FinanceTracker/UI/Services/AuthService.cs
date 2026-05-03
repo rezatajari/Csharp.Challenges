@@ -5,6 +5,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
+using UI.Services.Authorization;
 using UI.Services.Interfaces;
 
 namespace UI.Services

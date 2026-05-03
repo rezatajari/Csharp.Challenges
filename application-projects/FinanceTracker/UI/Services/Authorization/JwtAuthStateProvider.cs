@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace UI.Services
+namespace UI.Services.Authorization
 {
     public class JwtAuthStateProvider(ILocalStorageService localStorage) : AuthenticationStateProvider
     {
