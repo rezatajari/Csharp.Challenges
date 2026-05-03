@@ -76,13 +76,15 @@
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback OnClose { get; set; }
     [Parameter] public EventCallback<CreateAccountRequest> OnSave { get; set; }
-
     private CreateAccountModalForm _vm = new();
+    private string? _customError;
 
     private Task Close() => OnClose.InvokeAsync();
 
     private async Task HandleValidSubmit()
     {
+        _customError = null;
+
         var request = new CreateAccountRequest
         {
             Name = _vm.Name,
@@ -103,7 +105,7 @@
         }
         else
         {
-            Console.WriteLine("Validation failed: " + result.Errors.FirstOrDefault()?.ErrorMessage);
+            _customError = result.Errors.FirstOrDefault()?.ErrorMessage;
         }
     }
 }
