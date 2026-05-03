@@ -44,7 +44,7 @@
     }
 
     <button class="btn btn-success" @onclick="() => _showModal = true">Add Account</button>
-    <CreateAccountModal IsVisible="_showModal" OnClose="() => _showModal = false" />
+    <CreateAccountModal IsVisible="_showModal" OnClose="CloseCreateAccountModal" />
 </div>
 
 @code {
@@ -64,5 +64,11 @@
         {
             _errorMessage = result.ErrorMessage;
         }
+    }
+
+    private void CloseCreateAccountModal()
+    {
+        _showModal = false;
+        StateHasChanged();
     }
 }
