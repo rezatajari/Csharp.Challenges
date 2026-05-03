@@ -41,11 +41,19 @@
             }
         </div>
     }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Account Overview</h3>
+        <button class="btn btn-success" @onclick="OpenCreateModal">
+            <i class="bi bi-plus-lg"></i> Add New Account
+        </button>
+    </div>
 </div>
 
 @code {
     private DashboardResponse? _response;
     private string? _errorMessage;
+    private bool _showModal = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,4 +68,8 @@
             _errorMessage = result.ErrorMessage;
         }
     }
+
+    private void OpenCreateModal() => _showModal = true;
+    private void CloseModal() => _showModal = false;
+
 }
