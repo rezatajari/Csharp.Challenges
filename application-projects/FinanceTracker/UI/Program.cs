@@ -25,5 +25,5 @@ builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddScoped<AuthenticationStateProvider, TestAuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthStateProvider>();
 await builder.Build().RunAsync();
