@@ -1,6 +1,7 @@
 ﻿@page "/dashboard"
 @using Application.Dtos.Reponses
 @using Microsoft.AspNetCore.Authorization
+@using UI.Components
 @using UI.Services.Interfaces
 @inject IFinanceService FinanceService
 @attribute [Authorize]
@@ -42,12 +43,8 @@
         </div>
     }
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Account Overview</h3>
-        <button class="btn btn-success" @onclick="OpenCreateModal">
-            <i class="bi bi-plus-lg"></i> Add New Account
-        </button>
-    </div>
+    <button class="btn btn-success" @onclick="() => _showModal = true">Add Account</button>
+    <CreateAccountModal IsVisible="_showModal" OnClose="() => _showModal = false" />
 </div>
 
 @code {
@@ -68,8 +65,4 @@
             _errorMessage = result.ErrorMessage;
         }
     }
-
-    private void OpenCreateModal() => _showModal = true;
-    private void CloseModal() => _showModal = false;
-
 }
