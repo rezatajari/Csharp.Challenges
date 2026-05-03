@@ -1,6 +1,7 @@
 ﻿
 using Application.Dtos.Requests;
 using Application.Shared;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using UI.Services.Interfaces;
@@ -9,7 +10,8 @@ namespace UI.Services
 {
     public class AuthService : BaseService, IAuthService
     {
-        public AuthService(HttpClient client,IJSRuntime jsRuntime) : base(client, jsRuntime) { }
+        public AuthService(HttpClient client, AuthenticationStateProvider authStateProvide,
+            IJSRuntime jsRuntime) : base(client, jsRuntime) { }
 
         public async Task<Result<bool>> Register(RegisterUserRequest formModel)
         {
