@@ -1,7 +1,9 @@
 ﻿@page "/dashboard"
 @using Application.Dtos.Reponses
+@using Microsoft.AspNetCore.Authorization
 @using UI.Services.Interfaces
 @inject IFinanceService FinanceService
+@attribute [Authorize]
 
 <PageTitle>Dashboard</PageTitle>
 
