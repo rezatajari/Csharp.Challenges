@@ -21,6 +21,16 @@ namespace UI.Services
             return new AuthenticationState(user);
         }
 
+        public void NotifyUserLogin(string token)
+        {
+            var claims = ParseClaimsFromJwt(token);
+            var identity=new ClaimsIdentity(claims, "jwt");
+            var user =new ClaimsPrincipal(identity);
+
+            var authState = Task.FromResult(new AuthenticationState(user));
+            NotifyAuthenticationStateChanged(authState);
+        }
+
         private IEnumerable<Claim> ParseClaimsFromJwt(string token)
         {
             var payload = token.Split('.')[1];
