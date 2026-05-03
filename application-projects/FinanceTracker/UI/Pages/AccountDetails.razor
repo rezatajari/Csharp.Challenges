@@ -6,7 +6,8 @@
 @using Microsoft.AspNetCore.Authorization
 @using UI.Components
 @using UI.Services
-@inject FinanceService _accService
+@using UI.Services.Interfaces
+@inject IFinanceService FinanceService
 @attribute [Authorize]
 
 <h3>Account Details</h3>
@@ -62,12 +63,12 @@ else
 
     private async Task RefreshData()
     {
-        var accountResult = await _accService.GetAccountByIdAsync(Id);
+        var accountResult = await FinanceService.GetAccountByIdAsync(Id);
         if (accountResult.IsSuccess)
         {
             account = accountResult.Value; 
 
-            var txResult = await _accService.GetTransactionsByAccountIdAsync(Id);
+            var txResult = await FinanceService.GetTransactionsByAccountIdAsync(Id);
             if (txResult.IsSuccess)
                 transactions = txResult.Value;
         }
@@ -76,11 +77,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var accountResult = await _accService.GetAccountByIdAsync(Id);
+        var accountResult = await FinanceService.GetAccountByIdAsync(Id);
         if (accountResult.IsSuccess)
         {
             account = accountResult.Value;
-            var txResult = await _accService.GetTransactionsByAccountIdAsync(Id);
+            var txResult = await FinanceService.GetTransactionsByAccountIdAsync(Id);
             if (txResult.IsSuccess)
                 transactions = txResult.Value;
         }
