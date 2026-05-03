@@ -1,19 +1,72 @@
-﻿@if (IsVisible)
+﻿@using Application.Dtos.Requests
+@using Application.Shared.Validators
+@using Domain.Entities
+@using Domain.ValueObjects
+@using UI.Models
+@using FluentValidation
+
+@if (IsVisible)
 {
     <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title">Create New Account</h5>
-                    <button type="button" class="btn-close" @onclick="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" @onclick="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p>Form coming soon...</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @onclick="Close">Cancel</button>
-                    <button type="button" class="btn btn-primary">Save Account</button>
-                </div>
+
+                <EditForm Model="@_vm" OnValidSubmit="HandleValidSubmit">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Account Name</label>
+                            <InputText @bind-Value="_vm.Name" class="form-control" placeholder="e.g., Daily Expenses" />
+                            <ValidationMessage For="@(() => _vm.Name)" class="text-danger" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7 mb-3">
+                                <label class="form-label fw-bold">Initial Balance</label>
+                                <InputNumber @bind-Value="_vm.Amount" class="form-control" />
+                                <ValidationMessage For="@(() => _vm.Amount)" class="text-danger" />
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label fw-bold">Currency</label>
+                                <InputSelect @bind-Value="_vm.Currency" class="form-select">
+                                    @foreach (var curr in Enum.GetValues<Currency>())
+                                    {
+                                        <option value="@curr">@curr</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Account Type</label>
+                            <InputSelect @bind-Value="_vm.Type" class="form-select">
+                                @foreach (var type in Enum.GetValues<AccountType>())
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        @if (_vm.Type == AccountType.CreditCard)
+                        {
+                            <div class="mb-3 border-start border-primary border-4 ps-3 bg-light py-2">
+                                <label class="form-label fw-bold text-primary">Credit Limit</label>
+                                <InputNumber @bind-Value="_vm.CreditLimitAmount" class="form-control" />
+                                <ValidationMessage For="@(() => _vm.CreditLimitAmount)" class="text-danger" />
+                                <small class="text-muted">Required for credit card accounts.</small>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" @onclick="Close">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4">Save Account</button>
+                    </div>
+                </EditForm>
             </div>
         </div>
     </div>
@@ -22,6 +75,35 @@
 @code {
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback<CreateAccountRequest> OnSave { get; set; }
+
+    private CreateAccountModalForm _vm = new();
 
     private Task Close() => OnClose.InvokeAsync();
+
+    private async Task HandleValidSubmit()
+    {
+        var request = new CreateAccountRequest
+        {
+            Name = _vm.Name,
+            Type = _vm.Type,
+            Balance = Money.Create(_vm.Amount, _vm.Currency),
+            CreditLimit = _vm.Type == AccountType.CreditCard
+                ? Money.Create(_vm.CreditLimitAmount, _vm.Currency)
+                : Money.Default()
+        };
+
+        var validator = new CreateAccountRequestValidator();
+        var result = await validator.ValidateAsync(request);
+
+        if (result.IsValid)
+        {
+            await OnSave.InvokeAsync(request);
+            _vm = new();
+        }
+        else
+        {
+            Console.WriteLine("Validation failed: " + result.Errors.FirstOrDefault()?.ErrorMessage);
+        }
+    }
 }

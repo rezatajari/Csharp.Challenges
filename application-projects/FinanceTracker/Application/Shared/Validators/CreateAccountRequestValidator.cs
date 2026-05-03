@@ -8,9 +8,6 @@ namespace Application.Shared.Validators
     {
         public CreateAccountRequestValidator()
         {
-            RuleFor(x => x.UserId)
-                .NotEmpty().WithMessage("User Id is required");
-
             RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Account name is required.")
             .MaximumLength(100).WithMessage("Name is too long.");
