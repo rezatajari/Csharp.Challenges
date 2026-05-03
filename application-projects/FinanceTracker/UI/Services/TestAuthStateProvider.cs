@@ -14,6 +14,11 @@ namespace UI.Services
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
             var claims = ParseClaimsFromJwt(token);
+
+            var identity = new ClaimsIdentity(claims, "jwt");
+            var user = new ClaimsPrincipal(identity);
+
+            return new AuthenticationState(user);
         }
 
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
