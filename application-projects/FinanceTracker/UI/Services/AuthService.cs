@@ -9,11 +9,10 @@ using UI.Services.Interfaces;
 
 namespace UI.Services
 {
-    public class AuthService : BaseService, IAuthService
+    public class AuthService(HttpClient client,
+         ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider)
+        : BaseService(client, localStorage), IAuthService
     {
-        public AuthService(HttpClient client, AuthenticationStateProvider authStateProvide,
-             ILocalStorageService localStorage) : base(client, localStorage) { }
-
         public async Task<Result<bool>> Register(RegisterUserRequest formModel)
         {
             var response = await _client.PostAsJsonAsync("api/auth/register", formModel);
@@ -35,7 +34,8 @@ namespace UI.Services
                 if (string.IsNullOrEmpty(token))
                     return Result<bool>.Failure("Null token");
 
-                await _localStorage.SetItemAsync<string>("authToken", token);
+                await _localStorage.SetItemAsync("authToken", token);
+                ((JwtAuthStateProvider)authStateProvider).NotifyUserLogin(token);
 
                 return Result<bool>.Success(true);
             }

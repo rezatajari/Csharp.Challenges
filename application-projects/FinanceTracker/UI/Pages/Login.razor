@@ -70,8 +70,6 @@
         var result = await AuthService.Logn(_model);
         if (result.IsSuccess)
         {
-            var customStateProvider = (JwtAuthStateProvider)AuthStateProvider;
-            ((JwtAuthStateProvider)AuthStateProvider).NotifyUserLogin(result.Value.Token);
             NavManager.NavigateTo("/dashboard");
         }
         else
