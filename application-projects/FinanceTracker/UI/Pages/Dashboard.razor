@@ -43,8 +43,8 @@
         </div>
     }
 
-    <button class="btn btn-success" @onclick="() => _showModal = true">Add Account</button>
-    <CreateAccountModal IsVisible="_showModal" OnClose="CloseCreateAccountModal" />
+    <button class="btn btn-success" @onclick="ShowModal">Add Account</button>
+    <CreateAccountModal IsVisible="_showModal" OnClose="CloseModal" />
 </div>
 
 @code {
@@ -66,9 +66,6 @@
         }
     }
 
-    private void CloseCreateAccountModal()
-    {
-        _showModal = false;
-        StateHasChanged();
-    }
+    private void ShowModal()=>_showModal = true;
+    private void CloseModal()=>_showModal = false;
 }
