@@ -22,7 +22,7 @@ namespace Domain.Entities
         protected BaseAccount(int userId,string name, Money initialBalance, AccountType type)
         {
             if (userId <= 0) throw new ArgumentException("Invalid User ID");
-
+            UserId=userId;
             ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
             Name = name;
             Balance = initialBalance;
