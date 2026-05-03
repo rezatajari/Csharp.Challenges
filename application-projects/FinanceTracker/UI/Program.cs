@@ -23,7 +23,7 @@ builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
     client.BaseAddress = new Uri(apiBaseUrl);
 });
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
-builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthStateProvider>();
 await builder.Build().RunAsync();
