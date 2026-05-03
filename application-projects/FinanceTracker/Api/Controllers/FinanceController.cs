@@ -62,12 +62,7 @@ namespace Api.Controllers
         [HttpGet("dashboard")]
         public async Task<IActionResult> Dashboard(CancellationToken ct)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim))
-                return Unauthorized();
-
-            int.TryParse(userIdClaim, out int userId);
-            var result = await financeService.GetDashboard(userId, ct);
+            var result = await financeService.GetDashboard(UserId, ct);
             return HandleResult(result);
         }
     }

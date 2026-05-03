@@ -7,11 +7,11 @@ namespace Application.Interfaces
 {
     public interface IFinanceService
     {
-        Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto,int userId, CancellationToken ct);
+        Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto,int UserId, CancellationToken ct);
         Task<Result<bool>> AddTransaction(AddTransaction txDto, CancellationToken ct);
         Task<Result<List<AccountResponse>>?> GetAccounts(CancellationToken ct);
         Task<Result<AccountResponse>> GetAccount(int Id, CancellationToken ct);
         Task<Result<List<TransactionResponse>>> GetAccountTransactions(int Id, CancellationToken ct);
-        Task<Result<DashboardResponse>> GetDashboard(int userId, CancellationToken ct);
+        Task<Result<DashboardResponse>> GetDashboard(int UserId, CancellationToken ct);
     }
 }
