@@ -3,9 +3,11 @@
 @using Application.Dtos.Reponses
 @using Domain.Entities
 @using Domain.ValueObjects
+@using Microsoft.AspNetCore.Authorization
 @using UI.Components
 @using UI.Services
 @inject FinanceService _accService
+@attribute [Authorize]
 
 <h3>Account Details</h3>
 

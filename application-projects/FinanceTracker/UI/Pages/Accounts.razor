@@ -3,10 +3,12 @@
 @using Application.Dtos.Reponses
 @using Domain.Entities
 @using Domain.ValueObjects
+@using Microsoft.AspNetCore.Authorization
 @using UI.Services
 @using UI.Services.Interfaces
 @inject IFinanceService accService
 @inject NavigationManager Nav
+@attribute [Authorize]
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
