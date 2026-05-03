@@ -1,22 +1,22 @@
 ﻿@page "/accounts"
 @using Application.Dtos
 @using Application.Dtos.Reponses
+@using Application.Dtos.Requests
 @using Domain.Entities
 @using Domain.ValueObjects
 @using Microsoft.AspNetCore.Authorization
+@using UI.Components
 @using UI.Services
 @using UI.Services.Interfaces
-@inject IFinanceService accService
+@inject IFinanceService FinanceService
 @inject NavigationManager Nav
 @attribute [Authorize]
 
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">My Accounts</h2>
-        <a href="/create-account" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i> New Account
-        </a>
-    </div>
+    <button class="btn btn-success" @onclick="ShowModal">Add Account</button>
+    <CreateAccountModal IsVisible="_showModal"
+                        OnClose="CloseModal"
+                        OnSave="HandleCreateAccount" />
 
     @if (message == "created")
     {
@@ -85,13 +85,15 @@
 
 @code {
     private List<AccountResponse>? accountlist;
+    private string? _errorMessage;
+    private bool _showModal = false;
 
     [SupplyParameterFromQuery]
     public string? message { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await accService.GetAllAccouintsAsync();
+        var result = await FinanceService.GetAllAccouintsAsync();
         if (result != null && result.IsSuccess)
         {
             accountlist = result.Value;
@@ -105,5 +107,25 @@
     private void AccDetails(int Id)
     {
         Nav.NavigateTo($"/account-details/{Id}");
+    }
+
+    private void ShowModal() => _showModal = true;
+    private void CloseModal() => _showModal = false;
+
+    private async Task HandleCreateAccount(CreateAccountRequest request)
+    {
+        _errorMessage = null;
+
+        var result = await FinanceService.CreateAccount(request);
+
+        if (result.IsSuccess)
+        {
+            _showModal = false;
+            await OnInitializedAsync();
+        }
+        else
+        {
+            _errorMessage = result.ErrorMessage;
+        }
     }
 }
