@@ -5,7 +5,6 @@ namespace Application.Dtos.Requests
 {
     public class CreateAccountRequest
     {
-        public int UserId { get; set; }
         public string Name { get; set; }
         public Money Balance { get; set; }
         public AccountType Type { get; set; }
