@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Reponses;
 using Application.Dtos.Requests;
 using Application.Shared;
+using Blazored.LocalStorage;
 using Domain.ValueObjects;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
@@ -9,7 +10,7 @@ using UI.Services.Interfaces;
 
 namespace UI.Services
 {
-    public class FinanceService(HttpClient client, IJSRuntime jsRuntime) : BaseService(client,jsRuntime), IFinanceService
+    public class FinanceService(HttpClient client, ILocalStorageService localStorage) : BaseService(client, localStorage), IFinanceService
     {
         public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
         {
