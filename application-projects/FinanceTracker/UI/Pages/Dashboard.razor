@@ -44,10 +44,7 @@
         </div>
     }
 
-    <button class="btn btn-success" @onclick="ShowModal">Add Account</button>
-    <CreateAccountModal IsVisible="_showModal"
-                        OnClose="CloseModal"
-                        OnSave="HandleCreateAccount" />
+    <AddAccountAction OnAccountCreated="OnInitializedAsync" />
 </div>
 
 @code {
@@ -62,26 +59,6 @@
         if (result.IsSuccess)
         {
             _response = result.Value;
-        }
-        else
-        {
-            _errorMessage = result.ErrorMessage;
-        }
-    }
-
-    private void ShowModal() => _showModal = true;
-    private void CloseModal() => _showModal = false;
-
-    private async Task HandleCreateAccount(CreateAccountRequest request)
-    {
-        _errorMessage = null;
-
-        var result = await FinanceService.CreateAccount(request);
-
-        if (result.IsSuccess)
-        {
-            _showModal = false; 
-            await OnInitializedAsync(); 
         }
         else
         {

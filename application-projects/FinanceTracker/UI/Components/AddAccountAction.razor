@@ -1,0 +1,42 @@
+﻿@using Application.Dtos.Requests
+@using UI.Services.Interfaces
+@inject IFinanceService FinanceService
+
+<button class="btn btn-success" @onclick="ShowModal">
+    <i class="bi bi-plus-lg"></i> Add Account
+</button>
+
+<CreateAccountModal IsVisible="_showModal"
+                    OnClose="CloseModal"
+                    OnSave="HandleCreateAccount" />
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger mt-2">@_errorMessage</div>
+}
+
+@code {
+    [Parameter] public EventCallback OnAccountCreated { get; set; }
+
+    private bool _showModal;
+    private string? _errorMessage;
+
+    private void ShowModal() => _showModal = true;
+    private void CloseModal() => _showModal = false;
+
+    private async Task HandleCreateAccount(CreateAccountRequest request)
+    {
+        _errorMessage = null;
+        var result = await FinanceService.CreateAccount(request);
+
+        if (result.IsSuccess)
+        {
+            _showModal = false;
+            await OnAccountCreated.InvokeAsync();
+        }
+        else
+        {
+            _errorMessage = result.ErrorMessage;
+        }
+    }
+}

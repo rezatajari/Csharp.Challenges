@@ -13,11 +13,8 @@
 @attribute [Authorize]
 
 <div class="container mt-5">
-    <button class="btn btn-success" @onclick="ShowModal">Add Account</button>
-    <CreateAccountModal IsVisible="_showModal"
-                        OnClose="CloseModal"
-                        OnSave="HandleCreateAccount" />
-
+    <AddAccountAction OnAccountCreated="OnInitializedAsync" />
+    
     @if (message == "created")
     {
         <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
@@ -85,8 +82,6 @@
 
 @code {
     private List<AccountResponse>? accountlist;
-    private string? _errorMessage;
-    private bool _showModal = false;
 
     [SupplyParameterFromQuery]
     public string? message { get; set; }
@@ -107,25 +102,5 @@
     private void AccDetails(int Id)
     {
         Nav.NavigateTo($"/account-details/{Id}");
-    }
-
-    private void ShowModal() => _showModal = true;
-    private void CloseModal() => _showModal = false;
-
-    private async Task HandleCreateAccount(CreateAccountRequest request)
-    {
-        _errorMessage = null;
-
-        var result = await FinanceService.CreateAccount(request);
-
-        if (result.IsSuccess)
-        {
-            _showModal = false;
-            await OnInitializedAsync();
-        }
-        else
-        {
-            _errorMessage = result.ErrorMessage;
-        }
     }
 }
