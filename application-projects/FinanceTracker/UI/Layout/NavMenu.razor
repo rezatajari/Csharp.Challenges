@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Blazored.LocalStorage
+@using UI.Services
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Finance Tracker</a>
     </div>
@@ -9,7 +11,7 @@
         <AuthorizeView>
             <Authorized>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" href="/dashboard" >
                         <span class="bi bi-house-door-fill" aria-hidden="true"></span> Dashboard
                     </NavLink>
                 </div>
@@ -31,8 +33,20 @@
                         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Accounts
                     </NavLink>
                 </div>
+
+                <div class="nav-item px-3">
+                    <a class="nav-link" style="cursor:pointer" @onclick="HandleLogout">
+                        <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Log Out
+                    </a>
+                </div>
             </Authorized>
             <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Home
+                    </NavLink>
+                </div>
+
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="register">
                         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Register
@@ -44,13 +58,20 @@
                         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Log In
                     </NavLink>
                 </div>
-
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Home">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Log Out
-                    </NavLink>
-                </div>
             </NotAuthorized>
         </AuthorizeView>
     </nav>
 </div>
+
+@code {
+    [Inject] private ILocalStorageService LocalStorage { get; set; }
+    [Inject] private AuthenticationStateProvider AuthProvider { get; set; }
+    [Inject] private NavigationManager Nav { get; set; }
+
+    private async Task HandleLogout()
+    {
+        await LocalStorage.RemoveItemAsync("authToken");
+        ((JwtAuthStateProvider)AuthProvider).NotifyUserLogout();
+        Nav.NavigateTo("/");
+    }
+}

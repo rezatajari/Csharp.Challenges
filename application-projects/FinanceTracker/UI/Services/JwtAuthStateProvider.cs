@@ -31,6 +31,13 @@ namespace UI.Services
             NotifyAuthenticationStateChanged(authState);
         }
 
+        public void NotifyUserLogout()
+        {
+            var anonymous = new ClaimsPrincipal(new ClaimsIdentity());
+            var authState = Task.FromResult(new AuthenticationState(anonymous));
+            NotifyAuthenticationStateChanged(authState);
+        }
+
         private IEnumerable<Claim> ParseClaimsFromJwt(string token)
         {
             var payload = token.Split('.')[1];
