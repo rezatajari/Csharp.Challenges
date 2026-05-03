@@ -20,11 +20,8 @@ namespace Api.Controllers
         {
             logger.LogInformation("Received request to create account: {AccountName}", createAccModel.Name);
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim))
-                return Unauthorized();
-
-            int.TryParse(userIdClaim, out int userId);
-            var result = await financeService.OpenAccount(createAccModel,userId, ct);
+            
+            var result = await financeService.OpenAccount(createAccModel,UserId, ct);
             return HandleResult(result);
         }
 
