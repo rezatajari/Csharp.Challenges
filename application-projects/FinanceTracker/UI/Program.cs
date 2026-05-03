@@ -1,4 +1,5 @@
 using Application.Shared.Validators;
+using Blazored.LocalStorage;
 using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -23,5 +24,6 @@ builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
 });
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthStateProvider>();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthenticationStateProvider, TestAuthStateProvider>();
 await builder.Build().RunAsync();
