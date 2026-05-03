@@ -12,13 +12,19 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FinanceController(IFinanceService financeService, ILogger<FinanceController> logger) : ApiControllerBase
+    public class FinanceController(IFinanceService financeService, ILogger<FinanceController> logger) 
+        : ApiControllerBase
     {
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccount(CreateAccountRequest createAccModel, CancellationToken ct)
         {
             logger.LogInformation("Received request to create account: {AccountName}", createAccModel.Name);
-            var result = await financeService.OpenAccount(createAccModel, ct);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized();
+
+            int.TryParse(userIdClaim, out int userId);
+            var result = await financeService.OpenAccount(createAccModel,userId, ct);
             return HandleResult(result);
         }
 

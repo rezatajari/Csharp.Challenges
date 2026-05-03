@@ -5,14 +5,13 @@ using Application.Interfaces.IRepositories;
 using Application.Shared;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
-using System.Security.Principal;
 
 namespace Application.Services
 {
     public class FinanceService(IFinanceRepository financeRepo, ILogger<FinanceService> logger)
         : IFinanceService
     {
-        public async Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto, CancellationToken ct)
+        public async Task<Result<bool>> OpenAccount(CreateAccountRequest createAccDto,int userId, CancellationToken ct)
         {
             logger.LogInformation("Attempting to open a new account of type {AccountType} with name {AccountName}", createAccDto.Type, createAccDto.Name);
 
@@ -20,11 +19,11 @@ namespace Application.Services
 
             if (createAccDto.Type == AccountType.Savings)
             {
-                newAccount = SavingsAccount.Create(createAccDto.UserId, createAccDto.Name, createAccDto.Balance, createAccDto.Type);
+                newAccount = SavingsAccount.Create(userId, createAccDto.Name, createAccDto.Balance, createAccDto.Type);
             }
             else if (createAccDto.Type == AccountType.CreditCard)
             {
-                newAccount = CreditCardAccount.Create(createAccDto.UserId, createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit, createAccDto.Type);
+                newAccount = CreditCardAccount.Create(userId, createAccDto.Name, createAccDto.Balance, createAccDto.CreditLimit, createAccDto.Type);
             }
 
             if (newAccount == null)
