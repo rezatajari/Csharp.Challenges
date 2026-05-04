@@ -56,11 +56,17 @@ namespace Api.Controllers
             return HandleResult(result);
         }
 
-        [Authorize]
         [HttpGet("dashboard")]
         public async Task<IActionResult> Dashboard(CancellationToken ct)
         {
             var result = await financeService.GetDashboard(UserId, ct);
+            return HandleResult(result);
+        }
+
+        [HttpDelete("delete/{Id}")]
+        public async Task<IActionResult> Delete(int Id,CancellationToken ct)
+        {
+            var result= await financeService.DeleteAccount(Id,ct);
             return HandleResult(result);
         }
     }

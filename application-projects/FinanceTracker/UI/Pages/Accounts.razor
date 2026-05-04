@@ -16,6 +16,13 @@
 <div class="container mt-5">
     <AddAccountAction OnAccountCreated="OnInitializedAsync" />
 
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+    <div class="alert alert-danger" role="alert">
+        @_errorMessage
+    </div>
+    }
+    
     @if (accountlist == null)
     {
         <div class="text-center py-5">
@@ -77,9 +84,11 @@
 
 @code {
     private List<AccountResponse>? accountlist;
+    private string _errorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
+        _errorMessage = string.Empty;
         var result = await FinanceService.GetAllAccouintsAsync();
         if (result != null && result.IsSuccess)
         {
@@ -98,6 +107,14 @@
 
     private async Task DeleteAccount(int Id)
     {
-        var response = await FinanceService.DeleteAccount(Id);
+        var response = await FinanceService.DeleteAccountAsync(Id);
+        if (response.IsSuccess)
+        {
+            await OnInitializedAsync();
+        }
+        else
+        {
+            _errorMessage = response.ErrorMessage;
+        }
     }
 }

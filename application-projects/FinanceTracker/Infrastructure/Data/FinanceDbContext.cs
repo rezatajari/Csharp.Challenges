@@ -31,6 +31,8 @@ namespace Infrastructure.Data
                 entity.HasDiscriminator<string>("AccountType")
                     .HasValue<SavingsAccount>("Savings")
                     .HasValue<CreditCardAccount>("CreditCard");
+
+                entity.HasQueryFilter(a => !a.IsDeleted);
             });
 
             modelBuilder.Entity<CreditCardAccount>(entity =>

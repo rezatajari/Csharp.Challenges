@@ -218,5 +218,16 @@ namespace Application.Services
             DashboardResponse result = new DashboardResponse(dashboardAccounts);
             return Result<DashboardResponse>.Success(result);
         }
+
+        public async Task<Result<bool>> DeleteAccount(int accountId, CancellationToken ct)
+        {
+            BaseAccount? account=await financeRepo.GetByIdAsync(accountId, ct);
+            if (account is null)
+                return Result<bool>.Failure("Your account is not found");
+
+            account.Delete();
+            await financeRepo.SaveChangesAsync(ct);
+            return Result<bool>.Success(true);
+        }
     }
 }
