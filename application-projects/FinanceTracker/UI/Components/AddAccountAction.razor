@@ -27,7 +27,7 @@
     private async Task HandleCreateAccount(CreateAccountRequest request)
     {
         _errorMessage = null;
-        var result = await FinanceService.CreateAccount(request);
+        var result = await FinanceService.CreateAccountAsync(request);
 
         if (result.IsSuccess)
         {

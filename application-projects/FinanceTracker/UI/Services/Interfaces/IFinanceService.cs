@@ -8,10 +8,11 @@ namespace UI.Services.Interfaces
     public interface IFinanceService
     {
         Task<Result<DashboardResponse>> GetDashboardAsync();
-        Task<Result<bool>> CreateAccount(CreateAccountRequest request);
+        Task<Result<bool>> CreateAccountAsync(CreateAccountRequest request);
         Task<Result<List<AccountResponse>>> GetAllAccouintsAsync();
         Task <Result<AccountResponse>> GetAccountByIdAsync(int Id);
         Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id);
-        Task<Result<bool>> AddTransaction(AddTransactionRequest request);
+        Task<Result<bool>> AddTransactionAsync(AddTransactionRequest request);
+        Task<Result<bool>> DeleteAccountAsync(int Id);
     }
 }

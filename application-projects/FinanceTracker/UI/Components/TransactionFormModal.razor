@@ -111,7 +111,7 @@
         if (string.IsNullOrWhiteSpace(addTxModel.CategoryName))
             addTxModel.CategoryName = "No category name";
 
-        var result = await FinanceService.AddTransaction(addTxModel);
+        var result = await FinanceService.AddTransactionAsync(addTxModel);
         if (result.IsSuccess)
         {
             statusMessage = "Transaction added successfully!";

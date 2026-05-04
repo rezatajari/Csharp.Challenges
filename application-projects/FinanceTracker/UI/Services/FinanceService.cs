@@ -12,7 +12,7 @@ namespace UI.Services
 {
     public class FinanceService(HttpClient client, ILocalStorageService localStorage) : BaseService(client, localStorage), IFinanceService
     {
-        public async Task<Result<bool>> CreateAccount(CreateAccountRequest request)
+        public async Task<Result<bool>> CreateAccountAsync(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
             if (response.IsSuccessStatusCode)
@@ -66,16 +66,23 @@ namespace UI.Services
             return Result<List<TransactionResponse>>.Failure(error);
         }
 
-        public async Task<Result<bool>> AddTransaction(AddTransactionRequest request)
+        public async Task<Result<bool>> AddTransactionAsync(AddTransactionRequest request)
         {
 
             var response = await _client.PostAsJsonAsync("api/finance/transaction", request);
+            return await  ToResult<bool>(response);
+        }
+
+        private async Task<Result<T>> ToResult<T>(HttpResponseMessage response)
+        {
             if (response.IsSuccessStatusCode)
             {
-                bool isAddedTx= await response.Content.ReadFromJsonAsync<bool>();
-                return Result<bool>.Success(isAddedTx); 
+                var data = await response.Content.ReadFromJsonAsync<T>();
+                return Result<T>.Success(data!);
             }
-            return Result<bool>.Failure("Cannot save your transaction");
+
+            var error = await GetErrorResponse(response);
+            return Result<T>.Failure(error);
         }
 
         public async Task<Result<DashboardResponse>> GetDashboardAsync()
@@ -91,6 +98,21 @@ namespace UI.Services
 
             string error = await GetErrorResponse(response);
             return Result<DashboardResponse>.Failure(error);
+        }
+
+        public async Task<Result<bool>> DeleteAccountAsync(int Id)
+        {
+            var response = await _client.DeleteAsync($"api/finance/delete/{Id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                bool isDeleted = await response.Content.ReadFromJsonAsync<bool>();
+                return Result<bool>.Success(isDeleted);
+            }
+
+            string error = await GetErrorResponse(response);
+            return Result<bool>.Failure(error);
+
         }
     }
 }
