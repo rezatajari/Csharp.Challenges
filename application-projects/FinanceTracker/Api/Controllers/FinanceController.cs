@@ -47,11 +47,12 @@ namespace Api.Controllers
         }
 
         [HttpPost("transaction")]
-        public async Task<IActionResult> AddTransaction(AddTransaction inputTxDto, CancellationToken ct)
+        public async Task<IActionResult> AddTransaction(AddTransactionRequest request, CancellationToken ct)
         {
             logger.LogInformation("Received request to add {TransactionType} for AccountId: {AccountId}",
-                inputTxDto.TransactionType, inputTxDto.AccountId);
-            var result = await financeService.AddTransaction(inputTxDto, ct);
+                request.Type, request.AccountId);
+
+            var result = await financeService.AddTransaction(request, ct);
             return HandleResult(result);
         }
 

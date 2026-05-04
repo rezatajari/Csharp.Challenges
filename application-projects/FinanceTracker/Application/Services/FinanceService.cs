@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Application.Interfaces.IRepositories;
 using Application.Shared;
 using Domain.Entities;
+using Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services
@@ -141,10 +142,15 @@ namespace Application.Services
             return Result<List<TransactionResponse>>.Success(tx);
         }
 
-        public async Task<Result<bool>> AddTransaction(AddTransaction txDto, CancellationToken ct)
+        public async Task<Result<bool>> AddTransaction(AddTransactionRequest txDto, CancellationToken ct)
         {
             logger.LogInformation("Processing {TransactionType} for AccountId: {AccountId}. Amount: {Amount}",
-                txDto.TransactionType, txDto.AccountId, txDto.Amount);
+                txDto.Type, txDto.AccountId, txDto.Amount);
+
+            Money amount=Money.Create(txDto.Amount,txDto.Currency);
+            Category category = Category.Create(txDto.CategoryName, txDto.CategoryDescription);
+            AddTransaction transaction = new AddTransaction(txDto.AccountId,
+                txDto.TargetAccountId, amount, category, txDto.Type, txDto.TransactionDescription);
 
             var account = await financeRepo.GetByIdAsync(txDto.AccountId, ct);
             if (account == null)

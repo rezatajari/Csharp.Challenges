@@ -66,14 +66,10 @@ namespace UI.Services
             return Result<List<TransactionResponse>>.Failure(error);
         }
 
-        public async Task<Result<bool>> AddTransaction(AddTransactionForm request)
+        public async Task<Result<bool>> AddTransaction(AddTransactionRequest request)
         {
-            var category = Category.Create(request.CategoryName, request.CategoryDescription);
-            var amount = Money.Create(request.Amount, request.Currency);
-            var inputTxDto = new AddTransaction(request.AccountId, request.TargetAccountId, amount, category,
-                request.Type, request.TransactionDescription);
 
-            var response = await _client.PostAsJsonAsync("api/finance/transaction", inputTxDto);
+            var response = await _client.PostAsJsonAsync("api/finance/transaction", request);
             if (response.IsSuccessStatusCode)
             {
                 bool isAddedTx= await response.Content.ReadFromJsonAsync<bool>();
