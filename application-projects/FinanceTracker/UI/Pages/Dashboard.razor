@@ -54,6 +54,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _response = null; 
+        _errorMessage = null;
+
         var result = await FinanceService.GetDashboardAsync();
 
         if (result.IsSuccess)
@@ -64,5 +67,7 @@
         {
             _errorMessage = result.ErrorMessage;
         }
+
+        StateHasChanged();
     }
 }
