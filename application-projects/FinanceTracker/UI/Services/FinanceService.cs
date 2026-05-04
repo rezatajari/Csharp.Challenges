@@ -10,109 +10,49 @@ using UI.Services.Interfaces;
 
 namespace UI.Services
 {
-    public class FinanceService(HttpClient client, ILocalStorageService localStorage) : BaseService(client, localStorage), IFinanceService
+    public class FinanceService(HttpClient client, ILocalStorageService localStorage) 
+        : BaseService(client, localStorage), IFinanceService
     {
         public async Task<Result<bool>> CreateAccountAsync(CreateAccountRequest request)
         {
             var response = await _client.PostAsJsonAsync("api/finance/create-account", request);
-            if (response.IsSuccessStatusCode)
-            {
-                bool isCreated = await response.Content.ReadFromJsonAsync<bool>();
-                return Result<bool>.Success(isCreated);
-            };
-                   
-            string error = await GetErrorResponse(response);
-            return Result<bool>.Failure(error);
+            return await ToResult<bool>(response);
         }
 
         public async Task<Result<List<AccountResponse>>> GetAllAccouintsAsync()
         {
             var response = await _client.GetAsync("api/finance/accounts");
-
-            if (response.IsSuccessStatusCode)
-            {
-                List<AccountResponse>? accounts=await response.Content.ReadFromJsonAsync<List<AccountResponse>>();
-                return Result<List<AccountResponse>>.Success(accounts ?? []);
-            }
-
-            string error= await GetErrorResponse(response);
-            return Result<List<AccountResponse>>.Failure(error);
+            return await ToResult<List<AccountResponse>>(response);
         }
 
         public async Task<Result<AccountResponse>> GetAccountByIdAsync(int Id)
         {
             var response = await _client.GetAsync($"api/finance/account/{Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                AccountResponse? account = await response.Content.ReadFromJsonAsync<AccountResponse>();
-                return account != null
-                    ? Result<AccountResponse>.Success(account)
-                    : Result<AccountResponse>.Failure("Response from server is empty.");
-            }
-            
-            string error=await GetErrorResponse(response);
-            return Result<AccountResponse>.Failure(error);
+            return await ToResult<AccountResponse>(response);
         }
 
         public async Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id)
         {
             var response = await _client.GetAsync($"api/finance/transaction/{Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                List<TransactionResponse>? transactions = await response.Content.ReadFromJsonAsync<List<TransactionResponse>>();
-                return Result<List<TransactionResponse>>.Success(transactions ?? []);
-            }
-            string error=await GetErrorResponse(response);
-            return Result<List<TransactionResponse>>.Failure(error);
+            return await ToResult<List<TransactionResponse>>(response);
         }
 
         public async Task<Result<bool>> AddTransactionAsync(AddTransactionRequest request)
         {
-
             var response = await _client.PostAsJsonAsync("api/finance/transaction", request);
             return await  ToResult<bool>(response);
-        }
-
-        private async Task<Result<T>> ToResult<T>(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadFromJsonAsync<T>();
-                return Result<T>.Success(data!);
-            }
-
-            var error = await GetErrorResponse(response);
-            return Result<T>.Failure(error);
         }
 
         public async Task<Result<DashboardResponse>> GetDashboardAsync()
         {
             var response = await _client.GetAsync("api/finance/dashboard");
-            if (response.IsSuccessStatusCode)
-            {
-                DashboardResponse? dashboard=await response.Content.ReadFromJsonAsync<DashboardResponse>();
-                return dashboard != null
-                    ? Result<DashboardResponse>.Success(dashboard)
-                    : Result<DashboardResponse>.Failure("The server is not response.");
-            }
-
-            string error = await GetErrorResponse(response);
-            return Result<DashboardResponse>.Failure(error);
+            return await ToResult<DashboardResponse>(response);
         }
 
         public async Task<Result<bool>> DeleteAccountAsync(int Id)
         {
             var response = await _client.DeleteAsync($"api/finance/delete/{Id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                bool isDeleted = await response.Content.ReadFromJsonAsync<bool>();
-                return Result<bool>.Success(isDeleted);
-            }
-
-            string error = await GetErrorResponse(response);
-            return Result<bool>.Failure(error);
-
+            return await ToResult<bool>(response);
         }
     }
 }

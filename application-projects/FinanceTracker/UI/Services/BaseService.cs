@@ -1,5 +1,5 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.JSInterop;
+﻿using Application.Shared;
+using Blazored.LocalStorage;
 using System.Net.Http.Json;
 
 namespace UI.Services
@@ -17,6 +17,18 @@ namespace UI.Services
         {
             CustomProblemDetails? problemDetails = await response.Content.ReadFromJsonAsync<CustomProblemDetails>();
             return problemDetails?.detail ?? "Unknow error";
+        }
+
+        protected async Task<Result<T>> ToResult<T>(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<T>();
+                return Result<T>.Success(data!);
+            }
+
+            var error = await GetErrorResponse(response);
+            return Result<T>.Failure(error);
         }
     }
 }
