@@ -20,7 +20,7 @@ jobs:
         dotnet-version: '10.0'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore application-projects/FinanceTracker/FinanceTracker.sln
 
     - name: Build
       run: dotnet build --no-restore --configuration Release
