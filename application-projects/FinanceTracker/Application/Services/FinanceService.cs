@@ -51,7 +51,7 @@ namespace Application.Services
         {
             logger.LogInformation("Retrieving all accounts from the database");
 
-            var accounts = await financeRepo.GetAllAsync(ct);
+            var accounts = await financeRepo.GetAllAsync(ct, a => a.UserId == UserId);
 
             try
             {
