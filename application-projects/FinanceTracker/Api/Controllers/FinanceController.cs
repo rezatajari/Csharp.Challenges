@@ -26,7 +26,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetAllAccounts(CancellationToken ct)
         {
             logger.LogInformation("Received request to fetch all accounts");
-            var result = await financeService.GetAccounts(ct);
+            var result = await financeService.GetAccounts(UserId, ct);
             return HandleResult(result);
         }
 

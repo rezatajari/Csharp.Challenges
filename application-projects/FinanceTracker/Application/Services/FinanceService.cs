@@ -47,7 +47,7 @@ namespace Application.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<List<AccountResponse>>?> GetAccounts(CancellationToken ct)
+        public async Task<Result<List<AccountResponse>>?> GetAccounts(int UserId, CancellationToken ct)
         {
             logger.LogInformation("Retrieving all accounts from the database");
 
