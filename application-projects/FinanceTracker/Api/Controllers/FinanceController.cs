@@ -8,6 +8,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FinanceController(IFinanceService financeService, ILogger<FinanceController> logger) 
         : ApiControllerBase
     {
