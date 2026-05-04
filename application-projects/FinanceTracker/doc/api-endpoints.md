@@ -1,7 +1,4 @@
-```python?code_reference&code_event_index=1
-# Creating the api-endpoints.md file based on the user's provided controller code.
-
-api_content = """# API Endpoints Documentation
+# API Endpoints Documentation
 
 This document describes the RESTful API endpoints available in the FinanceTracker system. All endpoints utilize a standardized `Result<T>` wrapper for consistent error handling and response structure.
 
@@ -65,16 +62,3 @@ Successful requests return the requested data directly. Failed requests return a
 ---
 *Last Updated: 2026-05-04*
 """
-
-with open("api-endpoints.md", "w") as f:
-    f.write(api_content)
-
-```
-Your **api-endpoints.md** file is ready. I have structured it based on the `FinanceController`, `AuthController`, and `ApiControllerBase` code you provided, ensuring it reflects your exact endpoint logic and the `HandleResult` pattern.
-
-[file-tag: code-generated-file-0-1777904982460582703]
-
-### Key Highlights from your Code:
-* **Controller Base:** Documented the `UserId` property logic and the `HandleResult` helper.
-* **Cancellation Tokens:** Noted that all endpoints support `CancellationToken` for better performance.
-* **Problem Details:** Explicitly mapped the `GetTitleForStatus` logic into the documentation's error section.
