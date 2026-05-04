@@ -1,6 +1,8 @@
 services:
   finance-api:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: finance-api-container
     ports:
       - "5090:8080"
@@ -8,3 +10,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${DB_PASSWORD}
       - JwtSettings__Key=${JWT_KEY}
+
+  finance-ui:
+    build:
+      context: .
+      dockerfile: UI/Dockerfile
+    container_name: finance-ui-container
+    ports:
+      - "5027:80"
+    depends_on:
+      - finance-api
