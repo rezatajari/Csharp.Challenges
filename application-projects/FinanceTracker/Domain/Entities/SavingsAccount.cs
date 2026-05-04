@@ -48,7 +48,10 @@ namespace Domain.Entities
             this.Balance -= amount;
             var transaction = Transaction.Create(amount, type, category, description, createdAt);
             StoreTransaction(transaction);
-            toAccount.Deposit(amount, type, category, description, createdAt);
+
+            var amountForDeposit = Money.Create(amount.Amount, amount.Currency);
+            var categoryForDeposit = Category.Create(category.Name, category.Description);
+            toAccount.Deposit(amountForDeposit, type, categoryForDeposit, description, createdAt);
             return transaction;
         }
 
