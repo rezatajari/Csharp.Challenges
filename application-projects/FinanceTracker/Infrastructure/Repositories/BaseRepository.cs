@@ -3,6 +3,7 @@ using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
@@ -24,16 +25,24 @@ namespace Infrastructure.Repositories
             _dbSet.Update(entity);
         }
 
-        public async Task<List<T>> GetAllAsync(CancellationToken ct)
+        public async Task<List<T>> GetAllAsync(
+            CancellationToken ct,
+            Expression<Func<T,bool>>? predict=null)
         {
             logger.LogInformation("Fetching all records for {EntityName}", typeof(T).Name);
-            return await _dbSet.ToListAsync(ct);
+
+            IQueryable<T> query = _dbSet;
+            if (predict != null)
+            {
+                query = query.Where(predict);
+            }
+            return await query.ToListAsync(ct);
         }
 
-        public async Task<T?> GetByIdAsync(int id, CancellationToken ct)
+        public async Task<T?> GetByIdAsync(int Id, CancellationToken ct)
         {
-            logger.LogInformation("Fetching {EntityName} with Id {EntityId}", typeof(T).Name, id);
-            return await _dbSet.FindAsync(id, ct);
+            logger.LogInformation("Fetching {EntityName} with Id {EntityId}", typeof(T).Name, Id);
+            return await _dbSet.FindAsync(Id, ct);
         }
 
         public void Update(T entity)
