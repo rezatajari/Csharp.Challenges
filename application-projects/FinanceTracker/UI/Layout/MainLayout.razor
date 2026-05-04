@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -7,13 +6,48 @@
     </div>
 
     <main>
-        <div class="top-row px-4 d-flex justify-content-between align-items-center">
-            <span class="navbar-brand">My Finance App</span>
-            <button class="btn btn-outline-primary">User Profile</button>
+        <div class="top-row px-4 d-flex justify-content-between align-items-center shadow-sm bg-white">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-bank2 text-primary me-2 fs-4"></i>
+                <span class="fw-bold text-dark fs-5">FinanceTracker</span>
+            </div>
+
+            <div>
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <NavLink href="register" class="btn btn-primary btn-sm px-3 rounded-pill shadow-sm">
+                            Get Started
+                        </NavLink>
+                    </NotAuthorized>
+                    <Authorized>
+                        <span class="text-muted small me-2">Welcome back!</span>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
         </div>
 
-        <article class="content px-4">
-            @Body
+        <article class="content px-4 py-4">
+            <div class="container-fluid">
+                @Body
+            </div>
         </article>
     </main>
 </div>
+
+<style>
+    /* Clean up the default Blazor top-row */
+    .top-row {
+        height: 3.5rem;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 1000;
+    }
+
+    /* Ensure the body area has a soft background to make cards pop */
+    main {
+        background-color: #f8f9fa;
+    }
+
+    .content {
+        padding-top: 1.5rem;
+    }
+</style>

@@ -1,56 +1,90 @@
 ﻿@using Blazored.LocalStorage
 @using UI.Services
 @using UI.Services.Authorization
-<div class="top-row ps-3 navbar navbar-dark">
+
+<div class="top-row ps-3 navbar navbar-dark bg-dark border-bottom border-secondary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Finance Tracker</a>
+        <a class="navbar-brand d-flex align-items-center" href="">
+            <i class="bi bi-piggy-bank-fill me-2 text-primary"></i>
+            <span class="fw-bold">Finance Tracker</span>
+        </a>
     </div>
 </div>
 
-<div class="nav-scrollable">
-    <nav class="flex-column">
+<div class="nav-scrollable bg-dark" style="min-height: calc(100vh - 3.5rem);">
+    <nav class="flex-column p-2">
         <AuthorizeView>
             <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/dashboard" >
-                        <span class="bi bi-house-door-fill" aria-hidden="true"></span> Dashboard
+                <div class="nav-item px-2 py-1">
+                    <NavLink class="nav-link rounded-2 text-white-50" href="/dashboard" Match="NavLinkMatch.All">
+                        <i class="bi bi-speedometer2 me-3 fs-5"></i> Dashboard
                     </NavLink>
                 </div>
 
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="accounts">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Accounts
+                <div class="nav-item px-2 py-1">
+                    <NavLink class="nav-link rounded-2 text-white-50" href="accounts">
+                        <i class="bi bi-wallet2 me-3 fs-5"></i> Accounts
                     </NavLink>
                 </div>
 
-                <div class="nav-item px-3">
-                    <a class="nav-link" style="cursor:pointer" @onclick="HandleLogout">
-                        <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Log Out
-                    </a>
+                <hr class="text-secondary mx-3 my-3" />
+
+                <div class="nav-item px-2 py-1">
+                    <button class="nav-link btn btn-link w-100 text-start rounded-2 text-danger border-0" @onclick="HandleLogout">
+                        <i class="bi bi-box-arrow-right me-3 fs-5"></i> Log Out
+                    </button>
                 </div>
             </Authorized>
+
             <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Home
+                <div class="nav-item px-2 py-1">
+                    <NavLink class="nav-link rounded-2 text-white-50" href="/" Match="NavLinkMatch.All">
+                        <i class="bi bi-house-door me-3 fs-5"></i> Home
                     </NavLink>
                 </div>
 
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="register">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Register
+                <div class="nav-item px-2 py-1">
+                    <NavLink class="nav-link rounded-2 text-white-50" href="login">
+                        <i class="bi bi-shield-lock me-3 fs-5"></i> Log In
                     </NavLink>
                 </div>
 
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="login">
-                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Log In
+                <div class="nav-item px-2 py-1">
+                    <NavLink class="nav-link rounded-2 text-white-50" href="register">
+                        <i class="bi bi-person-plus me-3 fs-5"></i> Register
                     </NavLink>
                 </div>
             </NotAuthorized>
+
+            <Authorizing>
+                <div class="nav-item px-3 text-center py-4">
+                    <div class="spinner-border spinner-border-sm text-light" role="status"></div>
+                </div>
+            </Authorizing>
         </AuthorizeView>
     </nav>
 </div>
+
+<style>
+    /* This makes the active link look modern and bright */
+    .nav-link.active {
+        background-color: rgba(13, 110, 253, 0.15) !important;
+        color: #0d6efd !important;
+        font-weight: 500;
+    }
+
+    .nav-link:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #ffffff !important;
+    }
+
+    .nav-link {
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        padding: 0.6rem 1rem;
+    }
+</style>
 
 @code {
     [Inject] private ILocalStorageService LocalStorage { get; set; }

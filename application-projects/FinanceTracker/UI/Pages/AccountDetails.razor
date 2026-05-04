@@ -8,62 +8,129 @@
 @inject IFinanceService FinanceService
 @attribute [Authorize]
 
-<h3>Account Details</h3>
+<PageTitle>Account Details - Finance Tracker</PageTitle>
 
-@if (isLoading)
-{
-    <div class="spinner-border text-primary" role="status"></div>
-}
-else if (!string.IsNullOrEmpty(ErrorMessage))
-{
-    <div class="alert alert-danger d-flex align-items-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <div>@ErrorMessage</div>
-    </div>
-}
-else
-{
-    <div class="card shadow-sm p-4">
-        <h4>@account.Name</h4>
-        <p>Type: @account.Type</p>
-        <p class="fw-semibold">Balance: @account.Balance.Amount.ToString("C")</p>
-    </div>
-}
+<div class="container-fluid py-4 px-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <NavLink href="accounts" class="text-decoration-none text-muted small">
+            <i class="bi bi-arrow-left me-1"></i> Back to Accounts
+        </NavLink>
+    </nav>
 
-<h4 calss="fw-bold mt-4 mb-3">Transaction History</h4>
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-emerald" role="status"></div>
+            <p class="mt-2 text-muted">Loading account history...</p>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-octagon-fill me-2"></i>
+            <div>@ErrorMessage</div>
+        </div>
+    }
+    else
+    {
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card bg-dark text-white border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                        <div>
+                            <span class="badge bg-emerald-soft text-emerald mb-2 px-3 py-2 text-uppercase fw-bold" style="font-size: 0.7rem;">
+                                @account.Type
+                            </span>
+                            <h1 class="display-5 fw-bold mb-1">@account.Name</h1>
+                            <p class="text-white-50 mb-0">Account ID: #@Id</p>
+                        </div>
+                        <div class="mt-4 mt-md-0 text-md-end">
+                            <label class="text-white-50 small text-uppercase d-block mb-1">Available Balance</label>
+                            <h2 class="display-4 fw-bold text-emerald mb-0">@account.Balance.Amount.ToString("C")</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<button class="btn btn-primary mb-3" @onclick="()=>transactionModal.Show()">Add Transaction</button>
-<TransactionTable Transactions="transactions" />
-<TransactionFormModal @ref="transactionModal" Id="Id" OnSave="HandleSaveFinished" />
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-dark mb-0">Transaction History</h4>
+            <button class="btn btn-emerald px-4 shadow-sm fw-bold" @onclick="() => transactionModal.Show()">
+                <i class="bi bi-plus-lg me-2"></i> New Transaction
+            </button>
+        </div>
 
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-0">
+                @if (transactions == null || !transactions.Any())
+                {
+                    <div class="text-center py-5">
+                        <i class="bi bi-receipt text-muted display-4"></i>
+                        <p class="text-muted mt-3">No transactions recorded yet for this account.</p>
+                    </div>
+                }
+                else
+                {
+                    <TransactionTable Transactions="transactions" />
+                }
+            </div>
+        </div>
 
+        <TransactionFormModal @ref="transactionModal" Id="Id" OnSave="HandleSaveFinished" />
+    }
+</div>
 
+<style>
+    .text-emerald {
+        color: #157347 !important;
+    }
+
+    .bg-emerald-soft {
+        background-color: rgba(21, 115, 71, 0.2);
+    }
+
+    .btn-emerald {
+        background-color: #157347;
+        border-color: #157347;
+        color: white;
+        transition: all 0.2s;
+    }
+
+        .btn-emerald:hover {
+            background-color: #0e5a36;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(21, 115, 71, 0.2);
+        }
+
+    .spinner-border.text-emerald {
+        color: #157347 !important;
+    }
+</style>
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
+    [Parameter] public int Id { get; set; }
     private AccountResponse? account;
     private List<TransactionResponse>? transactions = new();
-    private TransactionFormModal transactionModal=default!;  // Component
+    private TransactionFormModal transactionModal = default!;
     private string? ErrorMessage;
     private bool isLoading = true;
-    private string? pageMessage;
 
     private async Task HandleSaveFinished()
     {
-        var accountResult = await FinanceService.GetAccountByIdAsync(Id);
-        if (accountResult.IsSuccess)
-        {
-            account = accountResult.Value; 
-
-            var txResult = await FinanceService.GetTransactionsByAccountIdAsync(Id);
-            if (txResult.IsSuccess)
-                transactions = txResult.Value;
-        }
+        // Skeptical Expert Note: Refreshing both ensures UI consistency
+        // if the transaction affected the account balance.
+        await LoadData();
         StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+        isLoading = false;
+    }
+
+    private async Task LoadData()
     {
         var accountResult = await FinanceService.GetAccountByIdAsync(Id);
         if (accountResult.IsSuccess)
@@ -71,13 +138,13 @@ else
             account = accountResult.Value;
             var txResult = await FinanceService.GetTransactionsByAccountIdAsync(Id);
             if (txResult.IsSuccess)
+            {
                 transactions = txResult.Value;
+            }
         }
         else
         {
             ErrorMessage = accountResult.ErrorMessage;
         }
-
-        isLoading = false;
     }
 }

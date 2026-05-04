@@ -1,4 +1,68 @@
 ﻿@page "/"
 
+<PageTitle>Home - FinanceTracker</PageTitle>
 
-<PageTitle>Home - My Finance App</PageTitle>
+<div class="bg-light min-vh-100">
+    <div class="container py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+            <div class="col-10 col-sm-8 col-lg-6">
+                <div class="p-5 bg-white shadow-lg rounded-4 text-center">
+                    <i class="bi bi-graph-up-arrow display-1 text-primary"></i>
+                    <div class="mt-4">
+                        <div class="progress mb-2" style="height: 10px;">
+                            <div class="progress-bar bg-success" style="width: 70%"></div>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-info" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 small">Real-time Financial Tracking</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold lh-1 mb-3 text-dark">Take Control of Your <span class="text-primary">Financial Future</span></h1>
+                <p class="lead mb-4 text-secondary">
+                    Join thousands of users who track their spending, manage multiple accounts,
+                    and reach their savings goals with our intuitive finance tracker.
+                    Simple, secure, and always synchronized.
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <NavLink href="register" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">
+                        Get Started
+                    </NavLink>
+                    <NavLink href="login" class="btn btn-outline-secondary btn-lg px-4">
+                        Sign In
+                    </NavLink>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-4 py-5" id="featured-3">
+        <h2 class="pb-2 border-bottom fw-light text-center mb-5">Why Choose Us?</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="feature col text-center">
+                <div class="mb-3">
+                    <i class="bi bi-wallet2 fs-1 text-primary"></i>
+                </div>
+                <h3 class="fs-4 fw-bold">Multi-Account</h3>
+                <p class="text-muted">Manage your cash, bank accounts, and credit cards in a single unified view.</p>
+            </div>
+            <div class="feature col text-center">
+                <div class="mb-3">
+                    <i class="bi bi-shield-lock fs-1 text-primary"></i>
+                </div>
+                <h3 class="fs-4 fw-bold">Secure by Design</h3>
+                <p class="text-muted">We use JWT encryption and best practices to keep your transactions safe.</p>
+            </div>
+            <div class="feature col text-center">
+                <div class="mb-3">
+                    <i class="bi bi-lightning-charge fs-1 text-primary"></i>
+                </div>
+                <h3 class="fs-4 fw-bold">Fast Transfers</h3>
+                <p class="text-muted">Perform internal transfers between accounts with instant balance reconciliation.</p>
+            </div>
+        </div>
+    </div>
+</div>

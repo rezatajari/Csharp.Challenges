@@ -1,37 +1,142 @@
 ﻿@using Application.Dtos
 @using Application.Dtos.Reponses
 @using Domain.Entities
-<table class="table table-hover border">
-    <thead class="table-light">
-        <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Description</th>
-            <th scope="col">Category</th>
-            <th scope="col">Type</th>
-            <th scope="col" class="text-end">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tx in Transactions)
-        {
-            <tr class="align-middle">
-                <td class="text-muted">@tx.CreatedAt.ToShortDateString()</td>
-                <td>@tx.Description</td>
-                <td>@tx.Category.Name</td>
-                <td>
-                    <span class="badge @(tx.Type == TransactionType.Income ? "bg-success" : "bg-danger")">
-                        @tx.Type
-                    </span>
-                </td>
-                <td class="text-end fw-semibold">
-                    @tx.Amount.Amount @tx.Amount.Currency
-                </td>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+            <tr>
+                <th scope="col" class="ps-4 border-0 text-uppercase small fw-bold text-muted">Date</th>
+                <th scope="col" class="border-0 text-uppercase small fw-bold text-muted">Category & Description</th>
+                <th scope="col" class="border-0 text-uppercase small fw-bold text-muted text-center">Type</th>
+                <th scope="col" class="pe-4 border-0 text-uppercase small fw-bold text-muted text-end">Amount</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var tx in Transactions.OrderByDescending(t => t.CreatedAt))
+            {
+                <tr>
+                    <td class="ps-4 py-3">
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold text-dark">@tx.CreatedAt.ToString("MMM dd")</span>
+                            <span class="text-muted small">@tx.CreatedAt.Year</span>
+                        </div>
+                    </td>
+                    <td class="py-3">
+                        <div class="d-flex align-items-center">
+                            <div class="category-icon-sm me-3 shadow-sm">
+                                <i class="bi @GetCategoryIcon(tx.Category.Name)"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">@tx.Category.Name</div>
+                                <div class="text-muted small text-truncate" style="max-width: 250px;">
+                                    @(string.IsNullOrEmpty(tx.Description) ? "No additional details" : tx.Description)
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 text-center">
+                        <span class="badge rounded-pill px-3 py-2 @GetBadgeClass(tx.Type)">
+                            <i class="bi @GetTypeIcon(tx.Type) me-1"></i>
+                            @tx.Type
+                        </span>
+                    </td>
+                    <td class="pe-4 py-3 text-end">
+                        <span class="fw-bold fs-5 @GetAmountClass(tx.Type)">
+                            @(tx.Type == TransactionType.Expense ? "-" : "+")@tx.Amount.Amount.ToString("N2")
+                        </span>
+                        <span class="text-muted small ms-1">@tx.Amount.Currency</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .category-icon-sm {
+        width: 35px;
+        height: 35px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #157347;
+    }
+
+    /* Soft Color Badges */
+    .bg-income-soft {
+        background-color: rgba(21, 115, 71, 0.1);
+        color: #157347;
+    }
+
+    .bg-expense-soft {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+
+    .bg-transfer-soft {
+        background-color: rgba(13, 110, 253, 0.1);
+        color: #0d6efd;
+    }
+
+    /* Amount Colors */
+    .text-income {
+        color: #157347 !important;
+    }
+
+    .text-expense {
+        color: #dc3545 !important;
+    }
+
+    .text-transfer {
+        color: #0d6efd !important;
+    }
+
+    .table tbody tr {
+        transition: background-color 0.2s ease;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+        .table tbody tr:hover {
+            background-color: #fcfcfc;
         }
-    </tbody>
-</table>
+</style>
 
 @code {
-    [Parameter]
-    public List<TransactionResponse> Transactions { get; set; } = new();
+    [Parameter] public List<TransactionResponse> Transactions { get; set; } = new();
+
+    private string GetBadgeClass(TransactionType type) => type switch
+    {
+        TransactionType.Income => "bg-income-soft",
+        TransactionType.Expense => "bg-expense-soft",
+        _ => "bg-transfer-soft"
+    };
+
+    private string GetAmountClass(TransactionType type) => type switch
+    {
+        TransactionType.Income => "text-income",
+        TransactionType.Expense => "text-expense",
+        _ => "text-transfer"
+    };
+
+    private string GetTypeIcon(TransactionType type) => type switch
+    {
+        TransactionType.Income => "bi-arrow-up-right-circle-fill",
+        TransactionType.Expense => "bi-arrow-down-left-circle-fill",
+        _ => "bi-arrow-left-right"
+    };
+
+    private string GetCategoryIcon(string category)
+    {
+        // Simple logic for category icons
+        var c = category.ToLower();
+        if (c.Contains("salary") || c.Contains("income")) return "bi-briefcase";
+        if (c.Contains("shop") || c.Contains("store")) return "bi-cart";
+        if (c.Contains("food") || c.Contains("eat")) return "bi-cup-hot";
+        if (c.Contains("rent") || c.Contains("home")) return "bi-house";
+        if (c.Contains("transfer")) return "bi-arrow-left-right";
+        return "bi-tag"; // Default
+    }
 }

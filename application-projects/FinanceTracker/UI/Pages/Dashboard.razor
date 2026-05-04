@@ -7,54 +7,122 @@
 @inject IFinanceService FinanceService
 @attribute [Authorize]
 
-<PageTitle>Dashboard</PageTitle>
+<PageTitle>Dashboard - Finance Tracker</PageTitle>
 
-<div class="container mt-4">
-    <h3 class="mb-4">Account Overview</h3>
+<div class="container-fluid py-4 px-4">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-0">Financial Overview</h2>
+            <p class="text-muted small">Welcome back! Here is what's happening with your money.</p>
+        </div>
+        <AddAccountAction OnAccountCreated="OnInitializedAsync" />
+    </div>
 
     @if (_response == null && string.IsNullOrEmpty(_errorMessage))
     {
-        <div class="d-flex align-items-center">
-            <strong>Loading your accounts...</strong>
-            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+        <div class="text-center py-5">
+            <div class="spinner-border text-emerald" role="status"></div>
+            <p class="mt-2 text-muted">Analyzing your accounts...</p>
         </div>
     }
     else if (!string.IsNullOrEmpty(_errorMessage))
     {
-        <div class="alert alert-danger" role="alert">
-            @_errorMessage
+        <div class="alert alert-danger shadow-sm border-0 d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-octagon-fill me-2"></i>
+            <div>@_errorMessage</div>
         </div>
     }
     else
     {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-dark text-white border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50 text-uppercase small fw-bold mb-1">Total Combined Balance</h6>
+                            <h2 class="display-6 fw-bold mb-0">
+                                @((_response?.Accounts.Sum(a => a.Balance.Amount) ?? 0).ToString("C"))
+                            </h2>
+                        </div>
+                        <div class="bg-emerald p-3 rounded-3 shadow-sm">
+                            <i class="bi bi-currency-exchange fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-dark mb-3">Your Accounts</h5>
         <div class="row">
             @foreach (var account in _response!.Accounts)
             {
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body">
-                            <h6 class="text-muted mb-1">@account.AccountName</h6>
-                            <h4 class="fw-bold">
-                                @account.Balance.Amount.ToString("C") @account.Balance.Currency
-                            </h4>
+                <div class="col-md-6 col-xl-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 account-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="icon-shape bg-light text-emerald rounded-3 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                    <i class="bi bi-wallet2 fs-4"></i>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i> Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h6 class="text-muted fw-semibold mb-1">@account.AccountName</h6>
+                            <h3 class="fw-bold text-dark mb-3">
+                                @account.Balance.Amount.ToString("C") <span class="fs-6 text-muted fw-normal">@account.Balance.Currency</span>
+                            </h3>
                         </div>
                     </div>
                 </div>
             }
         </div>
     }
-
-    <AddAccountAction OnAccountCreated="OnInitializedAsync" />
 </div>
+
+<style>
+    /* Custom Theme Colors */
+    .text-emerald {
+        color: #157347 !important;
+    }
+
+    .bg-emerald {
+        background-color: #157347 !important;
+    }
+
+    .bg-success-soft {
+        background-color: rgba(21, 115, 71, 0.1);
+    }
+
+    .account-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-left: 4px solid transparent !important;
+    }
+
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+            border-left: 4px solid #157347 !important;
+        }
+
+    .icon-shape {
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+    }
+</style>
 
 @code {
     private DashboardResponse? _response;
     private string? _errorMessage;
-    private bool _showModal = false;
 
     protected override async Task OnInitializedAsync()
     {
-        _response = null; 
+        _response = null;
         _errorMessage = null;
 
         var result = await FinanceService.GetDashboardAsync();

@@ -6,43 +6,60 @@
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 
-<h3>Login</h3>
+<PageTitle>Login - Finance Tracker</PageTitle>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Log In</h4>
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="row w-100 justify-content-center">
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-dark text-success rounded-circle shadow-sm mb-3" style="width: 70px; height: 70px;">
+                    <i class="bi bi-shield-lock-fill fs-1"></i>
                 </div>
+                <h2 class="fw-bold text-dark">Welcome Back</h2>
+                <p class="text-muted">Securely access your financial dashboard</p>
+            </div>
 
-                <div class="card-body">
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-4 p-md-5">
                     <EditForm Model="@_model" OnValidSubmit="HandleLogin">
-                        <FluentValidationValidator/>
+                        <FluentValidationValidator />
 
-                        <div class="mb-3">
-                            <label class="form-label" >Email</label>
-                            <InputText @bind-Value="_model.Email" class="form-control" />
-                            <ValidationMessage For="@(()=>_model.Email)" class="text-danger"/>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-uppercase text-muted">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <InputText @bind-Value="_model.Email" class="form-control border-start-0 ps-0" placeholder="name@example.com" />
+                            </div>
+                            <ValidationMessage For="@(() => _model.Email)" class="text-danger small mt-1" />
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <InputText @bind-Value="_model.Password" type="password" class="form-control" />
-                            <ValidationMessage For="@(() => _model.Password)" class="text-danger" />
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-uppercase text-muted">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted">
+                                    <i class="bi bi-key"></i>
+                                </span>
+                                <InputText @bind-Value="_model.Password" type="password" class="form-control border-start-0 ps-0" placeholder="••••••••" />
+                            </div>
+                            <ValidationMessage For="@(() => _model.Password)" class="text-danger small mt-1" />
                         </div>
 
                         @if (!string.IsNullOrEmpty(_errorMessage))
                         {
-                            <div class="alert alert-danger">@_errorMessage</div>
+                            <div class="alert alert-danger d-flex align-items-center p-2 small mb-4" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <div>@_errorMessage</div>
+                            </div>
                         }
 
-                        <button type="submit" class="btn btn-primary w-100" disabled="@_isLogin">
+                        <button type="submit" class="btn btn-emerald w-100 py-3 fw-bold shadow-sm" disabled="@_isLogin">
                             @if (_isLogin)
                             {
-                                <span class="spinner-border spinner-border-sm"></span>
-                            
-                                <span>Login...</span>
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                <span>Signing in...</span>
                             }
                             else
                             {
@@ -52,14 +69,48 @@
                     </EditForm>
                 </div>
             </div>
+
+            <div class="text-center mt-4">
+                <p class="text-muted">Don't have an account? <NavLink href="register" class="text-success fw-bold text-decoration-none">Create one</NavLink></p>
+            </div>
         </div>
     </div>
 </div>
 
+<style>
+    /* Custom "Attractive Green" - Deep Emerald */
+    .btn-emerald {
+        background-color: #157347; /* Darker than default success */
+        border-color: #157347;
+        color: white;
+        transition: all 0.3s ease;
+    }
 
+        .btn-emerald:hover {
+            background-color: #0e5a36;
+            border-color: #0e5a36;
+            color: white;
+            transform: translateY(-1px);
+            shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-emerald:active {
+            transform: translateY(0);
+        }
+
+    /* Form focus effects */
+    .form-control:focus {
+        border-color: #157347;
+        box-shadow: 0 0 0 0.25rem rgba(21, 115, 71, 0.15);
+    }
+
+    .text-success {
+        color: #157347 !important;
+    }
+</style>
 
 @code {
-    private LoginUserRequest _model=new();
+    private LoginUserRequest _model = new();
     private string? _errorMessage;
     private bool _isLogin;
 
