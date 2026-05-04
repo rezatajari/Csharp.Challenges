@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./application-projects/FinanceTracker/FinanceTracker.slnx
+        working-directory: ./application-projects/FinanceTracker
 
     steps:
     - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
         dotnet-version: '10.0'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore FinanceTracker.slnx
 
     - name: Build
       run: dotnet build --no-restore --no-restore
