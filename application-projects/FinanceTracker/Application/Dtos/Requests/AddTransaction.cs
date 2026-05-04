@@ -1,14 +1,13 @@
 ﻿using Domain.Entities;
 using Domain.ValueObjects;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Application.Dtos.Requests
 {
         public record AddTransaction(
-            int accountId,
-            int targetAccountId,
-            Money amount,
-            Category category,
-            TransactionType type,
-            string? des);
+            int AccountId,
+            int TargetAccountId,
+            Money Amount,
+            Category Category,
+            TransactionType Type,
+            string? Description);
 }

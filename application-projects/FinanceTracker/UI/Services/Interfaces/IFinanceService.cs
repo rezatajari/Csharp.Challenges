@@ -12,6 +12,6 @@ namespace UI.Services.Interfaces
         Task<Result<List<AccountResponse>>> GetAllAccouintsAsync();
         Task <Result<AccountResponse>> GetAccountByIdAsync(int Id);
         Task<Result<List<TransactionResponse>>> GetTransactionsByAccountIdAsync(int Id);
-        Task<Result<bool>> AddTransaction(AddTransactionForm request);
+        Task<Result<bool>> AddTransaction(AddTransactionRequest request);
     }
 }
