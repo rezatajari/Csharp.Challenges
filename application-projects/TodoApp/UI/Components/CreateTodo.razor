@@ -1,0 +1,27 @@
+﻿@using Domain.Entities
+@inject HttpClient _client;
+
+<div class="container">
+    <h3>CreateTodo</h3>
+
+    <EditForm OnSubmit="CreateTodoAsync" @Model="@formModel">
+        <InputText @bind-Value="@formModel.Title" />
+    </EditForm>
+</div>
+
+
+
+@code {
+    private CreateTodoForm formModel = new();
+
+    public class CreateTodoForm{
+        public string Title{ get; set; }
+    }
+
+    public async Task CreateTodoAsync()
+    {
+        var result = await _client.PostAsJsonAsync("api/todos/add",formModel);
+            
+    }
+
+}

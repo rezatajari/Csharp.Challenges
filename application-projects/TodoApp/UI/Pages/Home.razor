@@ -1,24 +1,6 @@
 ﻿@page "/"
+@using UI.Components
 @inject NavigationManager Nav
 
-<div class="container mt-5 text-center">
 
-    <h1 class="mb-3">Todo App</h1>
-
-    <p class="text-muted">
-        Simple task management system. Create, complete and track your todos.
-    </p>
-
-    <button class="btn btn-primary mt-3"
-            @onclick="GoToTodos">
-        Go to Todos
-    </button>
-
-</div>
-
-@code {
-    private void GoToTodos()
-    {
-        Nav.NavigateTo("/todos");
-    }
-}
+<CreateTodo></CreateTodo>

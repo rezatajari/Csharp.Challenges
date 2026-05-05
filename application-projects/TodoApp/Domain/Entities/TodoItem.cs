@@ -1,5 +1,4 @@
-﻿using Domain.Exceptions;
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class TodoItem:BaseEntity
     {
@@ -28,10 +27,10 @@ namespace Domain.Entities
         public void Complete()
         {
             if (IsDeleted)
-                throw new DomainException("Cannot complete a deleted todo.");
+                throw new Exception("Cannot complete a deleted todo.");
 
             if (IsCompleted)
-                throw new DomainException("Todo is already completed.");
+                throw new Exception("Todo is already completed.");
 
             IsCompleted = true;
             CompletedAt = DateTime.UtcNow;
