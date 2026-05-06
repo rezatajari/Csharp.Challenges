@@ -3,6 +3,7 @@ using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Controllers
 {
@@ -28,5 +29,13 @@ namespace API.Controllers
             return Ok(item);
         }
 
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetAll()
+        {
+            List<TodoItem> todos = await context.TodoItems.ToListAsync();
+            if (todos.Count == 0)
+                return NoContent();
+            return Ok(todos);
+        }
     }
 }
