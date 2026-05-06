@@ -16,5 +16,9 @@ namespace Application.Services
                 throw new Exception("Don't save in satabase");
             return item;
         }
+
+        public Task<TodoItem> GetById(int Id, CancellationToken ct)
+        {
+        }
     }
 }

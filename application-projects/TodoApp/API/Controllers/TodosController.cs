@@ -27,10 +27,17 @@ namespace API.Controllers
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int Id, CancellationToken ct)
         {
-            TodoItem? item = await context.TodoItems.FirstOrDefaultAsync(t => t.Id == Id);
-            if (item is null) 
-                return NotFound();
-            return Ok(item);
+            try
+            {
+                TodoItem? todoItem = await todoService.GetById(Id, ct);
+                if (todoItem is null)
+                    return NotFound();
+                return Ok(todoItem);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail:ex.Message, statusCode: 500, title: "Database Error");
+            }
         }
 
         [HttpGet("get-all")]
