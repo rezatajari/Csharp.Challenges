@@ -1,10 +1,8 @@
 ﻿using Application.IServieces;
 using Application.Shared.DTOs;
 using Domain.Entities;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Controllers
 {
@@ -13,15 +11,15 @@ namespace API.Controllers
     public class TodosController(ITodoService todoService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTodoForm formModel)
+        public async Task<IActionResult> Create(CreateTodoForm formModel,CancellationToken ct)
         {
             TodoItem item = TodoItem.Create(formModel.Title);
-            
+            await todoService.CreateTodoItem(
             return Ok(item);
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetById(int Id)
+        public async Task<IActionResult> GetById(int Id, CancellationToken ct)
         {
             TodoItem? item = await context.TodoItems.FirstOrDefaultAsync(t => t.Id == Id);
             if (item is null) 
@@ -30,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpGet("get-all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll( CancellationToken ct)
         {
             List<TodoItem> todos = await context.TodoItems.ToListAsync();
             if (todos.Count == 0)
@@ -39,7 +37,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteById(int Id) {
+        public async Task<IActionResult> DeleteById(int Id, CancellationToken ct) {
             TodoItem? item=await context.TodoItems.FirstOrDefaultAsync(item=>item.Id == Id);
             if (item is null)
                 return NotFound();
@@ -49,7 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateTodoRequest model)
+        public async Task<IActionResult> Update(UpdateTodoRequest model, CancellationToken ct)
         {
             TodoItem? item=await context.TodoItems.FirstOrDefaultAsync(t=>t.Id == model.Id);
             if (item is null)
