@@ -9,5 +9,6 @@ namespace Application.IRepositories
         Task<List<TodoItem>> GetAllAsync();
         Task<TodoItem> UpdateAsync(TodoItem item);
         Task<TodoItem> DeleteAsync(int Id);
+        Task SaveChangeAsync();
     }
 }

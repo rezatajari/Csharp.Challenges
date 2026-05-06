@@ -1,13 +1,13 @@
 ﻿using Application.IRepositories;
 using Domain.Entities;
+using Infrastructure.Data;
 
 namespace Infrastructure.Repositories
 {
-    public class TodoRepository : ITodoRepository
+    public class TodoRepository(TodoAppDb context) : ITodoRepository
     {
         public Task<TodoItem> AddAsync(TodoItem item)
         {
-            throw new NotImplementedException();
         }
 
         public Task<TodoItem> DeleteAsync(int Id)
