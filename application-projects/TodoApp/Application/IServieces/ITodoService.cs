@@ -11,5 +11,6 @@ namespace Application.IServieces
         Task<Result<List<TodoItem>>> GetAll(CancellationToken ct);
 
         Task<Result<bool>> Delete(int Id,CancellationToken ct);
+        Task<Result<bool>> Update(UpdateTodoRequest request,CancellationToken ct);
     }
 }

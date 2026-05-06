@@ -46,5 +46,18 @@ namespace Application.Services
                    return Result<TodoItem>.Failure(ErrorMessages.NotFound);
             return Result<TodoItem>.Success(item);
         }
+
+        public async Task<Result<bool>> Update(UpdateTodoRequest request, CancellationToken ct)
+        {
+            TodoItem? item = await todoRepo.GetAsync(request.Id, ct);
+            if (item == null)
+                return Result<bool>.Failure(ErrorMessages.NotFound);
+
+            item.Update(request.NewTitle);
+            int databaseResponse = await todoRepo.SaveChangeAsync(ct);
+            if (databaseResponse < 0)
+                return Result<bool>.Failure(ErrorMessages.DbError);
+            return Result<bool>.Success(true);
+        }
     }
 }
