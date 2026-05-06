@@ -5,7 +5,7 @@
 <div class="container">
     <h3>CreateTodo</h3>
 
-    <EditForm OnSubmit="CreateTodoAsync" @Model="formModel">
+    <EditForm OnSubmit="CreateTodoAsync" Model="formModel">
         <InputText @bind-Value="@formModel.Title" />
         <button type="submit">Create a Task</button>
     </EditForm>
@@ -15,11 +15,16 @@
 
 @code {
     private CreateTodoForm formModel = new();
+    [Parameter]
+    public EventCallback<string> ErrorMessage { get; set; }
+   
 
     public async Task CreateTodoAsync()
     {
-        var result = await _client.PostAsJsonAsync("api/todos",formModel);
-            
+            var result = await _client.PostAsJsonAsync("api/todos", formModel);
+            if (!result.IsSuccessStatusCode)
+                await ErrorMessage.InvokeAsync("The todo is not created");
+
     }
 
 }

@@ -1,0 +1,21 @@
+﻿@page "/"
+@using UI.Components
+@inject NavigationManager Nav
+
+<PageTitle>Todo Page</PageTitle>
+
+<CreateTodo ErrorMessage="ShowErrorMessage"></CreateTodo>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="text-danger">@_errorMessage</div>
+}
+
+
+@code{
+    private string _errorMessage=string.Empty;
+    private void ShowErrorMessage(string errorMessage)
+    {
+        _errorMessage = errorMessage;
+    }
+}

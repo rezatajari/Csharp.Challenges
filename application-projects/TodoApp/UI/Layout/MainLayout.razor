@@ -2,17 +2,34 @@
 
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-2 bg-dark text-white min-vh-100 p-3">
             <h4 class="mb-4">Todo App</h4>
 
-            <a class="text-white d-block mb-2" href="/">Home</a>
-            <a class="text-white d-block mb-2" href="/todos">Todos</a>
+            <a class="text-white d-block mb-2" href="/">Todo Page</a>
         </div>
 
         <div class="col-10 p-4">
-            @Body
+            <ErrorBoundary @ref="_boundary">
+                <ErrorContent>
+                    <div class="alert alert-danger">
+                        <p>The operation failed.</p>
+                        <button class="btn btn-primary" @onclick="Retry">Try Again</button>
+                    </div>
+                </ErrorContent>
+                <ChildContent>
+                    @Body
+                </ChildContent>
+            </ErrorBoundary>
         </div>
+    </div>
 
     </div>
-</div>
+
+@code {
+    private ErrorBoundary? _boundary;
+
+    private void Retry()
+    {
+        _boundary?.Recover();
+    }
+}
