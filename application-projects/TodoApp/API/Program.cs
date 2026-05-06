@@ -1,6 +1,16 @@
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<TodoAppDb>(option =>
+{
+    option.UseSqlServer(connectionString);
+});
+
 
 builder.Services.AddCors(options =>
 {
