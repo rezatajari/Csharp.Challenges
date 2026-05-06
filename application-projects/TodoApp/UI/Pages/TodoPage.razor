@@ -4,18 +4,26 @@
 
 <PageTitle>Todo Page</PageTitle>
 
-<CreateTodo ErrorMessage="ShowErrorMessage"></CreateTodo>
+<CreateTodo ErrorMessage="ShowErrorMessage" SuccessfulMessage="ShowSuccessfullMessage"></CreateTodo>
 
 @if (!string.IsNullOrEmpty(_errorMessage))
 {
     <div class="text-danger">@_errorMessage</div>
 }
-
+@if (!string.IsNullOrEmpty(_successfullMessage))
+{
+    <div class="text-success">@_successfullMessage</div>
+}
 
 @code{
     private string _errorMessage=string.Empty;
+    private string _successfullMessage = string.Empty;
     private void ShowErrorMessage(string errorMessage)
     {
         _errorMessage = errorMessage;
+    }
+    private void ShowSuccessfullMessage(string successfullMessage)
+    {
+        _successfullMessage = successfullMessage;
     }
 }

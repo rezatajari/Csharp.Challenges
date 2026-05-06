@@ -10,15 +10,15 @@
 
         <div class="col-10 p-4">
             <ErrorBoundary @ref="_boundary">
+                <ChildContent>
+                    @Body
+                </ChildContent>
                 <ErrorContent>
                     <div class="alert alert-danger">
                         <p>The operation failed.</p>
                         <button class="btn btn-primary" @onclick="Retry">Try Again</button>
                     </div>
                 </ErrorContent>
-                <ChildContent>
-                    @Body
-                </ChildContent>
             </ErrorBoundary>
         </div>
     </div>

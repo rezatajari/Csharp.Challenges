@@ -17,13 +17,20 @@
     private CreateTodoForm formModel = new();
     [Parameter]
     public EventCallback<string> ErrorMessage { get; set; }
-   
+    [Parameter]
+    public EventCallback<string> SuccessfulMessage{ get; set; }
 
     public async Task CreateTodoAsync()
     {
-            var result = await _client.PostAsJsonAsync("api/todos", formModel);
-            if (!result.IsSuccessStatusCode)
-                await ErrorMessage.InvokeAsync("The todo is not created");
+        var result = await _client.PostAsJsonAsync("api/todos", formModel);
+        if (!result.IsSuccessStatusCode){
+            await ErrorMessage.InvokeAsync("The todo is not created");
+        }
+        else
+        {
+            await SuccessfulMessage.InvokeAsync("Todo is created succesfully");
+        }
+
 
     }
 
