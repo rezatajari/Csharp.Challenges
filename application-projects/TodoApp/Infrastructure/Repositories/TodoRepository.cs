@@ -18,9 +18,9 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<TodoItem>> GetAllAsync(CancellationToken ct)
+        public async Task<List<TodoItem>> GetAllAsync(CancellationToken ct)
         {
-            throw new NotImplementedException();
+         return   await context.TodoItems.ToListAsync(ct);
         }
 
         public async Task<TodoItem?> GetAsync(int Id, CancellationToken ct)

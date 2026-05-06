@@ -18,6 +18,14 @@ namespace Application.Services
             return Result<TodoItem>.Success(item);
         }
 
+        public async Task<Result<List<TodoItem>>> GetAll(CancellationToken ct)
+        {
+            List<TodoItem> todoItems = await todoRepo.GetAllAsync(ct);
+            if (todoItems.Count == 0)
+                return Result<List<TodoItem>>.Failure(ErrorMessages.NotFound);
+            return Result<List<TodoItem>>.Success(todoItems);
+        }
+
         public async Task<Result<TodoItem>> GetById(int Id, CancellationToken ct)
         {
             TodoItem? item = await todoRepo.GetAsync(Id, ct);
