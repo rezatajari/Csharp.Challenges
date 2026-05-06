@@ -18,5 +18,12 @@ namespace Application.Shared
 
         public static Result<T> Success(T Data) => new(Data, string.Empty);
         public static Result<T> Failure(string errorMessage) => new(default, errorMessage);
+
+
+    }
+    public static class ErrorMessages
+    {
+        public const string NotFound = "The item is not found";
+        public const string DbError = "Don't save in database";
     }
 }

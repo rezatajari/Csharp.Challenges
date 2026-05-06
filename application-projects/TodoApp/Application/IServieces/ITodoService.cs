@@ -1,11 +1,12 @@
-﻿using Application.Shared.DTOs;
+﻿using Application.Shared;
+using Application.Shared.DTOs;
 using Domain.Entities;
 
 namespace Application.IServieces
 {
     public interface ITodoService
     {
-        Task<TodoItem> CreateTodoItem(CreateTodoForm requst,CancellationToken ct);
-        Task<TodoItem> GetById(int Id,CancellationToken ct);
+        Task<Result<TodoItem>> CreateTodoItem(CreateTodoForm requst,CancellationToken ct);
+        Task<Result<TodoItem>> GetById(int Id,CancellationToken ct);
     }
 }
