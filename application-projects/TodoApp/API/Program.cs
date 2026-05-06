@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseExceptionHandler();
 app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 

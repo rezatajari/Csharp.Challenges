@@ -1,4 +1,5 @@
 ﻿using Application.IServieces;
+using Application.Shared;
 using Application.Shared.DTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace API.Controllers
         {
             try
             {
-                TodoItem? todoItem = await todoService.CreateTodoItem(formModel, ct);
+                Result<TodoItem> todoItem = await todoService.CreateTodoItem(formModel, ct);
                 return Ok(todoItem);
             }
             catch (Exception ex)
