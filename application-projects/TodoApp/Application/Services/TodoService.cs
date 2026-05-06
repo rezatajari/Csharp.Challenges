@@ -3,7 +3,6 @@ using Application.IServieces;
 using Application.Shared;
 using Application.Shared.DTOs;
 using Domain.Entities;
-using System;
 
 namespace Application.Services
 {
@@ -15,19 +14,19 @@ namespace Application.Services
             await todoRepo.AddAsync(item, ct);
             int databaseResponse = await todoRepo.SaveChangeAsync(ct);
             if (databaseResponse < 0)
-                return Result<TodoItem>.Failure()
-            return item;
+                return Result<TodoItem>.Failure(ErrorMessages.DbError);
+            return Result<TodoItem>.Success(item);
         }
 
         public async Task<Result<TodoItem>> GetById(int Id, CancellationToken ct)
         {
             TodoItem? item = await todoRepo.GetAsync(Id, ct);
             if (item == null)
-                throw new Exception("The item is not found");
+                   return Result<TodoItem>.Failure(ErrorMessages.NotFound);
             int databaseResponse = await todoRepo.SaveChangeAsync(ct);
             if (databaseResponse < 0)
-                throw new Exception("Don't save in database");
-            return item;
+                return Result<TodoItem>.Failure(ErrorMessages.DbError);
+            return Result<TodoItem>.Success(item);
         }
     }
 }
