@@ -48,5 +48,15 @@ namespace API.Controllers
             return Ok(item);
         }
 
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Update(int Id,string newTitle)
+        {
+            TodoItem? item=await context.TodoItems.FirstOrDefaultAsync(t=>t.Id == Id);
+            if (item is null)
+                return NotFound();
+            item.Update(newTitle);
+            await context.SaveChangesAsync();
+            return Ok(item);
+        }
     }
 }
