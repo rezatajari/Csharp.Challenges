@@ -54,10 +54,15 @@ namespace Application.Services
                 return Result<bool>.Failure(ErrorMessages.NotFound);
 
             item.Update(request.NewTitle);
+            return await SaveInDatabase(true, ct);
+        }
+
+        private async Task<Result<T>> SaveInDatabase<T>(T item,CancellationToken ct)
+        {
             int databaseResponse = await todoRepo.SaveChangeAsync(ct);
             if (databaseResponse < 0)
-                return Result<bool>.Failure(ErrorMessages.DbError);
-            return Result<bool>.Success(true);
+                return Result<T>.Failure(ErrorMessages.DbError);
+            return Result<T>.Success(item);
         }
     }
 }
