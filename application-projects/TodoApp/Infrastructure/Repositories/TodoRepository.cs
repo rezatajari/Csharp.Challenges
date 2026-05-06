@@ -1,6 +1,7 @@
 ﻿using Application.IRepositories;
 using Domain.Entities;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -22,9 +23,9 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TodoItem> GetAsync(int Id, CancellationToken ct)
+        public async Task<TodoItem?> GetAsync(int Id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+          return  await context.TodoItems.FirstOrDefaultAsync(t => t.Id == Id);
         }
 
         public Task<int> SaveChangeAsync(CancellationToken ct)

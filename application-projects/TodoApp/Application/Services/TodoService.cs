@@ -2,6 +2,7 @@
 using Application.IServieces;
 using Application.Shared.DTOs;
 using Domain.Entities;
+using System;
 
 namespace Application.Services
 {
@@ -13,12 +14,19 @@ namespace Application.Services
             await todoRepo.AddAsync(item, ct);
             int databaseResponse =await todoRepo.SaveChangeAsync(ct);
             if (databaseResponse < 0)
-                throw new Exception("Don't save in satabase");
+                throw new Exception("Don't save in database");
             return item;
         }
 
-        public Task<TodoItem> GetById(int Id, CancellationToken ct)
+        public async Task<TodoItem> GetById(int Id, CancellationToken ct)
         {
+            TodoItem? item = await todoRepo.GetAsync(Id, ct);
+            if (item == null)
+                throw new Exception("The item is not found");
+            int databaseResponse=await todoRepo.SaveChangeAsync(ct);
+            if (databaseResponse < 0)
+                throw new Exception("Don't save in database");
+            return item;
         }
     }
 }
