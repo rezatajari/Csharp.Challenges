@@ -37,5 +37,16 @@ namespace API.Controllers
                 return NoContent();
             return Ok(todos);
         }
+
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteById(int Id) {
+            TodoItem? item=await context.TodoItems.FirstOrDefaultAsync(item=>item.Id == Id);
+            if (item is null)
+                return NotFound();
+            item.Delete();
+            await context.SaveChangesAsync();
+            return Ok(item);
+        }
+
     }
 }
