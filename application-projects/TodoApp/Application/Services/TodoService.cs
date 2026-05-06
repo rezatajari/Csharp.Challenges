@@ -3,7 +3,6 @@ using Application.IServieces;
 using Application.Shared;
 using Application.Shared.DTOs;
 using Domain.Entities;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -13,10 +12,7 @@ namespace Application.Services
         {
             TodoItem item = TodoItem.Create(requst.Title);
             await todoRepo.AddAsync(item, ct);
-            int databaseResponse = await todoRepo.SaveChangeAsync(ct);
-            if (databaseResponse < 0)
-                return Result<TodoItem>.Failure(ErrorMessages.DbError);
-            return Result<TodoItem>.Success(item);
+            return await SaveInDatabase(item, ct);
         }
 
         public async Task<Result<bool>> Delete(int Id, CancellationToken ct)
@@ -25,10 +21,7 @@ namespace Application.Services
             if (todoItem == null)
                 return Result<bool>.Failure(ErrorMessages.NotFound);
             todoItem.Delete();
-            int databaseResponse=await todoRepo.SaveChangeAsync(ct);
-            if (databaseResponse < 0)
-                return Result<bool>.Failure(ErrorMessages.DbError);
-            return Result<bool>.Success(true);
+            return await SaveInDatabase(true, ct);
         }
 
         public async Task<Result<List<TodoItem>>> GetAll(CancellationToken ct)
@@ -56,6 +49,10 @@ namespace Application.Services
             item.Update(request.NewTitle);
             return await SaveInDatabase(true, ct);
         }
+
+
+
+
 
         private async Task<Result<T>> SaveInDatabase<T>(T item,CancellationToken ct)
         {
