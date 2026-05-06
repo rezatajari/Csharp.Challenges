@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.IServieces
 {
-    public interface ITodoServices
+    public interface ITodoService
     {
         Task<TodoItem> CreateTodoItem(CreateTodoForm requst);
     }
