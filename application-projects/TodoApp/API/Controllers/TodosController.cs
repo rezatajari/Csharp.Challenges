@@ -42,12 +42,8 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UpdateTodoRequest model, CancellationToken ct)
         {
-            TodoItem? item = await context.TodoItems.FirstOrDefaultAsync(t => t.Id == model.Id);
-            if (item is null)
-                return NotFound();
-            item.Update(model.NewTitle);
-            await context.SaveChangesAsync();
-            return Ok(item);
+            Result<bool> result = await todoService.Update(model, ct);
+            return HandleResult(result);
         }
     }
 }
