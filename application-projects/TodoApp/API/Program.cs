@@ -1,3 +1,4 @@
+using API;
 using Application.IRepositories;
 using Application.IServieces;
 using Application.Services;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TodoAppDb>(option =>
 {
