@@ -9,20 +9,17 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodosController(ITodoService todoService) : ControllerBase
+    public class TodosController(ITodoService todoService) : ApiControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Create(CreateTodoForm formModel,CancellationToken ct)
         {
-            try
-            {
-                Result<TodoItem> todoItem = await todoService.CreateTodoItem(formModel, ct);
-                return Ok(todoItem);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail: ex.Message, statusCode: 500, title: "Databas Error"); ;
-            }
+            Result<TodoItem> result = await todoService.CreateTodoItem(formModel, ct);
+            return HandleResult();
+            if (result.IsSuccess)
+                return Ok(result.Data);
+
+            return Problem(detail: result.ErrorMessage, statusCode: StatusCodes.Status500InternalServerError, title: "Bad Request");
         }
 
         [HttpGet("{Id}")]
