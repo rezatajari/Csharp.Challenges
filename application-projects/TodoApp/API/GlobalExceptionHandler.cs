@@ -18,13 +18,13 @@ namespace API
 
             ProblemDetails problemDetails = new()
             {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Server Error",
-                Detail = "An unexpected error occured."
+                Status = statusCode,
+                Title = title,
+                Detail = exception.Message
             };
 
 
-            httpContext.Response.StatusCode = problemDetails.Status.Value;
+            httpContext.Response.StatusCode = statusCode;
             await httpContext.Response.WriteAsJsonAsync(problemDetails,cancellationToken);
             return true;
         }
