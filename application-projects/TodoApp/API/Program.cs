@@ -11,7 +11,8 @@ builder.Services.AddDbContext<TodoAppDb>(option =>
     option.UseSqlServer(connectionString);
 });
 
-
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazor",
@@ -35,6 +36,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseCors("AllowBlazor");
