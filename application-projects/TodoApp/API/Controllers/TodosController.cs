@@ -13,9 +13,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateTodoForm formModel,CancellationToken ct)
         {
-            TodoItem item = TodoItem.Create(formModel.Title);
-            await todoService.CreateTodoItem(
-            return Ok(item);
+            TodoItem? todoItem= await todoService.CreateTodoItem(formModel,ct);
+            return Ok(todoItem);
         }
 
         [HttpGet("{Id}")]

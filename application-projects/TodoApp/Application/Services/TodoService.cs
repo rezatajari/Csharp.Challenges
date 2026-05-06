@@ -7,9 +7,14 @@ namespace Application.Services
 {
     public class TodoService(ITodoRepository todoRepo) : ITodoService
     {
-        public Task<TodoItem> CreateTodoItem(CreateTodoForm requst)
+        public async Task<TodoItem> CreateTodoItem(CreateTodoForm requst,CancellationToken ct)
         {
-            throw new NotImplementedException();
+            TodoItem item = TodoItem.Create(requst.Title);
+            await todoRepo.AddAsync(item, ct);
+            int databaseResponse =await todoRepo.SaveChangeAsync(ct);
+            if (databaseResponse < 0)
+                throw new Exception("Don't save in satabase");
+            return item;
         }
     }
 }
