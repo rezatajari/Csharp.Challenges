@@ -35,12 +35,8 @@ namespace API.Controllers
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteById(int Id, CancellationToken ct)
         {
-            TodoItem? item = await context.TodoItems.FirstOrDefaultAsync(item => item.Id == Id);
-            if (item is null)
-                return NotFound();
-            item.Delete();
-            await context.SaveChangesAsync();
-            return Ok(item);
+            Result<bool> result = await todoService.Delete(Id, ct);
+            return HandleResult(result);
         }
 
         [HttpPut]
