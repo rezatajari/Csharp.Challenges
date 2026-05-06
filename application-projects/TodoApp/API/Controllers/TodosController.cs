@@ -13,8 +13,15 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateTodoForm formModel,CancellationToken ct)
         {
-            TodoItem? todoItem= await todoService.CreateTodoItem(formModel,ct);
-            return Ok(todoItem);
+            try
+            {
+                TodoItem? todoItem = await todoService.CreateTodoItem(formModel, ct);
+                return Ok(todoItem);
+            }
+            catch (Exception ex)
+            {
+                return Problem(detail: ex.Message, statusCode: 500, title: "Databas Error"); ;
+            }
         }
 
         [HttpGet("{Id}")]
