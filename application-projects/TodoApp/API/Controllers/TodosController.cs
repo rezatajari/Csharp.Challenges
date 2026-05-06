@@ -1,19 +1,20 @@
 ﻿using Application.Shared.DTOs;
 using Domain.Entities;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodosController : ControllerBase
+    public class TodosController(TodoAppDb context) : ControllerBase
     {
-        private List<TodoItem> _todoItems=new List<TodoItem>();
         [HttpPost]
         public async Task<IActionResult> Create(CreateTodoForm formModel)
         {
             TodoItem item = TodoItem.Create(formModel.Title);
-            _todoItems.Add(item);
+            await context.AddAsync(item);
+            await context.SaveChangesAsync();
             return Ok(item);
         }
     }
