@@ -15,27 +15,15 @@ namespace API.Controllers
         public async Task<IActionResult> Create(CreateTodoForm formModel,CancellationToken ct)
         {
             Result<TodoItem> result = await todoService.CreateTodoItem(formModel, ct);
-            return HandleResult();
-            if (result.IsSuccess)
-                return Ok(result.Data);
-
-            return Problem(detail: result.ErrorMessage, statusCode: StatusCodes.Status500InternalServerError, title: "Bad Request");
+            return HandleResult(result);
+          
         }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int Id, CancellationToken ct)
         {
-            try
-            {
-                TodoItem? todoItem = await todoService.GetById(Id, ct);
-                if (todoItem is null)
-                    return NotFound();
-                return Ok(todoItem);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail:ex.Message, statusCode: 500, title: "Database Error");
-            }
+                Result<TodoItem> todoItem = await todoService.GetById(Id, ct);
+                return HandleResult(todoItem);
         }
 
         [HttpGet("get-all")]
