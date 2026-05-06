@@ -49,12 +49,12 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(int Id,string newTitle)
+        public async Task<IActionResult> Update(UpdateTodoRequest model)
         {
-            TodoItem? item=await context.TodoItems.FirstOrDefaultAsync(t=>t.Id == Id);
+            TodoItem? item=await context.TodoItems.FirstOrDefaultAsync(t=>t.Id == model.Id);
             if (item is null)
                 return NotFound();
-            item.Update(newTitle);
+            item.Update(model.NewTitle);
             await context.SaveChangesAsync();
             return Ok(item);
         }
