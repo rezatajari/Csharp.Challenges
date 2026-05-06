@@ -16,20 +16,20 @@ namespace API.Controllers
         {
             Result<TodoItem> result = await todoService.CreateTodoItem(formModel, ct);
             return HandleResult(result);
-
         }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int Id, CancellationToken ct)
         {
             Result<TodoItem> result = await todoService.GetById(Id, ct);
-            return HandleResult(todoItem);
+            return HandleResult(result);
         }
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll(CancellationToken ct)
         {
             Result<List<TodoItem>> result = await todoService.GetAll(ct);
+            return HandleResult(result);
         }
 
         [HttpDelete("{Id}")]

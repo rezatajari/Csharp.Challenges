@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
 
         public async Task<List<TodoItem>> GetAllAsync(CancellationToken ct)
         {
-         return   await context.TodoItems.ToListAsync(ct);
+            return   await context.TodoItems.ToListAsync(ct);
         }
 
         public async Task<TodoItem?> GetAsync(int Id, CancellationToken ct)

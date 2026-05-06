@@ -3,6 +3,7 @@ using Application.IServieces;
 using Application.Shared;
 using Application.Shared.DTOs;
 using Domain.Entities;
+using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -18,6 +19,18 @@ namespace Application.Services
             return Result<TodoItem>.Success(item);
         }
 
+        public async Task<Result<bool>> Delete(int Id, CancellationToken ct)
+        {
+            TodoItem? todoItem = await todoRepo.GetAsync(Id, ct);
+            if (todoItem == null)
+                return Result<bool>.Failure(ErrorMessages.NotFound);
+            todoItem.Delete();
+            int databaseResponse=await todoRepo.SaveChangeAsync(ct);
+            if (databaseResponse < 0)
+                return Result<bool>.Failure(ErrorMessages.DbError);
+            return Result<bool>.Success(true);
+        }
+
         public async Task<Result<List<TodoItem>>> GetAll(CancellationToken ct)
         {
             List<TodoItem> todoItems = await todoRepo.GetAllAsync(ct);
@@ -31,9 +44,6 @@ namespace Application.Services
             TodoItem? item = await todoRepo.GetAsync(Id, ct);
             if (item == null)
                    return Result<TodoItem>.Failure(ErrorMessages.NotFound);
-            int databaseResponse = await todoRepo.SaveChangeAsync(ct);
-            if (databaseResponse < 0)
-                return Result<TodoItem>.Failure(ErrorMessages.DbError);
             return Result<TodoItem>.Success(item);
         }
     }
