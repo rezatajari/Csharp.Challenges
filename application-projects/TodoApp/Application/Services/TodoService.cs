@@ -8,7 +8,7 @@ namespace Application.Services
 {
     public class TodoService(ITodoRepository todoRepo) : ITodoService
     {
-        public async Task<Result<TodoItem>> CreateTodoItem(CreateTodoForm requst, CancellationToken ct)
+        public async Task<Result<TodoItem>> CreateTodoItem(CreateTodoItem requst, CancellationToken ct)
         {
             TodoItem item = TodoItem.Create(requst.Title);
             await todoRepo.AddAsync(item, ct);

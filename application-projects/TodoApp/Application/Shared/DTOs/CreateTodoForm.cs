@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.Shared.DTOs
 {
-    public class CreateTodoForm
+    public class CreateTodoItem
     {
         public string Title { get; set; }=string.Empty;
     }

@@ -12,7 +12,7 @@ namespace API.Controllers
     public class TodosController(ITodoService todoService) : ApiControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTodoForm formModel, CancellationToken ct)
+        public async Task<IActionResult> Create(CreateTodoItem formModel, CancellationToken ct)
         {
             Result<TodoItem> result = await todoService.CreateTodoItem(formModel, ct);
             return HandleResult(result);

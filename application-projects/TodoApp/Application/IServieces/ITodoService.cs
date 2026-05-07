@@ -6,7 +6,7 @@ namespace Application.IServieces
 {
     public interface ITodoService
     {
-        Task<Result<TodoItem>> CreateTodoItem(CreateTodoForm requst,CancellationToken ct);
+        Task<Result<TodoItem>> CreateTodoItem(CreateTodoItem requst,CancellationToken ct);
         Task<Result<TodoItem>> GetById(int Id,CancellationToken ct);
         Task<Result<List<TodoItem>>> GetAll(CancellationToken ct);
 
