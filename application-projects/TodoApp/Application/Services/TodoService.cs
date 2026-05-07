@@ -12,6 +12,7 @@ namespace Application.Services
         {
             TodoItem item = TodoItem.Create(requst.Title);
             await todoRepo.AddAsync(item, ct);
+            List<TodoItem> todoItem = [];
             return await SaveInDatabase(item, ct);
         }
 
