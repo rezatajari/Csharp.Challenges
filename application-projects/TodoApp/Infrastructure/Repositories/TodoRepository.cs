@@ -10,7 +10,6 @@ namespace Infrastructure.Repositories
         public async Task AddAsync(TodoItem item, CancellationToken ct)
         {
             await context.AddAsync(item, ct);
-            await context.SaveChangesAsync(ct);
         }
 
         public Task<TodoItem> DeleteAsync(int Id, CancellationToken ct)
@@ -28,9 +27,9 @@ namespace Infrastructure.Repositories
           return  await context.TodoItems.FirstOrDefaultAsync(t => t.Id == Id);
         }
 
-        public Task<int> SaveChangeAsync(CancellationToken ct)
+        public async Task<int> SaveChangeAsync(CancellationToken ct)
         {
-            throw new NotImplementedException();
+           return await context.SaveChangesAsync(ct);
         }
 
         public Task<TodoItem> UpdateAsync(TodoItem item, CancellationToken ct)

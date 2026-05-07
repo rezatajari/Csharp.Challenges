@@ -12,7 +12,6 @@ namespace Application.Services
         {
             TodoItem item = TodoItem.Create(requst.Title);
             await todoRepo.AddAsync(item, ct);
-            List<TodoItem> todoItem = [];
             return await SaveInDatabase(item, ct);
         }
 
@@ -53,12 +52,10 @@ namespace Application.Services
 
 
 
-
-
         private async Task<Result<T>> SaveInDatabase<T>(T item,CancellationToken ct)
         {
-            int databaseResponse = await todoRepo.SaveChangeAsync(ct);
-            if (databaseResponse < 0)
+            bool success = await todoRepo.SaveChangeAsync(ct) >0;
+            if (!success)
                 return Result<T>.Failure(ErrorMessages.DbError);
             return Result<T>.Success(item);
         }

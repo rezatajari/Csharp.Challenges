@@ -8,16 +8,17 @@ namespace Application.Shared
     {
         public T? Data { get; }
         public string? ErrorMessage { get; }
-        public bool IsSuccess => ErrorMessage == null;
+        public bool IsSuccess { get; };
 
-        private Result(T? data, string? errorMessage)
+        private Result(bool isSuccess,T? data, string? errorMessage)
         {
+            IsSuccess = isSuccess;
             Data = data;
             ErrorMessage = errorMessage;
         }
 
-        public static Result<T> Success(T Data) => new(Data, string.Empty);
-        public static Result<T> Failure(string errorMessage) => new(default, errorMessage);
+        public static Result<T> Success(T Data) => new(true, Data, string.Empty);
+        public static Result<T> Failure(string errorMessage) => new(false,default, errorMessage);
 
 
     }
