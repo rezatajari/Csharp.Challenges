@@ -8,7 +8,7 @@ namespace Application.Shared
     {
         public T? Data { get; }
         public string? ErrorMessage { get; }
-        public bool IsSuccess { get; };
+        public bool IsSuccess { get; }
 
         private Result(bool isSuccess,T? data, string? errorMessage)
         {
