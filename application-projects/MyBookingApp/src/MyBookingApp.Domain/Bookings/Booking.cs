@@ -1,4 +1,5 @@
 using MyBookingApp.Domain.Abstractions;
+using MyBookingApp.Domain.Shared;
 
 namespace MyBookingApp.Domain.Bookings;
 
@@ -17,10 +18,31 @@ public sealed class Booking : BaseEntity
     public DateTime? RejectedOnUtc { get; private set; }
     public DateTime? CompletedOnUtc { get; private set; }
     public DateTime? CancelledOnUtc { get; private set; }
-    private Booking(){}
+    private Booking() { }
 
-    public static Booking Create(Guid apartmentId, Guid userId, DateRange duration, Money priceForPeriod, Money cleaningFee, Money amenitiesUpcharge, Money totalPrice)
+    public static Booking Create(
+        Guid apartmentId,
+        Guid userId,
+        DateRange duration,
+        Money priceForPeriod,
+        Money cleaningFee,
+        Money amenitiesUpcharge)
     {
+        if (apartmentId == Guid.Empty)
+        {
+            throw new ArgumentException("Apartment ID is required.", nameof(apartmentId));
+        }
+
+        if (userId == Guid.Empty)
+        {
+            throw new ArgumentException("User ID is required.", nameof(userId));
+        }
+
+        ArgumentNullException.ThrowIfNull(duration);
+        ArgumentNullException.ThrowIfNull(priceForPeriod);
+        ArgumentNullException.ThrowIfNull(cleaningFee);
+        ArgumentNullException.ThrowIfNull(amenitiesUpcharge);
+
         return new Booking
         {
             ApartmentId = apartmentId,
@@ -29,7 +51,7 @@ public sealed class Booking : BaseEntity
             PriceForPeriod = priceForPeriod,
             CleaningFee = cleaningFee,
             AmenitiesUpcharge = amenitiesUpcharge,
-            TotalPrice = totalPrice,
+            TotalPrice = priceForPeriod + cleaningFee + amenitiesUpcharge,
             Status = BookingStatus.Pending
         };
     }
