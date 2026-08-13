@@ -2,20 +2,23 @@ namespace MyBookingApp.Domain.Shared;
 
 public sealed record Currency
 {
-    public string Code { get; }
+    internal static readonly Currency None = new("");
+    public static readonly Currency Usd = new("USD");
+    public static readonly Currency Eur = new("EUR");
 
-    private Currency(string code)
+    private Currency(string code) => Code = code;
+
+    public string Code { get; init; }
+
+    public static Currency FromCode(string code)
     {
-        Code = code;
+        return All.FirstOrDefault(c => c.Code == code) ??
+               throw new ApplicationException("The currency code is invalid");
     }
 
-    public static Currency Create(string code)
+    public static readonly IReadOnlyCollection<Currency> All = new[]
     {
-        if (string.IsNullOrWhiteSpace(code))
-        {
-            throw new ArgumentException("Currency code is required.", nameof(code));
-        }
-
-        return new Currency(code.Trim().ToUpperInvariant());
-    }
+        Usd,
+        Eur
+    };
 }
