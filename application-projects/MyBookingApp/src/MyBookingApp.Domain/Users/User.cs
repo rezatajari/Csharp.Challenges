@@ -7,10 +7,12 @@ namespace MyBookingApp.Domain.Users;
 
 public sealed class User : BaseEntity
 {
+    private readonly List<Role> _roles=new();
     public FirstName FirstName { get; private set; }
     public LastName LastName { get; private set; }
     public Email Email { get; private set; }
-    public IReadOnlyCollection
+    public string IdentityId { get;private set; }=string.Empty; 
+    public IReadOnlyCollection<Role> Roles=> _roles.ToList();
 
     private User() { }
 
@@ -22,5 +24,10 @@ public sealed class User : BaseEntity
             LastName = lastName,
             Email = email
         };
+    }
+
+    public void SetIdentityId(string identityId)
+    {
+        IdentityId=identityId;
     }
 }
