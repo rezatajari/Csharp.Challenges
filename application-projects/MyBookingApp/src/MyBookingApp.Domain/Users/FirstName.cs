@@ -1,3 +1,3 @@
 namespace MyBookingApp.Domain.Users;
 
-public sealed record (string Value);
+public sealed record FirstName(string Value);
