@@ -4,9 +4,9 @@ namespace MyBookingApp.Domain.Users;
 
 
 
-public class User : BaseEntity
+public sealed class User : BaseEntity
 {
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
+    public FirstName FirstName { get; private set; }
+    public LastName LastName { get; private set; }
     public string Email { get; private set; }
 }
